@@ -1,0 +1,43 @@
+body{
+    background-color: #c5ebf1;
+}
+
+#Logo{
+    background-image: radial-gradient(circle, #120b8f 0%, #0f0fa7 20%, #00d4ff 100%);
+}
+#Navbar{
+    background-color:rgb(153, 196, 233);
+}
+
+
+
+#cuerpo{
+    position:absolute;
+    left:26.5%;
+    background-color: red;
+}
+
+#boton_Compilar{
+    position: relative;
+    top: -350px;
+    border-radius:8px;
+    height: 35px;
+    width: 100px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    background-color:white;
+    border-bottom-color: black;
+}
+
+#boton_Compilar:hover{
+    background-color: wheat;
+}
+
+#TextoEdicion{
+    left: 30%;
+
+}
+
+#textarea2{
+    left: 50px;
+    color: #747474
+}

@@ -123,7 +123,7 @@
 %left 'TK_and' 'TK_or'   
 %left 'TK_mayor' 'TK_menor' 'TK_igual' 'TK_menor_igual' 'TK_mayor_igual' 'TK_igualacion' 'TK_desigual'
 %left 'TK_MAS' 'TK_MENOS'
-%left 'TK_POR' 'TK_DIVIDIDO'
+%left 'TK_POR' 'TK_DIVIDIDO' 'TK_POW'  'TK_SIN'   'TK_COS'  'TK_TAN'   'TK_LOG'  'TK_SQRT'
 %left 'TK_not' 
 %left UMENOS
 
@@ -232,5 +232,12 @@ EXPRESIONARIT
 	| EXPRESIONARIT TK_DIVIDIDO EXPRESIONARIT  						{}
 	| TK_par_apertura EXPRESIONARIT TK_par_cierre       			{}
 	| TK_not EXPRESIONARIT											{}
+	| TK_SIN TK_par_apertura EXPRESIONARIT TK_par_cierre			{}
+	| TK_COS TK_par_apertura EXPRESIONARIT TK_par_cierre			{}
+	| TK_LOG TK_par_apertura EXPRESIONARIT TK_par_cierre			{}
+	| TK_TAN TK_par_apertura EXPRESIONARIT TK_par_cierre			{}
+	| TK_SQRT TK_par_apertura EXPRESIONARIT TK_par_cierre			{}
+	| TK_POW TK_par_apertura EXPRESIONARIT TK_par_cierre			{}
 	| VALORES														{}
 ;
+

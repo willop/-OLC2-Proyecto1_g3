@@ -9,8 +9,8 @@
 
 %%
 
-\/\/.*										return 'TK_COMENTARIO';// comentario simple línea
-\/\*(\*(?!\/)|[^*])*\*\/\n					return 'TK_COMENTARIO_MULTI';//; comentario multiple líneas
+\/\/.*										//return 'TK_COMENTARIO';// comentario simple línea
+\/\*(\*(?!\/)|[^*])*\*\/\n					//return 'TK_COMENTARIO_MULTI';//; comentario multiple líneas
 
 
 "null"          			return 'TK_NULL';
@@ -57,6 +57,8 @@
 "continue"					return 'TK_CONTINUE';
 "true"						return 'TK_TRUE';
 "false"						return 'TK_FALSE';
+"main"						return 'TK_MAIN';
+"void"						return 'TK_VOID';
 /*Signos de ARITMETICOS*/
 "+"                 		return 'TK_MAS';
 "-"                 		return 'TK_MENOS';
@@ -95,7 +97,7 @@
 "$"							return 'TK_dolar';
 "?"							return 'TK_pregunta';
 
-\n	                 		return 'TK_SALTO_LINEA'
+\n	                 		//return 'TK_SALTO_LINEA'
 /* Espacios en blanco */
 \s+											// se ignoran espacios en blanco
 
@@ -123,7 +125,7 @@
 
 %left 'TK_and' 'TK_or'   
 %left 'TK_mayor' 'TK_menor' 'TK_igual' 'TK_menor_igual' 'TK_mayor_igual' 'TK_igualacion' 'TK_desigual' 'TK_concat' 'TK_potencia' 'TK_punto'
-%left 'TK_POR' 'TK_DIVIDIDO' 'TK_POW'  'TK_SIN'   'TK_COS'  'TK_TAN'   'TK_LOG'  'TK_SQRT' 'TK_PARSE' 
+%left 'TK_POR' 'TK_DIVIDIDO' 'TK_POW'  'TK_SIN'   'TK_COS'  'TK_TAN'   'TK_LOG'  'TK_SQRT' 'TK_PARSE' 'TK_numeral' 'TK_MODULO'
 %left 'TK_MAS' 'TK_MENOS'
 %left 'TK_not' 
 %left UMENOS
@@ -137,25 +139,51 @@ ini
 ;
 
 INSTRUCCIONES
-	: INSTRUCCIONES INSTRUCCION 
-	| INSTRUCCION
+	: INSTRUCCIONES_GLOBALES VOID_MAIN INSTRUCCIONES_GLOBALES
+	| VOID_MAIN INSTRUCCIONES_GLOBALES
+	| INSTRUCCIONES_GLOBALES VOID_MAIN 
+	| VOID_MAIN
 	//| error { console.error('Este es un error sintáctico: ' + yytext + ', en la linea: ' + this._$.first_line + ', en la columna: ' + this._$.first_column); }
 ;
 
-INSTRUCCION: DECLARACION 
-	| COMENTARIOS
+VOID_MAIN: TK_VOID TK_MAIN TK_par_apertura TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre
+;
+
+INSTRUCCION: INSTRUCCION DECLARACION 
+	| INSTRUCCION IMPRESION
+	| INSTRUCCION ASIGNACION
+	| INSTRUCCION FUNCIONES_NATIVAS
+	| INSTRUCCION FUNCIONES
+	| INSTRUCCION RETURN
+	| INSTRUCCION CONDICIONALES
+	| INSTRUCCION BUCLES
+	| DECLARACION 
 	| IMPRESION
 	| ASIGNACION
 	| FUNCIONES_NATIVAS
 	| FUNCIONES
 	| RETURN
 	| CONDICIONALES
-	| TK_SALTO_LINEA
+	| BUCLES
 ;
 
-COMENTARIOS : TK_COMENTARIO TK_SALTO_LINEA
-			| TK_COMENTARIO_MULTI TK_SALTO_LINEA
+INSTRUCCIONES_GLOBALES: INSTRUCCIONES_GLOBALES ASIGNACION
+					| INSTRUCCIONES_GLOBALES DECLARACION
+					| INSTRUCCIONES_GLOBALES FUNCIONES
+					| ASIGNACION
+					| DECLARACION
+					| FUNCIONES
 ;
+
+INSTRUCCION2: DECLARACION 
+	| IMPRESION
+	| ASIGNACION
+	| FUNCIONES_NATIVAS
+	| FUNCIONES
+	| RETURN
+	| BUCLES
+;
+
 
 DECLARACION: TIPO_VALOR TIPO_DECLARACION												{}
 			| TIPO_VALOR TK_punto TK_PARSE TK_par_apertura TK_CADENA TK_par_cierre		{}
@@ -175,20 +203,22 @@ CUERPO_STRUCT:CUERPO_STRUCT CONTENIDO_STRUCT
 
 CONTENIDO_STRUCT: TIPO_VALOR TK_ID TK_igual EXPRESIONARIT FIN_LINEA_STRUCT
 				| TIPO_VALOR TK_ID FIN_LINEA_STRUCT
-				| TK_SALTO_LINEA
+				| TK_ID TK_ID TK_igual EXPRESIONARIT FIN_LINEA_STRUCT
+				| TK_ID TK_ID FIN_LINEA_STRUCT
+
 ;
 				
 FIN_LINEA_STRUCT: TK_coma
-				| TK_SALTO_LINEA
 				| TK_pcoma
 ;
 
 TIPO_DECLARACION : TK_ID IGUALACION									{}
+				| TK_ID TK_par_apertura PARAMETRO_FUNSION TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre	{}
 				| COND_ARREGLO TK_ID IGUALACION						{}
 ;
 
-FIN_LINEA: TK_pcoma
-		| TK_SALTO_LINEA											{}
+FIN_LINEA: TK_pcoma													{}
+
 ;
 
 
@@ -204,6 +234,8 @@ COND_ARREGLO: TK_llave_apertura TK_llave_cierre						{}
 ;
 
 IGUALACION: TK_igual EXPRESIONARIT FIN_LINEA						{}
+			|TK_igual EXPRESIONARIT ASIGNACION_TERNARIA FIN_LINEA	{}
+			|TK_igual ARREGLO FIN_LINEA								{}
 			|MAS_VARIABLES FIN_LINEA								{}
 			|FIN_LINEA
 ;
@@ -214,14 +246,18 @@ MAS_VARIABLES: MAS_VARIABLES TK_coma TK_ID
 ;
 
 VALORES: TK_CADENA															{}
+		|TK_NULL
 		|TK_TRUE															{}
 		|TK_FALSE															{}
 		|TK_CARACTER														{}
 		|TK_ID 																{}
 		|TK_ID TK_par_apertura TK_par_cierre								{}
 		|TK_ID TK_par_apertura PARAMETROS TK_par_cierre						{}
+		|TK_ID ARREGLO														{}
 		|TK_ENTERO                        									{}
 		|TK_DECIMAL                       									{}
+		|TK_BEGIN 															{}
+		|TK_END 															{}
 		|TK_CARETER_OF_POSITION TK_par_apertura VALORES TK_par_cierre		{}
 		|TK_TOLOWERCASE	TK_par_apertura TK_par_cierre						{}
 		|TK_SUBSTRING TK_par_apertura VALORES TK_coma VALORES TK_par_cierre {}
@@ -232,7 +268,10 @@ VALORES: TK_CADENA															{}
 ;
 
 ARREGLO: TK_llave_apertura EXPRESIONARIT TK_llave_cierre										{}
+		|TK_llave_apertura ARREGLO TK_llave_cierre										{}
 		|TK_llave_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_llave_cierre					{}
+		|TK_llave_apertura ARREGLO MAS_VALORES_IMPRESION TK_llave_cierre					{}
+		|TK_llave_apertura EXPRESIONARIT TK_dos_puntos EXPRESIONARIT TK_llave_cierre					{}
 ;
 
 
@@ -261,9 +300,11 @@ EXPRESIONARIT
 	| TK_SQRT TK_par_apertura EXPRESIONARIT TK_par_cierre			{}
 	| TK_POW TK_par_apertura EXPRESIONARIT TK_par_cierre			{}
 	| TK_PARSE TK_par_apertura EXPRESIONARIT TK_par_cierre			{}
+	| TK_numeral EXPRESIONARIT										{}
 	| EXPRESIONARIT TK_concat EXPRESIONARIT       					{}
-	| EXPRESIONARIT TK_potencia TK_ENTERO		       				{}
+	| EXPRESIONARIT TK_potencia EXPRESIONARIT		       			{}
 	| EXPRESIONARIT TK_punto EXPRESIONARIT       					{}
+	| EXPRESIONARIT TK_MODULO EXPRESIONARIT       					{}
 	| VALORES														{}
 ;
 
@@ -277,6 +318,8 @@ IMPRESION: TK_PRINT TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA		{}
 ;
 
 MAS_VALORES_IMPRESION: MAS_VALORES_IMPRESION TK_coma EXPRESIONARIT
+					|MAS_VALORES_IMPRESION TK_coma ARREGLO
+					|TK_coma ARREGLO
 					|TK_coma EXPRESIONARIT
 ;
 
@@ -290,16 +333,32 @@ ASIGNACION: TK_ID TK_igual EXPRESIONARIT FIN_LINEA_ASIGNACION					{}
 			|TK_ID TK_igual TK_llave_apertura EXPRESIONARIT TK_llave_cierre FIN_LINEA_ASIGNACION					{}
 			|TK_ID TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA	{}
 			|TK_ID TK_par_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_par_cierre FIN_LINEA	{}
-			|TK_ID TK_par_apertura  TK_par_cierre FIN_LINEA	{}
+			|TK_ID TK_par_apertura  TK_par_cierre FIN_LINEA										{}
+			|TK_ID TK_MENOS TK_MENOS FIN_LINEA 													{}
+			|TK_ID TK_MAS TK_MAS FIN_LINEA														{}
+			|TK_ID TK_llave_apertura EXPRESIONARIT TK_llave_cierre 								{}
+			|TK_ID TK_llave_apertura TK_llave_cierre											{}
+			|TK_ID TK_llave_apertura EXPRESIONARIT TK_llave_cierre IGUALACION					{}
+			|TK_ID TK_llave_apertura TK_llave_cierre IGUALACION									{}
+			|TK_ID FUNCIONES_ARREGLO															{}
 ;
 
+FUNCIONES_ARREGLO: TK_punto TK_PUSH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_pcoma		{}
+				|TK_punto TK_POP TK_par_apertura TK_par_cierre TK_pcoma							{}
+				|TK_punto TK_LENGTH TK_par_apertura TK_par_cierre TK_pcoma						{}
+;
+
+
 FIN_LINEA_ASIGNACION: TK_pcoma										{}
-					| TK_SALTO_LINEA        						{}
 					| ASIGNACION_TERNARIA FIN_LINEA					{}
 ;
 
 
-ASIGNACION_TERNARIA:  TK_pregunta EXPRESIONARIT TK_dos_puntos EXPRESIONARIT 
+ASIGNACION_TERNARIA: ASIGNACION_TERNARIA TK_pregunta EXPRESIONARIT TK_dos_puntos EXPRESIONARIT 
+					| TK_pregunta EXPRESIONARIT TK_dos_puntos EXPRESIONARIT 
+					//| TK_pregunta ASIGNACION_TERNARIA TK_dos_puntos EXPRESIONARIT
+					//| TK_pregunta EXPRESIONARIT TK_dos_puntos ASIGNACION_TERNARIA
+					//| TK_pregunta ASIGNACION_TERNARIA TK_dos_puntos ASIGNACION_TERNARIA
 ;
 
 SIGNOS_COMPARACION: TK_mayor_igual        				{}
@@ -315,21 +374,29 @@ PARAMETROS: PARAMETROS TK_coma EXPRESIONARIT
 			|EXPRESIONARIT
 ;
 
-FUNCIONES_NATIVAS: TK_TOINT TK_par_apertura EXPRESIONARIT TK_par_cierre			{}
+FUNCIONES_NATIVAS: TK_TOINT TK_par_apertura EXPRESIONARIT TK_par_cierre				{}
 				|TK_TODOUBLE TK_par_apertura EXPRESIONARIT TK_par_cierre			{}
 
 ;
 
-FUNCIONES: TK_FUNCTION TK_ID TK_par_apertura PARAMETRO_FUNSION TK_par_cierre TK_corchete_apertura INSTRUCCIONES TK_corchete_cierre
-		| TK_FUNCTION TK_ID TK_par_apertura  TK_par_cierre TK_corchete_apertura INSTRUCCIONES TK_corchete_cierre
+FUNCIONES: TK_FUNCTION TK_ID TK_par_apertura PARAMETRO_FUNSION TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre		{}
+		| TK_FUNCTION TK_ID TK_par_apertura TK_ID TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre		{}
+		| TK_FUNCTION TK_ID TK_par_apertura TK_ID MAS_PARAMETROS_FUNSION TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre		{}
+		| TK_FUNCTION TK_ID TK_par_apertura  TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre						{}
 ;
 
 PARAMETRO_FUNSION: TIPO_VALOR TK_ID							{}
 				| TIPO_VALOR TK_ID MAS_PARAMETROS_FUNSION   {}
+				| TK_ID TK_ID								{}
+				| TK_ID TK_ID MAS_PARAMETROS_FUNSION		{}
 ;
 
 MAS_PARAMETROS_FUNSION: MAS_PARAMETROS_FUNSION TK_coma TIPO_VALOR TK_ID		{}
+				|MAS_PARAMETROS_FUNSION TK_coma TK_ID TK_ID					{}
+				|MAS_PARAMETROS_FUNSION TK_coma TK_ID 						{}
 				|TK_coma TIPO_VALOR TK_ID									{}
+				|TK_coma TK_ID TK_ID										{}
+				|TK_coma TK_ID												{}
 ;
 
 RETURN: TK_RETURN EXPRESIONARIT FIN_LINEA															{}
@@ -341,32 +408,51 @@ CONDICIONALES: FUNCION_IF																	{}
 			| FUNCION_SWITCH																{}
 ;
 
-FUNCION_IF:  TK_IF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura INSTRUCCIONES TK_corchete_cierre FIN_LINEA					{}
-			|TK_IF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura INSTRUCCIONES TK_corchete_cierre FIN_LINEA FUNCION_ELSEIF		{}
-			|TK_IF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura INSTRUCCIONES TK_corchete_cierre FIN_LINEA FUNCION_ELSE		{}
+FUNCION_IF:  TK_IF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre 					{}
+			|TK_IF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre  FUNCION_ELSEIF		{}
+			|TK_IF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre  FUNCION_ELSE		{}
+			|TK_IF TK_par_apertura EXPRESIONARIT TK_par_cierre  INSTRUCCION2 					{}
+			|TK_IF TK_par_apertura EXPRESIONARIT TK_par_cierre  INSTRUCCION2  FUNCION_ELSEIF		{}
+			|TK_IF TK_par_apertura EXPRESIONARIT TK_par_cierre  INSTRUCCION2  FUNCION_ELSE		{}
 ;
 
-FUNCION_ELSEIF: FUNCION_ELSEIF TK_ELSEIF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura INSTRUCCIONES TK_corchete_cierre 	TK_SALTO_LINEA	{}
-			|FUNCION_ELSEIF TK_ELSEIF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura INSTRUCCIONES TK_corchete_cierre TK_SALTO_LINEA FUNCION_ELSE	{}
-			|TK_ELSEIF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura INSTRUCCIONES TK_corchete_cierre TK_SALTO_LINEA 		{}
+FUNCION_ELSEIF: FUNCION_ELSEIF TK_ELSEIF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre 		{}
+			|FUNCION_ELSEIF TK_ELSEIF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre  FUNCION_ELSE	{}
+			|TK_ELSEIF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre  		{}
 			//|TK_ELSEIF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura INSTRUCCIONES TK_corchete_cierre 				 		{}
 ;	
 
-FUNCION_ELSE:TK_ELSE TK_corchete_apertura INSTRUCCIONES TK_corchete_cierre	
+FUNCION_ELSE:TK_ELSE TK_corchete_apertura INSTRUCCION TK_corchete_cierre	
+			|TK_ELSE INSTRUCCION2 
 			//| MAS_SALTOS_LINEA TK_ELSE TK_corchete_apertura INSTRUCCIONES TK_corchete_cierre
+
 ;
 
 FUNCION_SWITCH: TK_SWITCH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura SENTENCIAS_CASE TK_corchete_cierre	{}
-				|TK_SWITCH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura TK_SALTO_LINEA SENTENCIAS_CASE  TK_corchete_cierre	{}
 ;
 
-SENTENCIAS_CASE: TK_CASE EXPRESIONARIT TK_dos_puntos TK_SALTO_LINEA INSTRUCCIONES TK_BREAK TK_pcoma							{}
-				|TK_CASE EXPRESIONARIT TK_dos_puntos TK_SALTO_LINEA INSTRUCCIONES TK_BREAK  TK_pcoma TK_SALTO_LINEA SENTENCIAS_CASE							{}
-				|TK_CASE EXPRESIONARIT TK_dos_puntos TK_SALTO_LINEA INSTRUCCIONES TK_BREAK  TK_pcoma TK_SALTO_LINEA  MAS_SALTOS_LINEA  SENTENCIAS_CASE							{}
-				|TK_CASE EXPRESIONARIT TK_dos_puntos TK_SALTO_LINEA INSTRUCCIONES SENTENCIAS_CASE
-				|TK_DEFAULT TK_dos_puntos INSTRUCCIONES
+SENTENCIAS_CASE: TK_CASE EXPRESIONARIT TK_dos_puntos  INSTRUCCION TK_BREAK TK_pcoma							{}
+				|TK_CASE EXPRESIONARIT TK_dos_puntos  INSTRUCCION TK_BREAK  TK_pcoma  SENTENCIAS_CASE							{}
+				|TK_CASE EXPRESIONARIT TK_dos_puntos  INSTRUCCION SENTENCIAS_CASE
+				|TK_DEFAULT TK_dos_puntos INSTRUCCION
 ;
 
-MAS_SALTOS_LINEA: MAS_SALTOS_LINEA TK_SALTO_LINEA																								{}
-				| TK_SALTO_LINEA																												{}
+
+BUCLES: BUCLE_WHILE
+		|BUCLE_DO_WHILE
+		|BUCLE_FOR
+;
+
+
+BUCLE_WHILE: TK_WHILE TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura  INSTRUCCION TK_corchete_cierre
+;
+
+BUCLE_DO_WHILE: TK_DO TK_corchete_apertura INSTRUCCION TK_corchete_cierre TK_WHILE TK_par_apertura EXPRESIONARIT TK_par_cierre TK_pcoma
+;
+
+BUCLE_FOR: TK_FOR TK_par_apertura DECLARACION  EXPRESIONARIT TK_pcoma EXPRESIONARIT TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre
+		| TK_FOR TK_par_apertura ASIGNACION  EXPRESIONARIT TK_pcoma EXPRESIONARIT TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre
+		| TK_FOR TK_ID TK_IN EXPRESIONARIT TK_corchete_apertura INSTRUCCION TK_corchete_cierre 
+		| TK_FOR TK_ID TK_IN ARREGLO TK_corchete_apertura INSTRUCCION TK_corchete_cierre 
+		//| TK_FOR TK_ID TK_IN TK_ID ARREGLO TK_corchete_apertura INSTRUCCIONES TK_corchete_cierre 
 ;

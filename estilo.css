@@ -29,3 +29,12 @@ body{
     background-color: wheat;
 }
 
+#cuerpo{
+    background-color:red;
+    display: inline-block;
+}
+
+#div_edicionTexto{
+    background-color: #0f0fa7;
+    width: 30%;
+}

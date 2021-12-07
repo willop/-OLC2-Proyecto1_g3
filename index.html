@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./estilo.css" type="text/css"/>
     <title>Pagina Principal</title>
+
     <script src="./codemirror-5.64.0/lib/codemirror.js" ></script>
     <link href="./codemirror-5.64.0/lib/codemirror.css"rel="stylesheet" type="text/css"/> 
     <script src="./codemirror-5.64.0/mode/javascript/javascript.js" ></script>
@@ -23,22 +24,12 @@
     <div id="Navbar">
         <input type="file" id="File1"/>
     </div>
-
-
-    
+    <div id="div_edicionTexto">
+        <textarea id="TextoEdicion" rows="50" cols="70"></textarea>
+    </div>
     <div id="cuerpo"> 
-        <textarea id="TextoEdicion"></textarea>
         <button id="boton_Compilar">Compilar</button>
-        <textarea id="textarea2" rows="50" cols="70" readonly></textarea>
-        <script>
-            var editor = CodeMirror.fromTextArea
-            (document.getElementById('TextoEdicion'),{
-                mode: "javascript",
-                theme: "3024-night",
-                lineNumbers: true,
-            });
-            editor.setSize(480,757);
-        </script> 
+        <textarea id="textarea2" rows="50" cols="70" readonly></textarea>     
     </div>
     <script src="./functions.js" type="module"></script>
     <script src="./Analizador/gramatica.js"></script>

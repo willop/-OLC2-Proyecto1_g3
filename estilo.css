@@ -3,18 +3,16 @@ body{
 }
 
 #Logo{
+    top:0%;
+    width: 100%;
     background-image: radial-gradient(circle, #120b8f 0%, #0f0fa7 20%, #00d4ff 100%);
 }
+
 #Navbar{
+    width: 100%;
     background-color:rgb(153, 196, 233);
 }
 
-
-
-#cuerpo{
-    position:absolute;
-    left:26.5%;
-}
 
 #boton_Compilar{
     position: relative;
@@ -31,12 +29,3 @@ body{
     background-color: wheat;
 }
 
-#TextoEdicion{
-    left: 30%;
-
-}
-
-#textarea2{
-    left: 50px;
-    color: #747474
-}

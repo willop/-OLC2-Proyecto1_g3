@@ -18,6 +18,7 @@ editor.on('change',function(asd) {
     TextoDeEdicion = asd.getValue();
     console.log(TextoDeEdicion);
 })
+editor.setValue("void main(){\nPrint();\n}");
 
             
 //funcion para leer archivos
@@ -58,5 +59,5 @@ function accionBoton(e){
     otrotext.innerHTML = TextoDeEdicion;
     Imprimir(TextoDeEdicion);
     console.log(TextoDeEdicion);
-    gramatica.parse(TextoDeEdicion);
+    alert(gramatica.parse(TextoDeEdicion));
 }

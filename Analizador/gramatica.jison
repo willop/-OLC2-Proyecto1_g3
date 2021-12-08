@@ -116,7 +116,17 @@
 /lex
 
 /* constantes */
+%{
+	//para el objeto de impresion
+	function FImpresion(_tipoimpresion,_valorimpresion,_raro){
+		return {tipo:_tipoimpresion, valor:_valorimpresion,What:_raro};
+	}
 
+	//para declaraciones de funciones
+	function FDeclaracion(_tipo,_nombre,_valor){
+		return {tipo:_tipo,nombre:_nombre,valorvar:_valor};
+	}
+%}
 
 
 
@@ -140,9 +150,9 @@ ini
 
 INSTRUCCIONES
 	: INSTRUCCIONES_GLOBALES VOID_MAIN INSTRUCCIONES_GLOBALES
-	| VOID_MAIN INSTRUCCIONES_GLOBALES															
-	| INSTRUCCIONES_GLOBALES VOID_MAIN 
-	| VOID_MAIN																											{$$ =  $1}
+	| VOID_MAIN INSTRUCCIONES_GLOBALES																					{$$ = $2.concat($1);}
+	| INSTRUCCIONES_GLOBALES VOID_MAIN 																					{$$ = $1.concat($2);}
+	| VOID_MAIN																											{$$ =  [$1]}
 	//| error { console.error('Este es un error sintáctico: ' + yytext + ', en la linea: ' + this._$.first_line + ', en la columna: ' + this._$.first_column); }
 ;
 
@@ -157,9 +167,9 @@ INSTRUCCION: INSTRUCCION DECLARACION
 	| INSTRUCCION RETURN
 	| INSTRUCCION CONDICIONALES
 	| INSTRUCCION BUCLES
-	| DECLARACION 
+	| DECLARACION 																										{$$ = $1}
 	| IMPRESION																											{$$ = $1}
-	| ASIGNACION
+	| ASIGNACION																										{$$ = $1}
 	| FUNCIONES_NATIVAS
 	| FUNCIONES
 	| RETURN
@@ -289,6 +299,7 @@ EXPRESIONARIT
 	| EXPRESIONARIT TK_MENOS TK_MENOS								{}
 	| EXPRESIONARIT TK_MAS EXPRESIONARIT       						{}
 	| EXPRESIONARIT TK_MENOS EXPRESIONARIT     						{}
+	| EXPRESIONARIT TK_numeral TK_POR EXPRESIONARIT       			{}
 	| EXPRESIONARIT TK_POR EXPRESIONARIT       						{}
 	| EXPRESIONARIT TK_DIVIDIDO EXPRESIONARIT  						{}
 	| TK_par_apertura EXPRESIONARIT TK_par_cierre       			{}
@@ -301,16 +312,21 @@ EXPRESIONARIT
 	| TK_POW TK_par_apertura EXPRESIONARIT TK_par_cierre			{}
 	| TK_PARSE TK_par_apertura EXPRESIONARIT TK_par_cierre			{}
 	| TK_numeral EXPRESIONARIT										{}
-	| EXPRESIONARIT TK_concat EXPRESIONARIT       					{}
-	| EXPRESIONARIT TK_potencia EXPRESIONARIT		       			{}
+	| EXPRESIONARIT TK_concat EXPRESIONARIT       					{ var a = $1; var al=a.length; var b = $3; var bl = b.length; var c = a.substring(1,al-1); var d = b.substring(1,bl-1); var total = c+d;  $$ = total;}
+	| EXPRESIONARIT TK_potencia EXPRESIONARIT		       			{ var a = $1; var b = $3; var al = a.length; var c = a.substring(1,al-1); var re = "";
+																		for(var i=0; i<b;i++){
+																			re += c;
+																		}
+																	$$ = re;
+																	}
 	| EXPRESIONARIT TK_punto EXPRESIONARIT       					{}
 	| EXPRESIONARIT TK_MODULO EXPRESIONARIT       					{}
 	| VALORES														{$$ = $1;}
 ;
 
 
-IMPRESION: TK_PRINT TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA							{$$ = $3}
-		|TK_PRINTLN TK_par_apertura EXPRESIONARIT TK_par_cierre	FIN_LINEA							{$$ = "\n"+$3}
+IMPRESION: TK_PRINT TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA							{$$ = FImpresion("Print",$3,this._$);}
+		|TK_PRINTLN TK_par_apertura EXPRESIONARIT TK_par_cierre	FIN_LINEA							{$$ = FImpresion("Print"+$3,this._$);}
 		|TK_PRINT TK_par_apertura EXPRESIONARIT ASIGNACION_TERNARIA TK_par_cierre FIN_LINEA			{}
 		|TK_PRINTLN TK_par_apertura EXPRESIONARIT ASIGNACION_TERNARIA TK_par_cierre	FIN_LINEA		{}
 		|TK_PRINT TK_par_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_par_cierre FIN_LINEA		{}
@@ -430,7 +446,7 @@ FUNCION_ELSE:TK_ELSE TK_corchete_apertura INSTRUCCION TK_corchete_cierre
 
 FUNCION_SWITCH: TK_SWITCH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura SENTENCIAS_CASE TK_corchete_cierre	{}
 ;
-
+``````
 SENTENCIAS_CASE: TK_CASE EXPRESIONARIT TK_dos_puntos  INSTRUCCION TK_BREAK TK_pcoma							{}
 				|TK_CASE EXPRESIONARIT TK_dos_puntos  INSTRUCCION TK_BREAK  TK_pcoma  SENTENCIAS_CASE							{}
 				|TK_CASE EXPRESIONARIT TK_dos_puntos  INSTRUCCION SENTENCIAS_CASE

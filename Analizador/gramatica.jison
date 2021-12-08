@@ -135,22 +135,22 @@
 %% /* Definición de la gramática */
 
 ini
-	: INSTRUCCIONES EOF
+	: INSTRUCCIONES EOF																									{console.log($1); return $1;}
 ;
 
 INSTRUCCIONES
 	: INSTRUCCIONES_GLOBALES VOID_MAIN INSTRUCCIONES_GLOBALES
-	| VOID_MAIN INSTRUCCIONES_GLOBALES
+	| VOID_MAIN INSTRUCCIONES_GLOBALES															
 	| INSTRUCCIONES_GLOBALES VOID_MAIN 
-	| VOID_MAIN
+	| VOID_MAIN																											{$$ =  $1}
 	//| error { console.error('Este es un error sintáctico: ' + yytext + ', en la linea: ' + this._$.first_line + ', en la columna: ' + this._$.first_column); }
 ;
 
-VOID_MAIN: TK_VOID TK_MAIN TK_par_apertura TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre
+VOID_MAIN: TK_VOID TK_MAIN TK_par_apertura TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre			{$$ =  $6}	
 ;
 
 INSTRUCCION: INSTRUCCION DECLARACION 
-	| INSTRUCCION IMPRESION
+	| INSTRUCCION IMPRESION																								{$$ = $1}
 	| INSTRUCCION ASIGNACION
 	| INSTRUCCION FUNCIONES_NATIVAS
 	| INSTRUCCION FUNCIONES
@@ -158,7 +158,7 @@ INSTRUCCION: INSTRUCCION DECLARACION
 	| INSTRUCCION CONDICIONALES
 	| INSTRUCCION BUCLES
 	| DECLARACION 
-	| IMPRESION
+	| IMPRESION																											{$$ = $1}
 	| ASIGNACION
 	| FUNCIONES_NATIVAS
 	| FUNCIONES
@@ -212,24 +212,24 @@ FIN_LINEA_STRUCT: TK_coma
 				| TK_pcoma
 ;
 
-TIPO_DECLARACION : TK_ID IGUALACION									{}
-				| TK_ID TK_par_apertura PARAMETRO_FUNSION TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre	{}
-				| COND_ARREGLO TK_ID IGUALACION						{}
+TIPO_DECLARACION : TK_ID IGUALACION																									{}
+				| TK_ID TK_par_apertura PARAMETRO_FUNSION TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre			{}
+				| COND_ARREGLO TK_ID IGUALACION																						{}
 ;
 
-FIN_LINEA: TK_pcoma													{}
+FIN_LINEA: TK_pcoma																													{}
 
 ;
 
 
-TIPO_VALOR: TK_STRING 												{}
-		|TK_INT														{}
-		|TK_BOOLEAN													{}
-		|TK_DOUBLE													{}
-		|TK_CHAR													{}
+TIPO_VALOR: TK_STRING 																												{}
+		|TK_INT																														{}
+		|TK_BOOLEAN																													{}
+		|TK_DOUBLE																													{}
+		|TK_CHAR																													{}
 ;
 
-COND_ARREGLO: TK_llave_apertura TK_llave_cierre						{}
+COND_ARREGLO: TK_llave_apertura TK_llave_cierre																						{}
 
 ;
 
@@ -245,15 +245,15 @@ MAS_VARIABLES: MAS_VARIABLES TK_coma TK_ID
 
 ;
 
-VALORES: TK_CADENA															{}
-		|TK_NULL
+VALORES: TK_CADENA															{$$ = $1;}
+		|TK_NULL															{}
 		|TK_TRUE															{}
 		|TK_FALSE															{}
-		|TK_CARACTER														{}
+		|TK_CARACTER														{$$ = $1;}
 		|TK_ID 																{}
 		|TK_ID TK_par_apertura TK_par_cierre								{}
 		|TK_ID TK_par_apertura PARAMETROS TK_par_cierre						{}
-		|TK_ID ARREGLO														{}
+		|TK_ID ARREGLO														{$$ = $1;}
 		|TK_ENTERO                        									{}
 		|TK_DECIMAL                       									{}
 		|TK_BEGIN 															{}
@@ -305,22 +305,22 @@ EXPRESIONARIT
 	| EXPRESIONARIT TK_potencia EXPRESIONARIT		       			{}
 	| EXPRESIONARIT TK_punto EXPRESIONARIT       					{}
 	| EXPRESIONARIT TK_MODULO EXPRESIONARIT       					{}
-	| VALORES														{}
+	| VALORES														{$$ = $1;}
 ;
 
 
-IMPRESION: TK_PRINT TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA		{}
-		|TK_PRINTLN TK_par_apertura EXPRESIONARIT TK_par_cierre	FIN_LINEA		{}
-		|TK_PRINT TK_par_apertura EXPRESIONARIT ASIGNACION_TERNARIA TK_par_cierre FIN_LINEA		{}
+IMPRESION: TK_PRINT TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA							{$$ = $3}
+		|TK_PRINTLN TK_par_apertura EXPRESIONARIT TK_par_cierre	FIN_LINEA							{$$ = "\n"+$3}
+		|TK_PRINT TK_par_apertura EXPRESIONARIT ASIGNACION_TERNARIA TK_par_cierre FIN_LINEA			{}
 		|TK_PRINTLN TK_par_apertura EXPRESIONARIT ASIGNACION_TERNARIA TK_par_cierre	FIN_LINEA		{}
 		|TK_PRINT TK_par_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_par_cierre FIN_LINEA		{}
 		|TK_PRINTLN TK_par_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_par_cierre FIN_LINEA		{}
 ;
 
-MAS_VALORES_IMPRESION: MAS_VALORES_IMPRESION TK_coma EXPRESIONARIT
-					|MAS_VALORES_IMPRESION TK_coma ARREGLO
-					|TK_coma ARREGLO
-					|TK_coma EXPRESIONARIT
+MAS_VALORES_IMPRESION: MAS_VALORES_IMPRESION TK_coma EXPRESIONARIT									{}
+					|MAS_VALORES_IMPRESION TK_coma ARREGLO											{}
+					|TK_coma ARREGLO																{}
+					|TK_coma EXPRESIONARIT															{}
 ;
 
 

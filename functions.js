@@ -11,10 +11,9 @@ var editor = CodeMirror.fromTextArea
 (document.getElementById('TextoEdicion'),{
     mode: "javascript",
     theme: "3024-night",
-    lineNumbers: true,
+    lineNumbers: true
 });
-editor.setSize(480,757);
-
+editor.setSize(578,955);
 editor.on('change',function(asd) {
     TextoDeEdicion = asd.getValue();
     console.log(TextoDeEdicion);
@@ -36,11 +35,9 @@ function leerarchivo(e) {
     lector.readAsText(archivo);
 }
 
-
-editor.setSize(480,757);
 //funcion para mostrar el contenido en el textbox
 function mostrarcontenido(_contenido) {
-    const elemento = document.getElementById('TextoEdicion');
+    editor.setValue(_contenido);
     TextoDeEdicion = _contenido;
     elemento.value = _contenido;
 }

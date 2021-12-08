@@ -15,8 +15,9 @@ body{
 
 
 #boton_Compilar{
-    position: relative;
-    top: -350px;
+    position: absolute;
+    top: 50%;
+    left: 48%;
     border-radius:8px;
     height: 35px;
     width: 100px;
@@ -29,12 +30,20 @@ body{
     background-color: wheat;
 }
 
-#cuerpo{
-    background-color:red;
-    display: inline-block;
+#cuerpo_resultado{
+    position: absolute;
+    background-color:white;
+    top:20%;
+    left:60%;
+    width:30%;
+    height:75%;
 }
 
 #div_edicionTexto{
+    position:absolute;
+    top:20%;
+    left:8%;
     background-color: #0f0fa7;
     width: 30%;
+    height:75%;
 }

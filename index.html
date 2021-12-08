@@ -12,10 +12,10 @@
     <script src="./codemirror-5.64.0/mode/javascript/javascript.js" ></script>
     <link href="./codemirror-5.64.0/theme/lucario.css" rel="stylesheet" type="text/css"/>
     <link href="./codemirror-5.64.0/theme/3024-night.css" rel="stylesheet" type="text/css"/>
+    <link href="./codemirror-5.64.0/theme/gruvbox-dark.css" rel="stylesheet" type="text/css"/>
 
 </head>
 <body>
-    
     <div id="Logo">
         <br/>
         <center><img src="IMGS/Logo USAC.png" alt="" height="150"></center>
@@ -24,13 +24,17 @@
     <div id="Navbar">
         <input type="file" id="File1"/>
     </div>
-    <div id="div_edicionTexto">
-        <textarea id="TextoEdicion" rows="50" cols="70"></textarea>
-    </div>
-    <div id="cuerpo"> 
-        <button id="boton_Compilar">Compilar</button>
-        <textarea id="textarea2" rows="50" cols="70" readonly></textarea>     
-    </div>
+    <!-- cuerpo -->
+    <div id="cuerpo">
+        <div id="div_edicionTexto">
+            <textarea id="TextoEdicion"></textarea>
+        </div>
+        <button id="boton_Compilar"><a href="#textarea2">Compilar</a> </button>
+        <div id="cuerpo_resultado"> 
+            <textarea id="textarea2" rows="59" cols="80" readonly></textarea>     
+        </div>
+    </div>    
+        
     <script src="./functions.js" type="module"></script>
     <script src="./Analizador/gramatica.js"></script>
 </body>

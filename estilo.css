@@ -32,7 +32,6 @@ body{
 
 #cuerpo_resultado{
     position: absolute;
-    background-color:white;
     top:20%;
     left:60%;
     width:30%;
@@ -42,8 +41,14 @@ body{
 #div_edicionTexto{
     position:absolute;
     top:20%;
-    left:8%;
-    background-color: #0f0fa7;
+    left:17%;
     width: 30%;
     height:75%;
+}
+
+#Consola{
+    position:absolute;
+    top:100%;
+    left:25%;
+
 }

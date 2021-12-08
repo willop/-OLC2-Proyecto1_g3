@@ -40,8 +40,8 @@
 "function"					return 'TK_FUNCTION';
 "return"					return 'TK_RETURN';
 "if"						return 'TK_IF';
+"else if"					return 'TK_ELSEIF';
 "else"						return 'TK_ELSE';
-"elseif"					return 'TK_ELSEIF';
 "switch"					return 'TK_SWITCH';
 "case"						return 'TK_CASE';
 "default"					return 'TK_DEFAULT';
@@ -112,7 +112,9 @@
 
 <<EOF>>                 return 'EOF';
 
-.                       { console.error('Este es un error léxico: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yylloc.first_column); }
+//.                       { console.error('Este es un error léxico: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yylloc.first_column); }
+.						  {lisErr.push({err: 'Error Lexico', lex: yytext, fil: yylloc.first_line, col: yylloc.first_column, des:'Simbolo Desconocido'}); }
+
 /lex
 
 /* constantes */
@@ -126,6 +128,12 @@
 	function FDeclaracion(_tipo,_nombre,_valor){
 		return {tipo:_tipo,nombre:_nombre,valorvar:_valor};
 	}
+
+	//almacenamiento de errores
+	function FErrores(_tipo,_caracter,_fila,_columna,_descrip){
+		return{tipo:_tipo,Caracter:_caracter,Fila:_fila,Columna:_columna,Descripcion:_descrip};
+	}
+
 %}
 
 
@@ -153,6 +161,7 @@ INSTRUCCIONES
 	| VOID_MAIN INSTRUCCIONES_GLOBALES																					{$$ = $2.concat($1);}
 	| INSTRUCCIONES_GLOBALES VOID_MAIN 																					{$$ = $1.concat($2);}
 	| VOID_MAIN																											{$$ =  [$1]}
+	//| error{$$=FErrores('Lexico',yytext,this._$.first_line,this._$.first_column,'Necesita metodo main');}											
 	//| error { console.error('Este es un error sintáctico: ' + yytext + ', en la linea: ' + this._$.first_line + ', en la columna: ' + this._$.first_column); }
 ;
 
@@ -175,6 +184,7 @@ INSTRUCCION: INSTRUCCION DECLARACION
 	| RETURN
 	| CONDICIONALES
 	| BUCLES
+	
 ;
 
 INSTRUCCIONES_GLOBALES: INSTRUCCIONES_GLOBALES ASIGNACION
@@ -228,7 +238,6 @@ TIPO_DECLARACION : TK_ID IGUALACION																									{}
 ;
 
 FIN_LINEA: TK_pcoma																													{}
-
 ;
 
 
@@ -372,9 +381,6 @@ FIN_LINEA_ASIGNACION: TK_pcoma										{}
 
 ASIGNACION_TERNARIA: ASIGNACION_TERNARIA TK_pregunta EXPRESIONARIT TK_dos_puntos EXPRESIONARIT 
 					| TK_pregunta EXPRESIONARIT TK_dos_puntos EXPRESIONARIT 
-					//| TK_pregunta ASIGNACION_TERNARIA TK_dos_puntos EXPRESIONARIT
-					//| TK_pregunta EXPRESIONARIT TK_dos_puntos ASIGNACION_TERNARIA
-					//| TK_pregunta ASIGNACION_TERNARIA TK_dos_puntos ASIGNACION_TERNARIA
 ;
 
 SIGNOS_COMPARACION: TK_mayor_igual        				{}

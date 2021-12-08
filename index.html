@@ -33,6 +33,21 @@
         <div id="cuerpo_resultado"> 
             <textarea id="textarea2" rows="59" cols="80" readonly></textarea>     
         </div>
+    </div>
+    <div id="Consola">
+        <div id="consola">
+            <textarea id="textconsola" rows="15" cols="150" readonly></textarea>
+            <script>
+            var consola = CodeMirror.fromTextArea
+            (document.getElementById('textconsola'),{
+                mode: "javascript",
+                theme: "lucario",
+                lineNumbers: true,
+                readOnly: true
+            });
+            consola.setSize(1200,300);
+            </script>
+        </div>
     </div>    
         
     <script src="./functions.js" type="module"></script>

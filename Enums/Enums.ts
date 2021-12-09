@@ -1,5 +1,5 @@
 enum Tipo {
-    STRING,INTEGER,FLOAT,DOUBLE
+    STRING,INTEGER,CHAR,DOUBLE
 }
 
 enum TipoAritmetica{

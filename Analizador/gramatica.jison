@@ -60,6 +60,10 @@
 "main"						return 'TK_MAIN';
 "void"						return 'TK_VOID';
 /*Signos de ARITMETICOS*/
+"++"						return 'TK_INCREMENTO'
+"--"						return 'TK_DECREMENTO'
+
+
 "+"                 		return 'TK_MAS';
 "-"                 		return 'TK_MENOS';
 "*"                 		return 'TK_POR';
@@ -140,13 +144,22 @@
 
 
 /* Asociación de operadores y precedencia */
-
-%left 'TK_and' 'TK_or'   
-%left 'TK_mayor' 'TK_menor' 'TK_igual' 'TK_menor_igual' 'TK_mayor_igual' 'TK_igualacion' 'TK_desigual' 'TK_concat' 'TK_potencia' 'TK_punto'
-%left 'TK_POR' 'TK_DIVIDIDO' 'TK_POW'  'TK_SIN'   'TK_COS'  'TK_TAN'   'TK_LOG'  'TK_SQRT' 'TK_PARSE' 'TK_numeral' 'TK_MODULO'
+//presedencia hacia abajo
+%left  'TK_igual'  'TK_punto'
+%left 'TK_pregunta'
+%left 'TK_or'
+%left 'TK_and'
+%left 'TK_potencia'
+%left 'TK_concat'
+%left 'TK_igualacion' 'TK_desigual'
+%left 'TK_mayor' 'TK_menor' 'TK_menor_igual' 'TK_mayor_igual'
 %left 'TK_MAS' 'TK_MENOS'
-%left 'TK_not' 
+%left 'TK_POR' 'TK_DIVIDIDO' 'TK_MODULO' 'TK_POW'  'TK_SIN'   'TK_COS'  'TK_TAN'   'TK_LOG'  'TK_SQRT' 'TK_PARSE' // Duda
+%left 'TK_not' 'TK_numeral' 
+%left 'TK_INCREMENTO' 'TK_DECREMENTO' 
 %left UMENOS
+ 
+
 
 %start ini
 
@@ -266,15 +279,15 @@ MAS_VARIABLES: MAS_VARIABLES TK_coma TK_ID
 
 VALORES: TK_CADENA															{var a = $1; var al=a.length; var c = a.substring(1,al-1);    $$ = new Literal(c,Tipo.STRING);}
 		|TK_NULL															{}
-		|TK_TRUE															{}
-		|TK_FALSE															{}
-		|TK_CARACTER														{$$ = $1;}
+		|TK_TRUE															{$$ = new Literal($1,Tipo.BOOLEAN);}
+		|TK_FALSE															{$$ = new Literal($1,Tipo.BOOLEAN);}
+		|TK_CARACTER														{var a = $1; var al=a.length; var c = a.substring(1,al-1);    $$ = new Literal(c,Tipo.CHAR);}
 		|TK_ID 																{}
 		|TK_ID TK_par_apertura TK_par_cierre								{}
 		|TK_ID TK_par_apertura PARAMETROS TK_par_cierre						{}
-		|TK_ID ARREGLO														{$$ = $1;}
+		|TK_ID ARREGLO														{}
 		|TK_ENTERO                        									{$$ = new Literal(parseInt($1),Tipo.INTEGER)}
-		|TK_DECIMAL                       									{}
+		|TK_DECIMAL                       									{$$ = new Literal(parseFloat($1),Tipo.DOUBLE);}
 		|TK_BEGIN 															{}
 		|TK_END 															{}
 		|TK_CARETER_OF_POSITION TK_par_apertura VALORES TK_par_cierre		{}
@@ -295,7 +308,7 @@ ARREGLO: TK_llave_apertura EXPRESIONARIT TK_llave_cierre										{}
 
 
 EXPRESIONARIT
-	: TK_MENOS EXPRESIONARIT %prec UMENOS  							{}
+	: TK_MENOS EXPRESIONARIT %prec UMENOS  							{$$ = (-1* $2)}
 	| EXPRESIONARIT TK_and EXPRESIONARIT       						{}
 	| EXPRESIONARIT TK_or EXPRESIONARIT								{}
 	| EXPRESIONARIT TK_mayor_igual EXPRESIONARIT       				{}
@@ -304,13 +317,13 @@ EXPRESIONARIT
 	| EXPRESIONARIT TK_menor EXPRESIONARIT							{}
 	| EXPRESIONARIT TK_igualacion EXPRESIONARIT						{}
 	| EXPRESIONARIT TK_desigual EXPRESIONARIT						{}
-	| EXPRESIONARIT TK_MAS TK_MAS									{}
-	| EXPRESIONARIT TK_MENOS TK_MENOS								{}
+	| EXPRESIONARIT TK_INCREMENTO									{}
+	| EXPRESIONARIT TK_DECREMENTO									{}
 	| EXPRESIONARIT TK_MAS EXPRESIONARIT       						{$$ = new Aritmetica($1,$3,TipoAritmetica.SUMA,this._$.first_line,this._$.first_column)}
 	| EXPRESIONARIT TK_MENOS EXPRESIONARIT     						{$$ = new Aritmetica($1,$3,TipoAritmetica.RESTA,this._$.first_line,this._$.first_column)}
 	| EXPRESIONARIT TK_numeral TK_POR EXPRESIONARIT       			{}
-	| EXPRESIONARIT TK_POR EXPRESIONARIT       						{}
-	| EXPRESIONARIT TK_DIVIDIDO EXPRESIONARIT  						{}
+	| EXPRESIONARIT TK_POR EXPRESIONARIT       						{$$ = new Aritmetica($1,$3,TipoAritmetica.MULTIPLICACION,this._$.first_line,this._$.first_column)}
+	| EXPRESIONARIT TK_DIVIDIDO EXPRESIONARIT  						{$$ = new Aritmetica($1,$3,TipoAritmetica.DIVISION,this._$.first_line,this._$.first_column)}
 	| TK_par_apertura EXPRESIONARIT TK_par_cierre       			{}
 	| TK_not EXPRESIONARIT											{}
 	| TK_SIN TK_par_apertura EXPRESIONARIT TK_par_cierre			{}
@@ -359,8 +372,8 @@ ASIGNACION: TK_ID TK_igual EXPRESIONARIT FIN_LINEA_ASIGNACION					{}
 			|TK_ID TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA	{}
 			|TK_ID TK_par_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_par_cierre FIN_LINEA	{}
 			|TK_ID TK_par_apertura  TK_par_cierre FIN_LINEA										{}
-			|TK_ID TK_MENOS TK_MENOS FIN_LINEA 													{}
-			|TK_ID TK_MAS TK_MAS FIN_LINEA														{}
+			|TK_ID TK_DECREMENTO FIN_LINEA 													{}
+			|TK_ID TK_INCREMENTO FIN_LINEA														{}
 			|TK_ID TK_llave_apertura EXPRESIONARIT TK_llave_cierre 								{}
 			|TK_ID TK_llave_apertura TK_llave_cierre											{}
 			|TK_ID TK_llave_apertura EXPRESIONARIT TK_llave_cierre IGUALACION					{}

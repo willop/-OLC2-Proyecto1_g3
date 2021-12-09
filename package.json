@@ -1,7 +1,7 @@
 {
-  "name": "Grupo2",
+  "name": "Grupo3",
   "version": "1.0.0",
-  "description": "Proyecto Compiladores 2, Grupo 2",
+  "description": "Proyecto Compiladores 3, Grupo 2",
   "main": "index.js",
   "scripts": {
     "build": "echo ========Traduciendo TypeScripts======== && tsc && echo ========Traduccion exitosa========",
@@ -14,7 +14,7 @@
     "correrGramaticas": "npm run gramaticas && npm run copiarGramaticas",
     "full-build": "echo ========Corriendo full build======== && npm run build && npm run correrGramaticas && echo ========full build finalizado========"
   },
-  "author": "Grupo 2",
+  "author": "Grupo 3",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^15.9.0"

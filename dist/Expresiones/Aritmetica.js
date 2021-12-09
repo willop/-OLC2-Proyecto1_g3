@@ -24,6 +24,18 @@ class Aritmetica {
                 resultado = vresta.restar(izquierda, derecha);
                 //console.log(resultado);
                 break;
+            case TipoAritmetica.MULTIPLICACION:
+                //console.log("Entra a restar");
+                var vmultiplicacion = new Multiplicacion(); //hago referencia a un nuevo objeto de la clase Restar.ts
+                resultado = vmultiplicacion.multiplicar(izquierda, derecha);
+                //console.log(resultado);
+                break;
+            case TipoAritmetica.DIVISION:
+                //console.log("Entra a restar");
+                var vdivision = new Division(); //hago referencia a un nuevo objeto de la clase Restar.ts
+                resultado = vdivision.dividir(izquierda, derecha);
+                //console.log(resultado);
+                break;
         }
         return resultado;
     }

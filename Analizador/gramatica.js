@@ -104,11 +104,20 @@ break;
 case 15: case 16: case 17:
 this.$ = $$[$0]
 break;
-case 68: case 72: case 123:
+case 68:
+this.$ = new Literal($$[$0],Tipo.STRING);
+break;
+case 72: case 123:
 this.$ = $$[$0];
 break;
 case 76:
 this.$ = $$[$0-1];
+break;
+case 77:
+this.$ = new Literal(parseInt($$[$0]),Tipo.INTEGER)
+break;
+case 104:
+this.$ = new Aritmetica($$[$0-2],$$[$0],TipoAritmetica.SUMA,this._$.first_line,this._$.first_column)
 break;
 case 119:
  var a = $$[$0-2]; var al=a.length; var b = $$[$0]; var bl = b.length; var c = a.substring(1,al-1); var d = b.substring(1,bl-1); var total = c+d;  this.$ = total;
@@ -122,10 +131,10 @@ case 120:
 																	
 break;
 case 124:
-this.$ = FImpresion("Print",$$[$0-2],this._$);
+this.$ = new Print($$[$0-2],this._$.first_line,this._$.first_column,false);
 break;
 case 125:
-this.$ = FImpresion("Print"+$$[$0-2],this._$);
+this.$ = new Print($$[$0-2],this._$.first_line,this._$.first_column,true);
 break;
 }
 },
@@ -797,7 +806,7 @@ case 86:lisErr.push({err: 'Error Lexico', lex: yy_.yytext, fil: yy_.yylloc.first
 break;
 }
 },
-rules: [/^(?:\/\/.*)/i,/^(?:\/\*(\*(?!\/)|[^*])*\*\/\n)/i,/^(?:null\b)/i,/^(?:int\b)/i,/^(?:double\b)/i,/^(?:boolean\b)/i,/^(?:char\b)/i,/^(?:String\b)/i,/^(?:struct\b)/i,/^(?:pow\b)/i,/^(?:sqrt\b)/i,/^(?:sin\b)/i,/^(?:cos\b)/i,/^(?:tan\b)/i,/^(?:log10\b)/i,/^(?:caracterOfPosition\b)/i,/^(?:subString\b)/i,/^(?:length\b)/i,/^(?:toUppercase\b)/i,/^(?:toLowercase\b)/i,/^(?:print\b)/i,/^(?:println\b)/i,/^(?:parse\b)/i,/^(?:toInt\b)/i,/^(?:toDouble\b)/i,/^(?:typeof\b)/i,/^(?:function\b)/i,/^(?:return\b)/i,/^(?:if\b)/i,/^(?:else if\b)/i,/^(?:else\b)/i,/^(?:switch\b)/i,/^(?:case\b)/i,/^(?:default\b)/i,/^(?:break\b)/i,/^(?:while\b)/i,/^(?:do\b)/i,/^(?:for\b)/i,/^(?:in\b)/i,/^(?:push\b)/i,/^(?:pop\b)/i,/^(?:begin\b)/i,/^(?:end\b)/i,/^(?:continue\b)/i,/^(?:true\b)/i,/^(?:false\b)/i,/^(?:main\b)/i,/^(?:void\b)/i,/^(?:\+)/i,/^(?:-)/i,/^(?:\*)/i,/^(?:\/)/i,/^(?:%)/i,/^(?:\()/i,/^(?:\))/i,/^(?:\{)/i,/^(?:\})/i,/^(?:\[)/i,/^(?:\])/i,/^(?::)/i,/^(?:;)/i,/^(?:,)/i,/^(?:\.)/i,/^(?:==)/i,/^(?:=)/i,/^(?:!=)/i,/^(?:>=)/i,/^(?:<=)/i,/^(?:<)/i,/^(?:>)/i,/^(?:&&)/i,/^(?:\|\|)/i,/^(?:!)/i,/^(?:&)/i,/^(?:\^)/i,/^(?:#)/i,/^(?:\$)/i,/^(?:\?)/i,/^(?:\n)/i,/^(?:\s+)/i,/^(?:[0-9]+(\.[0-9]+)\b)/i,/^(?:[0-9]+\b)/i,/^(?:"[^\"]*")/i,/^(?:'[^\']*')/i,/^(?:([a-zA-Z])[a-zA-Z0-9_]*)/i,/^(?:$)/i,/^(?:.)/i],
+rules: [/^(?:\/\/.*)/i,/^(?:\/\*(\*(?!\/)|[^*])*\*\/\n)/i,/^(?:null\b)/i,/^(?:int\b)/i,/^(?:double\b)/i,/^(?:boolean\b)/i,/^(?:char\b)/i,/^(?:String\b)/i,/^(?:struct\b)/i,/^(?:pow\b)/i,/^(?:sqrt\b)/i,/^(?:sin\b)/i,/^(?:cos\b)/i,/^(?:tan\b)/i,/^(?:log10\b)/i,/^(?:caracterOfPosition\b)/i,/^(?:subString\b)/i,/^(?:length\b)/i,/^(?:toUppercase\b)/i,/^(?:toLowercase\b)/i,/^(?:print\b)/i,/^(?:println\b)/i,/^(?:parse\b)/i,/^(?:toInt\b)/i,/^(?:toDouble\b)/i,/^(?:typeof\b)/i,/^(?:function\b)/i,/^(?:return\b)/i,/^(?:if\b)/i,/^(?:else if\b)/i,/^(?:else\b)/i,/^(?:switch\b)/i,/^(?:case\b)/i,/^(?:default\b)/i,/^(?:break\b)/i,/^(?:while\b)/i,/^(?:do\b)/i,/^(?:for\b)/i,/^(?:in\b)/i,/^(?:push\b)/i,/^(?:pop\b)/i,/^(?:begin\b)/i,/^(?:end\b)/i,/^(?:continue\b)/i,/^(?:true\b)/i,/^(?:false\b)/i,/^(?:main\b)/i,/^(?:void\b)/i,/^(?:\+)/i,/^(?:-)/i,/^(?:\*)/i,/^(?:\/)/i,/^(?:%)/i,/^(?:\()/i,/^(?:\))/i,/^(?:\{)/i,/^(?:\})/i,/^(?:\[)/i,/^(?:\])/i,/^(?::)/i,/^(?:;)/i,/^(?:,)/i,/^(?:\.)/i,/^(?:==)/i,/^(?:=)/i,/^(?:!=)/i,/^(?:>=)/i,/^(?:<=)/i,/^(?:<)/i,/^(?:>)/i,/^(?:&&)/i,/^(?:\|\|)/i,/^(?:!)/i,/^(?:&)/i,/^(?:\^)/i,/^(?:#)/i,/^(?:\$)/i,/^(?:\?)/i,/^(?:\n)/i,/^(?:\s+)/i,/^(?:[0-9]+(\.[0-9]+))/i,/^(?:[0-9]+)/i,/^(?:"[^\"]*")/i,/^(?:'[^\']*')/i,/^(?:([a-zA-Z])[a-zA-Z0-9_]*)/i,/^(?:$)/i,/^(?:.)/i],
 conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86],"inclusive":true}}
 });
 return lexer;

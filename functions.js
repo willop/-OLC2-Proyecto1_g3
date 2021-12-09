@@ -54,10 +54,24 @@ document.getElementById('boton_Compilar').addEventListener('click', accionBoton)
 
 
 function accionBoton(e){
+    console.log("inicio");
+    var recolector = new Recolector([],[]);
     const otrotext = document.getElementById('textarea2');
     //TextoDeEdicion = editor.getValue();
     otrotext.innerHTML = TextoDeEdicion;
+    console.log("antes de imprimir");
     Imprimir(TextoDeEdicion);
-    console.log(TextoDeEdicion);
-    alert(gramatica.parse(TextoDeEdicion));
+    console.log("antes de gramatica");
+    var variable = gramatica.parse(TextoDeEdicion);
+    console.log(variable);
+    console.log("antes del for");
+    for(var inst in variable){
+        console.log(inst);
+        variable[inst].interpretar(recolector);
+    }
+
+    console.log("Inicio consola");
+    for (var rec in recolector.consola){
+        console.log(recolector.consola[rec]);
+    }
 }

@@ -1,0 +1,7 @@
+enum Tipo {
+    STRING,INTEGER,FLOAT,DOUBLE
+}
+
+enum TipoAritmetica{
+    SUMA,RESTA,MULTIPLICACION,DIVISION    
+}

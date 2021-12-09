@@ -102,8 +102,8 @@
 \s+											// se ignoran espacios en blanco
 
 
-[0-9]+("."[0-9]+)\b    		return 'TK_DECIMAL'; 
-[0-9]+\b                	return 'TK_ENTERO';   
+[0-9]+("."[0-9]+)    		return 'TK_DECIMAL'; 
+[0-9]+	                	return 'TK_ENTERO';   
 \"[^\"]*\"					return 'TK_CADENA';
 \'[^\']*\'					return 'TK_CARACTER';
 ([a-zA-Z])[a-zA-Z0-9_]*		return 'TK_ID';
@@ -264,7 +264,7 @@ MAS_VARIABLES: MAS_VARIABLES TK_coma TK_ID
 
 ;
 
-VALORES: TK_CADENA															{$$ = $1;}
+VALORES: TK_CADENA															{$$ = new Literal($1,Tipo.STRING);}
 		|TK_NULL															{}
 		|TK_TRUE															{}
 		|TK_FALSE															{}
@@ -273,7 +273,7 @@ VALORES: TK_CADENA															{$$ = $1;}
 		|TK_ID TK_par_apertura TK_par_cierre								{}
 		|TK_ID TK_par_apertura PARAMETROS TK_par_cierre						{}
 		|TK_ID ARREGLO														{$$ = $1;}
-		|TK_ENTERO                        									{}
+		|TK_ENTERO                        									{$$ = new Literal(parseInt($1),Tipo.INTEGER)}
 		|TK_DECIMAL                       									{}
 		|TK_BEGIN 															{}
 		|TK_END 															{}
@@ -306,7 +306,7 @@ EXPRESIONARIT
 	| EXPRESIONARIT TK_desigual EXPRESIONARIT						{}
 	| EXPRESIONARIT TK_MAS TK_MAS									{}
 	| EXPRESIONARIT TK_MENOS TK_MENOS								{}
-	| EXPRESIONARIT TK_MAS EXPRESIONARIT       						{}
+	| EXPRESIONARIT TK_MAS EXPRESIONARIT       						{$$ = new Aritmetica($1,$3,TipoAritmetica.SUMA,this._$.first_line,this._$.first_column)}
 	| EXPRESIONARIT TK_MENOS EXPRESIONARIT     						{}
 	| EXPRESIONARIT TK_numeral TK_POR EXPRESIONARIT       			{}
 	| EXPRESIONARIT TK_POR EXPRESIONARIT       						{}
@@ -334,8 +334,8 @@ EXPRESIONARIT
 ;
 
 
-IMPRESION: TK_PRINT TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA							{$$ = FImpresion("Print",$3,this._$);}
-		|TK_PRINTLN TK_par_apertura EXPRESIONARIT TK_par_cierre	FIN_LINEA							{$$ = FImpresion("Print"+$3,this._$);}
+IMPRESION: TK_PRINT TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA							{$$ = new Print($3,this._$.first_line,this._$.first_column,false);}  
+		|TK_PRINTLN TK_par_apertura EXPRESIONARIT TK_par_cierre	FIN_LINEA							{$$ = new Print($3,this._$.first_line,this._$.first_column,true);}
 		|TK_PRINT TK_par_apertura EXPRESIONARIT ASIGNACION_TERNARIA TK_par_cierre FIN_LINEA			{}
 		|TK_PRINTLN TK_par_apertura EXPRESIONARIT ASIGNACION_TERNARIA TK_par_cierre	FIN_LINEA		{}
 		|TK_PRINT TK_par_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_par_cierre FIN_LINEA		{}

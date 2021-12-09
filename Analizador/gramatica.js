@@ -105,7 +105,7 @@ case 15: case 16: case 17:
 this.$ = $$[$0]
 break;
 case 68:
-this.$ = new Literal($$[$0],Tipo.STRING);
+var a = $$[$0]; var al=a.length; var c = a.substring(1,al-1);    this.$ = new Literal(c,Tipo.STRING);
 break;
 case 72: case 123:
 this.$ = $$[$0];

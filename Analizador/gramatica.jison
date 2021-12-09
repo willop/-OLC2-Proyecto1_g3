@@ -264,7 +264,7 @@ MAS_VARIABLES: MAS_VARIABLES TK_coma TK_ID
 
 ;
 
-VALORES: TK_CADENA															{$$ = new Literal($1,Tipo.STRING);}
+VALORES: TK_CADENA															{var a = $1; var al=a.length; var c = a.substring(1,al-1);    $$ = new Literal(c,Tipo.STRING);}
 		|TK_NULL															{}
 		|TK_TRUE															{}
 		|TK_FALSE															{}

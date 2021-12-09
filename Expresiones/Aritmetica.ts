@@ -25,6 +25,12 @@ interpretar(recolector:any){
                 resultado = vsumar.sumar(izquierda, derecha);
                 //console.log(resultado);
                 break;
+            case TipoAritmetica.RESTA:
+                //console.log("Entra a restar");
+                var vresta = new Restar(); //hago referencia a un nuevo objeto de la clase Restar.ts
+                resultado = vresta.restar(izquierda, derecha);
+                //console.log(resultado);
+                break;
         }
         
         return resultado ;

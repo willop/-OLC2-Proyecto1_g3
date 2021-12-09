@@ -307,7 +307,7 @@ EXPRESIONARIT
 	| EXPRESIONARIT TK_MAS TK_MAS									{}
 	| EXPRESIONARIT TK_MENOS TK_MENOS								{}
 	| EXPRESIONARIT TK_MAS EXPRESIONARIT       						{$$ = new Aritmetica($1,$3,TipoAritmetica.SUMA,this._$.first_line,this._$.first_column)}
-	| EXPRESIONARIT TK_MENOS EXPRESIONARIT     						{}
+	| EXPRESIONARIT TK_MENOS EXPRESIONARIT     						{$$ = new Aritmetica($1,$3,TipoAritmetica.RESTA,this._$.first_line,this._$.first_column)}
 	| EXPRESIONARIT TK_numeral TK_POR EXPRESIONARIT       			{}
 	| EXPRESIONARIT TK_POR EXPRESIONARIT       						{}
 	| EXPRESIONARIT TK_DIVIDIDO EXPRESIONARIT  						{}

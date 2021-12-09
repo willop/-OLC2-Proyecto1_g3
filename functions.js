@@ -13,7 +13,7 @@ var editor = CodeMirror.fromTextArea
     theme: "3024-night",
     lineNumbers: true
 });
-editor.setSize(578,955);
+editor.setSize(570,780);
 editor.on('change',function(asd) {
     TextoDeEdicion = asd.getValue();
     //console.log(TextoDeEdicion);
@@ -74,6 +74,7 @@ function accionBoton(e){
     var variable = gramatica.parse(TextoDeEdicion);
     console.log(variable);
     for(var inst in variable){
+        console.log("Ejecutando instruccion ...")
         console.log(inst);
         variable[inst].interpretar(recolector);
     }

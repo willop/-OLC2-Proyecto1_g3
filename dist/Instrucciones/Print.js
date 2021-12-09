@@ -8,12 +8,11 @@ class Print {
     }
     interpretar(recolector) {
         var resultado = this.expresion.interpretar(recolector);
-        console.log("result");
         var salida = resultado.valor;
         if (this.lineanueva) {
             salida = salida + "\n";
         }
-        console.log(salida);
+        //console.log(salida);
         //tipo sea string resultado
         recolector.consola.push(salida);
     }

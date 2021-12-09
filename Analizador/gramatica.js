@@ -119,6 +119,9 @@ break;
 case 104:
 this.$ = new Aritmetica($$[$0-2],$$[$0],TipoAritmetica.SUMA,this._$.first_line,this._$.first_column)
 break;
+case 105:
+this.$ = new Aritmetica($$[$0-2],$$[$0],TipoAritmetica.RESTA,this._$.first_line,this._$.first_column)
+break;
 case 119:
  var a = $$[$0-2]; var al=a.length; var b = $$[$0]; var bl = b.length; var c = a.substring(1,al-1); var d = b.substring(1,bl-1); var total = c+d;  this.$ = total;
 break;

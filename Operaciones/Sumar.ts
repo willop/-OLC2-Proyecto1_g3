@@ -1,5 +1,3 @@
-
-
 class Sumar{
     tipo = TipoAritmetica.SUMA;
     sumar(izquierda:any,derecha:any):any{
@@ -15,6 +13,4 @@ class Sumar{
         //console.log("dentro de sumarintint");
         return new Return(izquierda.valor+derecha.valor,Tipo.INTEGER);
     }
-
 }
-

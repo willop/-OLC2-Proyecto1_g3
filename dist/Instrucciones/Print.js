@@ -11,10 +11,8 @@ class Print {
             var resultado = this.expresion.interpretar(entorno, recolector);
             var salida = resultado.valor;
             if (this.lineanueva) {
-                salida = salida + "\n";
+                salida = "\n" + salida;
             }
-            //console.log(salida);
-            //tipo sea string resultado
             recolector.consola.push(salida);
         }
         catch (e) {

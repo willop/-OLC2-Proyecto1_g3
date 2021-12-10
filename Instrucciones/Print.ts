@@ -15,16 +15,12 @@ class Print implements Instruccion {
             var resultado = this.expresion.interpretar(entorno,recolector);
             var salida = resultado.valor;
             if(this.lineanueva){
-                salida = salida +"\n"
+                salida = "\n"+ salida 
             }
-            //console.log(salida);
-            //tipo sea string resultado
             recolector.consola.push(salida);
-
         }catch(e){
             recolector.listaerrores.push(e);
             recolector.listaerrores.push(new ErrorGeneral(this.linea,this.columna,"ERROR EN PRINT",entorno));
-        }
-        
+        }        
     }
 }

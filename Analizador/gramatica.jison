@@ -334,14 +334,9 @@ EXPRESIONARIT
 	| TK_PARSE TK_par_apertura EXPRESIONARIT TK_par_cierre			{}
 	| TK_numeral EXPRESIONARIT										{}
 	| EXPRESIONARIT TK_concat EXPRESIONARIT       					{ var a = $1; var al=a.length; var b = $3; var bl = b.length; var c = a.substring(1,al-1); var d = b.substring(1,bl-1); var total = c+d;  $$ = total;}
-	| EXPRESIONARIT TK_potencia EXPRESIONARIT		       			{ var a = $1; var b = $3; var al = a.length; var c = a.substring(1,al-1); var re = "";
-																		for(var i=0; i<b;i++){
-																			re += c;
-																		}
-																	$$ = re;
-																	}
+	| EXPRESIONARIT TK_potencia EXPRESIONARIT		       			{ $$ = new Potencia($1,$3,this._$.first_line,this._$.first_column);}
 	| EXPRESIONARIT TK_punto EXPRESIONARIT       					{}
-	| EXPRESIONARIT TK_MODULO EXPRESIONARIT       					{$$ = new Aritmetica($1,$3,TipoAritmetica.MODULO,this._$.first_line,this._$.first_column)}
+	| EXPRESIONARIT TK_MODULO EXPRESIONARIT       					{$$ = new Aritmetica($1,$3,TipoAritmetica.MODULO,this._$.first_line,this._$.first_column);}
 	| VALORES														{$$ = $1;}
 ;
 
@@ -350,22 +345,23 @@ IMPRESION: TK_PRINT TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA							
 		|TK_PRINTLN TK_par_apertura EXPRESIONARIT TK_par_cierre	FIN_LINEA							{$$ = new Print($3,this._$.first_line,this._$.first_column,true);}
 		|TK_PRINT TK_par_apertura EXPRESIONARIT ASIGNACION_TERNARIA TK_par_cierre FIN_LINEA			{}
 		|TK_PRINTLN TK_par_apertura EXPRESIONARIT ASIGNACION_TERNARIA TK_par_cierre	FIN_LINEA		{}
-		|TK_PRINT TK_par_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_par_cierre FIN_LINEA		{}
-		|TK_PRINTLN TK_par_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_par_cierre FIN_LINEA		{}
+		|TK_PRINT TK_par_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_par_cierre FIN_LINEA		{var a = $4.valor; var b = $3.valor; var c = b+a; $3.valor = c;  $$ = new Print($3,this._$.first_line,this._$.first_column,false);}
+		|TK_PRINTLN TK_par_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_par_cierre FIN_LINEA		{var a = $4.valor; var b = $3.valor; var c = b+a; $3.valor = c;  $$ = new Print($3,this._$.first_line,this._$.first_column,true);}
 ;
 
-MAS_VALORES_IMPRESION: MAS_VALORES_IMPRESION TK_coma EXPRESIONARIT									{}
+MAS_VALORES_IMPRESION: MAS_VALORES_IMPRESION TK_coma EXPRESIONARIT									{var a = $1.valor; var b = $3.valor; $1.valor= " "+a+" "+b; $$ = $1;}
 					|MAS_VALORES_IMPRESION TK_coma ARREGLO											{}
 					|TK_coma ARREGLO																{}
-					|TK_coma EXPRESIONARIT															{}
+					|TK_coma EXPRESIONARIT															{$$ = $2;}
 ;
 
 
-ASIGNACION: TK_ID TK_igual EXPRESIONARIT FIN_LINEA_ASIGNACION							{$$ = new Asignacion($3,this._$.first_line,this._$.first_column,$1)}
-			|TK_ID TK_ID FIN_LINEA												{}
-			|TK_ID TK_ID TK_igual EXPRESIONARIT FIN_LINEA_ASIGNACION			{}
-			|TK_ID TK_punto TK_ID TK_igual EXPRESIONARIT FIN_LINEA				{}
-			|TK_ID SIGNOS_COMPARACION EXPRESIONARIT FIN_LINEA_ASIGNACION		{}
+ASIGNACION: TK_ID TK_igual EXPRESIONARIT FIN_LINEA_ASIGNACION					 {$$ = new Asignacion($3,this._$.first_line,this._$.first_column,$1)}
+			|TK_ID TK_ID FIN_LINEA												 {}
+			|TK_ID TK_ID TK_igual EXPRESIONARIT FIN_LINEA_ASIGNACION			 {}
+			|TK_ID MAS_ATRIBUTOS TK_igual EXPRESIONARIT FIN_LINEA 				 {}
+			|TK_ID MAS_ATRIBUTOS ARREGLO TK_igual EXPRESIONARIT FIN_LINEA 		 {}
+			|TK_ID SIGNOS_COMPARACION EXPRESIONARIT FIN_LINEA_ASIGNACION		 {}
 			|TK_ID TK_igual TK_llave_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_llave_cierre FIN_LINEA_ASIGNACION					{}
 			|TK_ID TK_igual TK_llave_apertura EXPRESIONARIT TK_llave_cierre FIN_LINEA_ASIGNACION					{}
 			|TK_ID TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA	{}
@@ -378,6 +374,10 @@ ASIGNACION: TK_ID TK_igual EXPRESIONARIT FIN_LINEA_ASIGNACION							{$$ = new As
 			|TK_ID TK_llave_apertura EXPRESIONARIT TK_llave_cierre IGUALACION					{}
 			|TK_ID TK_llave_apertura TK_llave_cierre IGUALACION									{}
 			|TK_ID FUNCIONES_ARREGLO															{}
+;
+
+MAS_ATRIBUTOS: MAS_ATRIBUTOS TK_punto TK_ID 													{}
+			| TK_punto TK_ID 																	{}
 ;
 
 FUNCIONES_ARREGLO: TK_punto TK_PUSH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_pcoma		{}

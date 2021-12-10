@@ -2,6 +2,6 @@ interface Instruccion{
     linea:number;
     columna: number;
     //salidaConsola: string;
-    interpretar(recolector:any):any ;
+    interpretar(entorno:any,recolector:any):any ;
 
 }

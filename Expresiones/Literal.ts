@@ -10,7 +10,7 @@ class Literal implements Expresion {
         this.tipo = tipo;
     }
 
-    interpretar(recolector:any){
+    interpretar(entorno:any,recolector:any){
         return new Return(this.valor,this.tipo);
     }
 }

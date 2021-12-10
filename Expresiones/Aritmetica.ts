@@ -13,9 +13,10 @@ class Aritmetica implements Expresion {
     }
 
 
-interpretar(recolector:any){
-        var izquierda = this.izquierda.interpretar(recolector);
-        var derecha = this.derecha.interpretar(recolector);
+interpretar(entorno:any,recolector:any){
+    try{
+        var izquierda = this.izquierda.interpretar(entorno,recolector);
+        var derecha = this.derecha.interpretar(entorno,recolector);
         var resultado=new Return(0,Tipo.INTEGER);
         
         switch(this.tipo){
@@ -43,8 +44,20 @@ interpretar(recolector:any){
                 resultado = vdivision.dividir(izquierda, derecha);
                 //console.log(resultado);
                 break;
+            case TipoAritmetica.POTENCIA:
+                var vpotencia = new Potencia();
+                resultado = vpotencia.potencia(izquierda,derecha);
+                break;
         }
         
         return resultado ;
+    }catch(e:any){
+        e.linea = this.linea;
+        e.columna = this.columna;
+        e.entorno = entorno;
+        throw e;
+
     }
+
+}
 }

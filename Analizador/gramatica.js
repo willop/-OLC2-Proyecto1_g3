@@ -86,6 +86,9 @@ switch (yystate) {
 case 1:
 console.log($$[$0-1]); return $$[$0-1];
 break;
+case 2:
+$$[$0-2].concat($$[$0-1]); $$[$0-2].concat($$[$0]); this.$ = $$[$0-2]
+break;
 case 3:
 this.$ = $$[$0].concat($$[$0-1]);
 break;
@@ -96,31 +99,61 @@ case 5:
 this.$ =  [$$[$0]]
 break;
 case 6:
-this.$ =  $$[$0-1]
+this.$ = new Instrucciones($$[$0-1],this._$.first_line,this._$.first_column,"MAIN")
 break;
-case 8:
-this.$ = $$[$0-1]
+case 7: case 8: case 9: case 10: case 11: case 12: case 13: case 14: case 23: case 24: case 25:
+$$[$0-1].push($$[$0]); this.$ = $$[$0-1]
 break;
-case 15: case 16: case 17:
+case 15: case 16: case 17: case 18: case 19: case 20: case 21: case 22: case 26: case 27: case 28:
+this.$ = [$$[$0]]
+break;
+case 29: case 30: case 31: case 32: case 33: case 34: case 35:
 this.$ = $$[$0]
 break;
+case 36:
+var asignacion = $$[$0]; asignacion.tipo = $$[$0-1]; this.$ = asignacion
+break;
+case 51:
+var asignacion = $$[$0]; asignacion.id = $$[$0-1]; this.$ = asignacion
+break;
+case 55:
+this.$= Tipo.STRING
+break;
+case 56:
+this.$= Tipo.INTEGER
+break;
+case 57:
+this.$= Tipo.BOOLEAN
+break;
+case 58:
+this.$= Tipo.DOUBLE
+break;
+case 59:
+this.$= Tipo.CHAR
+break;
+case 61:
+this.$ = new Declaracion($$[$0-1],this._$.first_line,this._$.first_column,null,null)
+break;
 case 68:
-var a = $$[$0]; var al=a.length; var c = a.substring(1,al-1);    this.$ = new Literal(c,Tipo.STRING);
+var a = $$[$0]; var al=a.length; var c = a.substring(1,al-1);    this.$ = new Literal(c,Tipo.STRING,this._$.first_line,this._$.first_column);
 break;
 case 70: case 71:
-this.$ = new Literal($$[$0],Tipo.BOOLEAN);
+this.$ = new Literal($$[$0],Tipo.BOOLEAN,this._$.first_line,this._$.first_column);
 break;
 case 72:
-var a = $$[$0]; var al=a.length; var c = a.substring(1,al-1);    this.$ = new Literal(c,Tipo.CHAR);
+var a = $$[$0]; var al=a.length; var c = a.substring(1,al-1);    this.$ = new Literal(c,Tipo.CHAR,this._$.first_line,this._$.first_column);
+break;
+case 73:
+this.$ = new Acceso($$[$0],this._$.first_line,this._$.first_column);
 break;
 case 77:
-this.$ = new Literal(parseInt($$[$0]),Tipo.INTEGER)
+this.$ = new Literal(parseInt($$[$0]),Tipo.INTEGER,this._$.first_line,this._$.first_column)
 break;
 case 78:
-this.$ = new Literal(parseFloat($$[$0]),Tipo.DOUBLE);
+this.$ = new Literal(parseFloat($$[$0]),Tipo.DOUBLE,this._$.first_line,this._$.first_column);
 break;
 case 93:
-this.$ = (-1* $$[$0])
+this.$ = new Aritmetica(-1,$$[$0],TipoAritmetica.MULTIPLICACION,this._$.first_line,this._$.first_column)
 break;
 case 104:
 this.$ = new Aritmetica($$[$0-2],$$[$0],TipoAritmetica.SUMA,this._$.first_line,this._$.first_column)
@@ -153,6 +186,9 @@ this.$ = new Print($$[$0-2],this._$.first_line,this._$.first_column,false);
 break;
 case 125:
 this.$ = new Print($$[$0-2],this._$.first_line,this._$.first_column,true);
+break;
+case 134:
+this.$ = new Asignacion($$[$0-1],this._$.first_line,this._$.first_column,$$[$0-3])
 break;
 }
 },

@@ -2,5 +2,5 @@ interface Expresion{
     linea:number;
     columna: number;
     //salidaConsola: string;
-    interpretar(recolector:any):any ;
+    interpretar(entorno:any, recolector:any):any ;
 }

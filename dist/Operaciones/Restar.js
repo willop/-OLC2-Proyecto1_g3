@@ -18,10 +18,6 @@ class Restar {
                 //r
                 return this.restarintchar(izquierda, derecha);
             }
-            else if (derecha.tipo == Tipo.STRING) {
-                //no se puede
-                //codigo de Rul
-            }
             else {
                 //bolean 
                 //codigo de Rul
@@ -41,13 +37,7 @@ class Restar {
                 //r
                 return this.restardoublechar(izquierda, derecha);
             }
-            else if (derecha.tipo == Tipo.STRING) {
-                //no se puede
-                //codigo de Rul
-            }
             else {
-                //bolean 
-                //codigo de Rul
             }
         }
         //IZQUIERDA CON CHAR 
@@ -64,13 +54,7 @@ class Restar {
                 //r
                 return this.restarcharchar(izquierda, derecha);
             }
-            else if (derecha.tipo == Tipo.STRING) {
-                //no se puede
-                //codigo de Rul
-            }
             else {
-                //bolean 
-                //codigo de Rul
             }
         }
         //De lo contrario error ya que no se puede efectuar esa operacion con los tipos restantes

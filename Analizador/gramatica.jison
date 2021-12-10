@@ -169,8 +169,7 @@ ini
 	: INSTRUCCIONES EOF																									{console.log($1); return $1;}
 ;
 
-INSTRUCCIONES
-	: INSTRUCCIONES_GLOBALES VOID_MAIN INSTRUCCIONES_GLOBALES
+INSTRUCCIONES :INSTRUCCIONES_GLOBALES VOID_MAIN INSTRUCCIONES_GLOBALES													{$1.concat($2); $1.concat($3); $$ = $1}
 	| VOID_MAIN INSTRUCCIONES_GLOBALES																					{$$ = $2.concat($1);}
 	| INSTRUCCIONES_GLOBALES VOID_MAIN 																					{$$ = $1.concat($2);}
 	| VOID_MAIN																											{$$ =  [$1]}
@@ -178,47 +177,47 @@ INSTRUCCIONES
 	//| error { console.error('Este es un error sintáctico: ' + yytext + ', en la linea: ' + this._$.first_line + ', en la columna: ' + this._$.first_column); }
 ;
 
-VOID_MAIN: TK_VOID TK_MAIN TK_par_apertura TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre			{$$ =  $6}	
+VOID_MAIN: TK_VOID TK_MAIN TK_par_apertura TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre			{$$ = new Instrucciones($6,this._$.first_line,this._$.first_column,"MAIN")}	
 ;
 
-INSTRUCCION: INSTRUCCION DECLARACION 
-	| INSTRUCCION IMPRESION																								{$$ = $1}
-	| INSTRUCCION ASIGNACION
-	| INSTRUCCION FUNCIONES_NATIVAS
-	| INSTRUCCION FUNCIONES
-	| INSTRUCCION RETURN
-	| INSTRUCCION CONDICIONALES
-	| INSTRUCCION BUCLES
-	| DECLARACION 																										{$$ = $1}
-	| IMPRESION																											{$$ = $1}
-	| ASIGNACION																										{$$ = $1}
-	| FUNCIONES_NATIVAS
-	| FUNCIONES
-	| RETURN
-	| CONDICIONALES
-	| BUCLES
+INSTRUCCION: INSTRUCCION DECLARACION 			{$1.push($2); $$ = $1}
+	| INSTRUCCION IMPRESION					    {$1.push($2); $$ = $1}
+	| INSTRUCCION ASIGNACION					{$1.push($2); $$ = $1}
+	| INSTRUCCION FUNCIONES_NATIVAS				{$1.push($2); $$ = $1}
+	| INSTRUCCION FUNCIONES						{$1.push($2); $$ = $1}
+	| INSTRUCCION RETURN						{$1.push($2); $$ = $1}
+	| INSTRUCCION CONDICIONALES					{$1.push($2); $$ = $1}
+	| INSTRUCCION BUCLES						{$1.push($2); $$ = $1}
+	| DECLARACION 								{$$ = [$1]}
+	| IMPRESION									{$$ = [$1]}
+	| ASIGNACION								{$$ = [$1]}
+	| FUNCIONES_NATIVAS							{$$ = [$1]}
+	| FUNCIONES									{$$ = [$1]}	
+	| RETURN									{$$ = [$1]}
+	| CONDICIONALES								{$$ = [$1]}
+	| BUCLES									{$$ = [$1]}	
 	
 ;
 
-INSTRUCCIONES_GLOBALES: INSTRUCCIONES_GLOBALES ASIGNACION
-					| INSTRUCCIONES_GLOBALES DECLARACION
-					| INSTRUCCIONES_GLOBALES FUNCIONES
-					| ASIGNACION
-					| DECLARACION
-					| FUNCIONES
+INSTRUCCIONES_GLOBALES: INSTRUCCIONES_GLOBALES ASIGNACION			{$1.push($2); $$ = $1}
+					| INSTRUCCIONES_GLOBALES DECLARACION			{$1.push($2); $$ = $1}
+					| INSTRUCCIONES_GLOBALES FUNCIONES				{$1.push($2); $$ = $1}
+					| ASIGNACION									{$$ = [$1]}
+					| DECLARACION									{$$ = [$1]}
+					| FUNCIONES										{$$ = [$1]}
 ;
 
-INSTRUCCION2: DECLARACION 
-	| IMPRESION
-	| ASIGNACION
-	| FUNCIONES_NATIVAS
-	| FUNCIONES
-	| RETURN
-	| BUCLES
+INSTRUCCION2: DECLARACION 			{$$ = $1}
+	| IMPRESION						{$$ = $1}
+	| ASIGNACION					{$$ = $1}	
+	| FUNCIONES_NATIVAS				{$$ = $1}
+	| FUNCIONES						{$$ = $1}
+	| RETURN						{$$ = $1}
+	| BUCLES						{$$ = $1}	
 ;
 
 
-DECLARACION: TIPO_VALOR TIPO_DECLARACION												{}
+DECLARACION: TIPO_VALOR TIPO_DECLARACION												{var asignacion = $2; asignacion.tipo = $1; $$ = asignacion}
 			| TIPO_VALOR TK_punto TK_PARSE TK_par_apertura TK_CADENA TK_par_cierre		{}
 			| TIPO_VALOR TK_par_apertura ARREGLO TK_par_cierre FIN_LINEA				{}
 			| TIPO_VALOR TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA			{}
@@ -245,7 +244,7 @@ FIN_LINEA_STRUCT: TK_coma
 				| TK_pcoma
 ;
 
-TIPO_DECLARACION : TK_ID IGUALACION																									{}
+TIPO_DECLARACION : TK_ID IGUALACION																									{var asignacion = $2; asignacion.id = $1; $$ = asignacion}
 				| TK_ID TK_par_apertura PARAMETRO_FUNSION TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre			{}
 				| COND_ARREGLO TK_ID IGUALACION																						{}
 ;
@@ -254,18 +253,18 @@ FIN_LINEA: TK_pcoma																													{}
 ;
 
 
-TIPO_VALOR: TK_STRING 																												{}
-		|TK_INT																														{}
-		|TK_BOOLEAN																													{}
-		|TK_DOUBLE																													{}
-		|TK_CHAR																													{}
+TIPO_VALOR: TK_STRING 																												{$$= Tipo.STRING}
+		|TK_INT																														{$$= Tipo.INTEGER}
+		|TK_BOOLEAN																													{$$= Tipo.BOOLEAN}
+		|TK_DOUBLE																													{$$= Tipo.DOUBLE}
+		|TK_CHAR																													{$$= Tipo.CHAR}
 ;
 
 COND_ARREGLO: TK_llave_apertura TK_llave_cierre																						{}
 
 ;
 
-IGUALACION: TK_igual EXPRESIONARIT FIN_LINEA						{}
+IGUALACION: TK_igual EXPRESIONARIT FIN_LINEA						{$$ = new Declaracion($2,this._$.first_line,this._$.first_column,null,null)}
 			|TK_igual EXPRESIONARIT ASIGNACION_TERNARIA FIN_LINEA	{}
 			|TK_igual ARREGLO FIN_LINEA								{}
 			|MAS_VARIABLES FIN_LINEA								{}
@@ -277,17 +276,17 @@ MAS_VARIABLES: MAS_VARIABLES TK_coma TK_ID
 
 ;
 
-VALORES: TK_CADENA															{var a = $1; var al=a.length; var c = a.substring(1,al-1);    $$ = new Literal(c,Tipo.STRING);}
+VALORES: TK_CADENA															{var a = $1; var al=a.length; var c = a.substring(1,al-1);    $$ = new Literal(c,Tipo.STRING,this._$.first_line,this._$.first_column);}
 		|TK_NULL															{}
-		|TK_TRUE															{$$ = new Literal($1,Tipo.BOOLEAN);}
-		|TK_FALSE															{$$ = new Literal($1,Tipo.BOOLEAN);}
-		|TK_CARACTER														{var a = $1; var al=a.length; var c = a.substring(1,al-1);    $$ = new Literal(c,Tipo.CHAR);}
-		|TK_ID 																{}
+		|TK_TRUE															{$$ = new Literal($1,Tipo.BOOLEAN,this._$.first_line,this._$.first_column);}
+		|TK_FALSE															{$$ = new Literal($1,Tipo.BOOLEAN,this._$.first_line,this._$.first_column);}
+		|TK_CARACTER														{var a = $1; var al=a.length; var c = a.substring(1,al-1);    $$ = new Literal(c,Tipo.CHAR,this._$.first_line,this._$.first_column);}
+		|TK_ID 																{$$ = new Acceso($1,this._$.first_line,this._$.first_column);}
 		|TK_ID TK_par_apertura TK_par_cierre								{}
 		|TK_ID TK_par_apertura PARAMETROS TK_par_cierre						{}
 		|TK_ID ARREGLO														{}
-		|TK_ENTERO                        									{$$ = new Literal(parseInt($1),Tipo.INTEGER)}
-		|TK_DECIMAL                       									{$$ = new Literal(parseFloat($1),Tipo.DOUBLE);}
+		|TK_ENTERO                        									{$$ = new Literal(parseInt($1),Tipo.INTEGER,this._$.first_line,this._$.first_column)}
+		|TK_DECIMAL                       									{$$ = new Literal(parseFloat($1),Tipo.DOUBLE,this._$.first_line,this._$.first_column);}
 		|TK_BEGIN 															{}
 		|TK_END 															{}
 		|TK_CARETER_OF_POSITION TK_par_apertura VALORES TK_par_cierre		{}
@@ -308,7 +307,7 @@ ARREGLO: TK_llave_apertura EXPRESIONARIT TK_llave_cierre										{}
 
 
 EXPRESIONARIT
-	: TK_MENOS EXPRESIONARIT %prec UMENOS  							{$$ = (-1* $2)}
+	: TK_MENOS EXPRESIONARIT %prec UMENOS  							{$$ = new Aritmetica(-1,$2,TipoAritmetica.MULTIPLICACION,this._$.first_line,this._$.first_column)}
 	| EXPRESIONARIT TK_and EXPRESIONARIT       						{}
 	| EXPRESIONARIT TK_or EXPRESIONARIT								{}
 	| EXPRESIONARIT TK_mayor_igual EXPRESIONARIT       				{}
@@ -362,7 +361,7 @@ MAS_VALORES_IMPRESION: MAS_VALORES_IMPRESION TK_coma EXPRESIONARIT									{}
 ;
 
 
-ASIGNACION: TK_ID TK_igual EXPRESIONARIT FIN_LINEA_ASIGNACION					{}
+ASIGNACION: TK_ID TK_igual EXPRESIONARIT FIN_LINEA_ASIGNACION							{$$ = new Asignacion($3,this._$.first_line,this._$.first_column,$1)}
 			|TK_ID TK_ID FIN_LINEA												{}
 			|TK_ID TK_ID TK_igual EXPRESIONARIT FIN_LINEA_ASIGNACION			{}
 			|TK_ID TK_punto TK_ID TK_igual EXPRESIONARIT FIN_LINEA				{}

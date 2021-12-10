@@ -6,7 +6,7 @@ class Literal {
         this.valor = valor;
         this.tipo = tipo;
     }
-    interpretar(recolector) {
+    interpretar(entorno, recolector) {
         return new Return(this.valor, this.tipo);
     }
 }

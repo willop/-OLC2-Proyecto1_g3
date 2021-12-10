@@ -67,21 +67,44 @@ document.getElementById('boton_Compilar').addEventListener('click', accionBoton)
 
 function accionBoton(e){
     var recolector = new Recolector([],[]);
+    var entorno = new Entorno(null);
     const otrotext = document.getElementById('textarea2');
+    var salidaConsola="";
     //TextoDeEdicion = editor.getValue();
     otrotext.innerHTML = TextoDeEdicion;
     Imprimir(TextoDeEdicion);
     var variable = gramatica.parse(TextoDeEdicion);
     console.log(variable);
-    for(var inst in variable){
-        console.log("Ejecutando instruccion ...")
-        console.log(inst);
-        variable[inst].interpretar(recolector);
-    }
+    try{
+        for(var inst in variable){
+            console.log("Ejecutando instruccion ...")
+            console.log(inst);
+            variable[inst].interpretar(entorno,recolector);
+        }
+
+    }catch(e){
+        recolector.listaerrores.push(new ErrorGeneral(0,0,"ERROR EN EJECUCION GENERAL",null));
+
+    }    
 
     for (var rec in recolector.consola){
         console.log(recolector.consola[rec]);
-        consola.setValue(recolector.consola[rec].toString());
+        salidaConsola += (recolector.consola[rec].toString());
     }
+
+    salidaConsola += "\n \n ===== salida ===== \n"
+
+    for (var rec in recolector.listaerrores){
+        console.log("inicio impresion errores");
+        console.log(recolector.listaerrores[rec]);
+        console.log(recolector.listaerrores[rec].linea);
+        console.log(recolector.listaerrores[rec].descripcion);
+        console.log(TipoError[recolector.listaerrores[rec].tipo]);
+        salidaConsola += (recolector.listaerrores[rec].toString()) +"\n";
+        console.log("FIN impresion errores");
+
+    }
+    consola.setValue(salidaConsola);
+    console.log(entorno.variables);
     
 }

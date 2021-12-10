@@ -15,14 +15,8 @@ class Sumar{
             else if(derecha.tipo == Tipo.CHAR){
                 //r
                 return this.sumarintchar(izquierda,derecha); 
-            }
-            else if(derecha.tipo == Tipo.STRING){
-                //no se puede
-                //codigo de Rul
-            }
-            else{
-                //bolean 
-                //codigo de Rul
+            }else{
+                throw new ErrorOperacion(0,0,"NO SE PUEDE SUMAR BOOLEANOS Y/O STRINGS",null)
             }
         }
         //IZQUIERDA CON DOUBLE Y SUS DERIVACIONES

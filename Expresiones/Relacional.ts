@@ -1,4 +1,4 @@
-class Logica implements Expresion {
+class Relacional implements Expresion {
     linea: number;
     columna: number;
     izquierda: any;
@@ -20,11 +20,17 @@ interpretar(entorno:any,recolector:any){
         var resultado=new Return(0,Tipo.INTEGER);
         
         switch(this.tipo){
-            case TipoLogica.AND:
-                //var vigualdad = new Igualdad();    
+            case TipoRelacional.IGUALDAD:
+                var vigualdad = new Igualdad();    
                 //salidaConsolaconsole.log("antes de sumar");
-                //resultado = vigualdad.igualdad(izquierda, derecha);
-                //console.log(resultado);
+                resultado = vigualdad.igualdad(izquierda, derecha);
+                console.log("igualdad "+resultado);
+                break;
+            case TipoRelacional.DESIGUALDAD:
+                var vdesigualdad = new Desigualdad();    
+                //salidaConsolaconsole.log("antes de sumar");
+                resultado = vdesigualdad.desigualdad(izquierda, derecha);
+                console.log("igualdad "+resultado);
                 break;
         }
         

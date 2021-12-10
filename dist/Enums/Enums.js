@@ -17,9 +17,15 @@ var TipoAritmetica;
 })(TipoAritmetica || (TipoAritmetica = {}));
 var TipoLogica;
 (function (TipoLogica) {
-    TipoLogica[TipoLogica["IGUALDAD"] = 0] = "IGUALDAD";
-    TipoLogica[TipoLogica["DESIGUALDAD"] = 1] = "DESIGUALDAD";
+    TipoLogica[TipoLogica["AND"] = 0] = "AND";
+    TipoLogica[TipoLogica["OR"] = 1] = "OR";
+    TipoLogica[TipoLogica["NOT"] = 2] = "NOT";
 })(TipoLogica || (TipoLogica = {}));
+var TipoRelacional;
+(function (TipoRelacional) {
+    TipoRelacional[TipoRelacional["IGUALDAD"] = 0] = "IGUALDAD";
+    TipoRelacional[TipoRelacional["DESIGUALDAD"] = 1] = "DESIGUALDAD";
+})(TipoRelacional || (TipoRelacional = {}));
 var TipoError;
 (function (TipoError) {
     TipoError[TipoError["ERROR_GENERAL"] = 0] = "ERROR_GENERAL";
@@ -28,4 +34,5 @@ var TipoError;
     TipoError[TipoError["VARIABLE_NO_DECLARADA"] = 3] = "VARIABLE_NO_DECLARADA";
     TipoError[TipoError["VARIABLE_YA_DECLARADA"] = 4] = "VARIABLE_YA_DECLARADA";
     TipoError[TipoError["ERROR_LOGICO"] = 5] = "ERROR_LOGICO";
+    TipoError[TipoError["ERROR_RELACIONAL"] = 6] = "ERROR_RELACIONAL";
 })(TipoError || (TipoError = {}));

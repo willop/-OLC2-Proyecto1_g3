@@ -156,7 +156,10 @@ case 93:
  this.$ = -Math.abs($$[$0]); 
 break;
 case 100:
-this.$ = new Logica($$[$0-2],$$[$0],TipoLogica.IGUALDAD,this._$.first_line,this._$.first_column);
+this.$ = new Relacional($$[$0-2],$$[$0],TipoRelacional.IGUALDAD,this._$.first_line,this._$.first_column);
+break;
+case 101:
+this.$ = new Relacional($$[$0-2],$$[$0],TipoRelacional.DESIGUALDAD,this._$.first_line,this._$.first_column);
 break;
 case 104:
 this.$ = new Aritmetica($$[$0-2],$$[$0],TipoAritmetica.SUMA,this._$.first_line,this._$.first_column)

@@ -314,8 +314,8 @@ EXPRESIONARIT
 	| EXPRESIONARIT TK_menor_igual EXPRESIONARIT       				{}
 	| EXPRESIONARIT TK_mayor EXPRESIONARIT       					{}
 	| EXPRESIONARIT TK_menor EXPRESIONARIT							{}
-	| EXPRESIONARIT TK_igualacion EXPRESIONARIT						{$$ = new Logica($1,$3,TipoLogica.IGUALDAD,this._$.first_line,this._$.first_column);}
-	| EXPRESIONARIT TK_desigual EXPRESIONARIT						{}
+	| EXPRESIONARIT TK_igualacion EXPRESIONARIT						{$$ = new Relacional($1,$3,TipoRelacional.IGUALDAD,this._$.first_line,this._$.first_column);}
+	| EXPRESIONARIT TK_desigual EXPRESIONARIT						{$$ = new Relacional($1,$3,TipoRelacional.DESIGUALDAD,this._$.first_line,this._$.first_column);}
 	| EXPRESIONARIT TK_INCREMENTO									{}
 	| EXPRESIONARIT TK_DECREMENTO									{}
 	| EXPRESIONARIT TK_MAS EXPRESIONARIT       						{$$ = new Aritmetica($1,$3,TipoAritmetica.SUMA,this._$.first_line,this._$.first_column)}

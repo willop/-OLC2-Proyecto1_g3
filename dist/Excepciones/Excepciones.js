@@ -34,8 +34,15 @@ class VariableYaDeclarada extends ErrorInterprete {
         super(linea, columna, TipoError.VARIABLE_YA_DECLARADA, descripcion, ambito);
     }
 }
+//************** Errores de tipo Logicos (&&,||,!) 
 class Logico extends ErrorInterprete {
     constructor(linea, columna, descripcion, ambito) {
         super(linea, columna, TipoError.ERROR_LOGICO, descripcion, ambito);
+    }
+}
+//************** Errores de tipo Relacional (==,!=,>,<,>=,<=) 
+class ERelacional extends ErrorInterprete {
+    constructor(linea, columna, descripcion, ambito) {
+        super(linea, columna, TipoError.ERROR_RELACIONAL, descripcion, ambito);
     }
 }

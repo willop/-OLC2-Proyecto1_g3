@@ -37,9 +37,10 @@ class Aritmetica {
                     resultado = vdivision.dividir(izquierda, derecha);
                     //console.log(resultado);
                     break;
-                case TipoAritmetica.POTENCIA:
-                    var vpotencia = new Potencia();
-                    resultado = vpotencia.potencia(izquierda, derecha);
+                case TipoAritmetica.MODULO:
+                    console.log("entro a Aritmetica");
+                    var vmodulo = new Modulo();
+                    resultado = vmodulo.modulo(izquierda, derecha);
                     break;
             }
             return resultado;

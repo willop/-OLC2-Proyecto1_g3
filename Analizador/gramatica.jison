@@ -307,14 +307,14 @@ ARREGLO: TK_llave_apertura EXPRESIONARIT TK_llave_cierre										{}
 
 
 EXPRESIONARIT
-	: TK_MENOS EXPRESIONARIT %prec UMENOS  							{$$ = new Aritmetica(-1,$2,TipoAritmetica.MULTIPLICACION,this._$.first_line,this._$.first_column)}
+	: TK_MENOS EXPRESIONARIT %prec UMENOS  							{ $$ = -Math.abs($2); } //new Aritmetica(1,-$2,TipoAritmetica.MULTIPLICACION,this._$.first_line,this._$.first_column)   ////Duda
 	| EXPRESIONARIT TK_and EXPRESIONARIT       						{}
 	| EXPRESIONARIT TK_or EXPRESIONARIT								{}
 	| EXPRESIONARIT TK_mayor_igual EXPRESIONARIT       				{}
 	| EXPRESIONARIT TK_menor_igual EXPRESIONARIT       				{}
 	| EXPRESIONARIT TK_mayor EXPRESIONARIT       					{}
 	| EXPRESIONARIT TK_menor EXPRESIONARIT							{}
-	| EXPRESIONARIT TK_igualacion EXPRESIONARIT						{}
+	| EXPRESIONARIT TK_igualacion EXPRESIONARIT						{$$ = new Logica($1,$3,TipoLogica.IGUALDAD,this._$.first_line,this._$.first_column);}
 	| EXPRESIONARIT TK_desigual EXPRESIONARIT						{}
 	| EXPRESIONARIT TK_INCREMENTO									{}
 	| EXPRESIONARIT TK_DECREMENTO									{}
@@ -341,7 +341,7 @@ EXPRESIONARIT
 																	$$ = re;
 																	}
 	| EXPRESIONARIT TK_punto EXPRESIONARIT       					{}
-	| EXPRESIONARIT TK_MODULO EXPRESIONARIT       					{}
+	| EXPRESIONARIT TK_MODULO EXPRESIONARIT       					{$$ = new Aritmetica($1,$3,TipoAritmetica.MODULO,this._$.first_line,this._$.first_column)}
 	| VALORES														{$$ = $1;}
 ;
 

@@ -13,8 +13,13 @@ var TipoAritmetica;
     TipoAritmetica[TipoAritmetica["RESTA"] = 1] = "RESTA";
     TipoAritmetica[TipoAritmetica["MULTIPLICACION"] = 2] = "MULTIPLICACION";
     TipoAritmetica[TipoAritmetica["DIVISION"] = 3] = "DIVISION";
-    TipoAritmetica[TipoAritmetica["POTENCIA"] = 4] = "POTENCIA";
+    TipoAritmetica[TipoAritmetica["MODULO"] = 4] = "MODULO";
 })(TipoAritmetica || (TipoAritmetica = {}));
+var TipoLogica;
+(function (TipoLogica) {
+    TipoLogica[TipoLogica["IGUALDAD"] = 0] = "IGUALDAD";
+    TipoLogica[TipoLogica["DESIGUALDAD"] = 1] = "DESIGUALDAD";
+})(TipoLogica || (TipoLogica = {}));
 var TipoError;
 (function (TipoError) {
     TipoError[TipoError["ERROR_GENERAL"] = 0] = "ERROR_GENERAL";
@@ -22,4 +27,5 @@ var TipoError;
     TipoError[TipoError["TIPO_INCORRECTO"] = 2] = "TIPO_INCORRECTO";
     TipoError[TipoError["VARIABLE_NO_DECLARADA"] = 3] = "VARIABLE_NO_DECLARADA";
     TipoError[TipoError["VARIABLE_YA_DECLARADA"] = 4] = "VARIABLE_YA_DECLARADA";
+    TipoError[TipoError["ERROR_LOGICO"] = 5] = "ERROR_LOGICO";
 })(TipoError || (TipoError = {}));

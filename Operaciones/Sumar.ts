@@ -33,13 +33,8 @@ class Sumar{
                 //r
                 return this.sumardoublechar(izquierda,derecha); 
             }
-            else if(derecha.tipo == Tipo.STRING){
-                //no se puede
-                //codigo de Rul
-            }
             else{
-                //bolean 
-                //codigo de Rul
+                throw new ErrorOperacion(0,0,"NO SE PUEDE SUMAR BOOLEANOS Y/O STRINGS",null)
             }
         }
         //IZQUIERDA CON CHAR 
@@ -56,26 +51,12 @@ class Sumar{
                 //r
                 return this.sumarcharchar(izquierda,derecha); 
             }
-            else if(derecha.tipo == Tipo.STRING){
-                //no se puede
-                //codigo de Rul
-            }
             else{
-                //bolean 
-                //codigo de Rul
+                throw new ErrorOperacion(0,0,"NO SE PUEDE SUMAR BOOLEANOS Y/O STRINGS",null)
             }
-        }
-        else if(izquierda.tipo == Tipo.CHAR){
-            //r
-            return this.sumarintchar(izquierda,derecha); 
-        }
-        else if(izquierda.tipo == Tipo.STRING){
-            //no se puede
-            //codigo de Rul
         }
         else{
-            //bolean 
-            //codigo de Rul
+            throw new ErrorOperacion(0,0,"NO SE PUEDE SUMAR BOOLEANOS Y/O STRINGS",null)
         }
         
 

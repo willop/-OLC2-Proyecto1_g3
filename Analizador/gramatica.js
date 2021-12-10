@@ -153,7 +153,10 @@ case 78:
 this.$ = new Literal(parseFloat($$[$0]),Tipo.DOUBLE,this._$.first_line,this._$.first_column);
 break;
 case 93:
-this.$ = new Aritmetica(-1,$$[$0],TipoAritmetica.MULTIPLICACION,this._$.first_line,this._$.first_column)
+ this.$ = -Math.abs($$[$0]); 
+break;
+case 100:
+this.$ = new Logica($$[$0-2],$$[$0],TipoLogica.IGUALDAD,this._$.first_line,this._$.first_column);
 break;
 case 104:
 this.$ = new Aritmetica($$[$0-2],$$[$0],TipoAritmetica.SUMA,this._$.first_line,this._$.first_column)
@@ -177,6 +180,9 @@ case 120:
 																		}
 																	this.$ = re;
 																	
+break;
+case 122:
+this.$ = new Aritmetica($$[$0-2],$$[$0],TipoAritmetica.MODULO,this._$.first_line,this._$.first_column)
 break;
 case 123:
 this.$ = $$[$0];

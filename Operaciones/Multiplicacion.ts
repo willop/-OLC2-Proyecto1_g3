@@ -14,6 +14,9 @@ class Multiplicacion{
                 //si son enteros
                 return this.multiplicarintchar(izquierda,derecha);
             }
+            else{
+                throw new ErrorOperacion(0,0,"NO SE PUEDE MULTIPLICAR BOOLEANOS Y/O STRINGS",null)
+            }
         }
         if(izquierda.tipo == Tipo.DOUBLE){
             if(derecha.tipo == Tipo.INTEGER){
@@ -27,6 +30,9 @@ class Multiplicacion{
             if(derecha.tipo == Tipo.CHAR){
                 //si son enteros
                 return this.multiplicardoublechar(izquierda,derecha);
+            }
+            else{
+                throw new ErrorOperacion(0,0,"NO SE PUEDE MULTIPLICAR BOOLEANOS Y/O STRINGS",null)
             }
         }
         if(izquierda.tipo == Tipo.CHAR){
@@ -42,6 +48,12 @@ class Multiplicacion{
                 //si son enteros
                 return this.multiplicarcharchar(izquierda,derecha);
             }
+            else{
+                throw new ErrorOperacion(0,0,"NO SE PUEDE MULTIPLICAR BOOLEANOS Y/O STRINGS",null)
+            }
+        }
+        else{
+            throw new ErrorOperacion(0,0,"NO SE PUEDE MULTIPLICAR BOOLEANOS Y/O STRINGS",null)
         }
     }
 

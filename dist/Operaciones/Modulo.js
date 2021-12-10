@@ -1,21 +1,21 @@
 "use strict";
-class Multiplicacion {
+class Modulo {
     constructor() {
-        this.tipo = TipoAritmetica.MULTIPLICACION;
+        this.tipo = TipoAritmetica.MODULO;
     }
-    multiplicar(izquierda, derecha) {
+    modulo(izquierda, derecha) {
         if (izquierda.tipo == Tipo.INTEGER) {
             if (derecha.tipo == Tipo.INTEGER) {
                 //si son enteros
-                return this.multiplicarintint(izquierda, derecha);
+                return this.modulointint(izquierda, derecha);
             }
             if (derecha.tipo == Tipo.DOUBLE) {
                 //si son enteros
-                return this.multiplicarintdouble(izquierda, derecha);
+                return this.modulointdouble(izquierda, derecha);
             }
             if (derecha.tipo == Tipo.CHAR) {
                 //si son enteros
-                return this.multiplicarintchar(izquierda, derecha);
+                return this.modulointchar(izquierda, derecha);
             }
             else {
                 throw new ErrorOperacion(0, 0, "NO SE PUEDE MULTIPLICAR BOOLEANOS Y/O STRINGS", null);
@@ -24,15 +24,15 @@ class Multiplicacion {
         if (izquierda.tipo == Tipo.DOUBLE) {
             if (derecha.tipo == Tipo.INTEGER) {
                 //si son enteros
-                return this.multiplicardoubleint(izquierda, derecha);
+                return this.modulodoubleint(izquierda, derecha);
             }
             if (derecha.tipo == Tipo.DOUBLE) {
                 //si son enteros
-                return this.multiplicardoubledouble(izquierda, derecha);
+                return this.modulodoubledouble(izquierda, derecha);
             }
             if (derecha.tipo == Tipo.CHAR) {
                 //si son enteros
-                return this.multiplicardoublechar(izquierda, derecha);
+                return this.modulodoublechar(izquierda, derecha);
             }
             else {
                 throw new ErrorOperacion(0, 0, "NO SE PUEDE MULTIPLICAR BOOLEANOS Y/O STRINGS", null);
@@ -41,15 +41,15 @@ class Multiplicacion {
         if (izquierda.tipo == Tipo.CHAR) {
             if (derecha.tipo == Tipo.INTEGER) {
                 //si son enteros
-                return this.multiplicarcharint(izquierda, derecha);
+                return this.modulocharint(izquierda, derecha);
             }
             if (derecha.tipo == Tipo.DOUBLE) {
                 //si son enteros
-                return this.multiplicarchardouble(izquierda, derecha);
+                return this.modulochardouble(izquierda, derecha);
             }
             if (derecha.tipo == Tipo.CHAR) {
                 //si son enteros
-                return this.multiplicarcharchar(izquierda, derecha);
+                return this.modulocharchar(izquierda, derecha);
             }
             else {
                 throw new ErrorOperacion(0, 0, "NO SE PUEDE MULTIPLICAR BOOLEANOS Y/O STRINGS", null);
@@ -59,37 +59,38 @@ class Multiplicacion {
             throw new ErrorOperacion(0, 0, "NO SE PUEDE MULTIPLICAR BOOLEANOS Y/O STRINGS", null);
         }
     }
-    multiplicarintint(izquierda, derecha) {
-        return new Return(izquierda.valor * derecha.valor, Tipo.INTEGER);
+    modulointint(izquierda, derecha) {
+        console.log("Res modulo:  " + izquierda.valor % derecha.valor);
+        return new Return(izquierda.valor % derecha.valor, Tipo.INTEGER);
     }
-    multiplicarintdouble(izquierda, derecha) {
-        return new Return(izquierda.valor * derecha.valor, Tipo.DOUBLE);
+    modulointdouble(izquierda, derecha) {
+        return new Return(izquierda.valor % derecha.valor, Tipo.DOUBLE);
     }
-    multiplicarintchar(izquierda, derecha) {
+    modulointchar(izquierda, derecha) {
         derecha.valor = derecha.valor.charCodeAt(0);
-        return new Return(izquierda.valor * derecha.valor, Tipo.INTEGER);
+        return new Return(izquierda.valor % derecha.valor, Tipo.INTEGER);
     }
-    multiplicardoubleint(izquierda, derecha) {
-        return new Return(izquierda.valor * derecha.valor, Tipo.DOUBLE);
+    modulodoubleint(izquierda, derecha) {
+        return new Return(izquierda.valor % derecha.valor, Tipo.DOUBLE);
     }
-    multiplicardoubledouble(izquierda, derecha) {
-        return new Return(izquierda.valor * derecha.valor, Tipo.DOUBLE);
+    modulodoubledouble(izquierda, derecha) {
+        return new Return(izquierda.valor % derecha.valor, Tipo.DOUBLE);
     }
-    multiplicardoublechar(izquierda, derecha) {
+    modulodoublechar(izquierda, derecha) {
         derecha.valor = derecha.valor.charCodeAt(0);
-        return new Return(izquierda.valor * derecha.valor, Tipo.DOUBLE);
+        return new Return(izquierda.valor % derecha.valor, Tipo.DOUBLE);
     }
-    multiplicarcharint(izquierda, derecha) {
+    modulocharint(izquierda, derecha) {
         izquierda.valor = izquierda.valor.charCodeAt(0);
-        return new Return(izquierda.valor * derecha.valor, Tipo.DOUBLE);
+        return new Return(izquierda.valor % derecha.valor, Tipo.DOUBLE);
     }
-    multiplicarchardouble(izquierda, derecha) {
+    modulochardouble(izquierda, derecha) {
         izquierda.valor = izquierda.valor.charCodeAt(0);
-        return new Return(izquierda.valor * derecha.valor, Tipo.DOUBLE);
+        return new Return(izquierda.valor % derecha.valor, Tipo.DOUBLE);
     }
-    multiplicarcharchar(izquierda, derecha) {
+    modulocharchar(izquierda, derecha) {
         izquierda.valor = izquierda.valor.charCodeAt(0);
         derecha.valor = derecha.valor.charCodeAt(0);
-        return new Return(izquierda.valor * derecha.valor, Tipo.DOUBLE);
+        return new Return(izquierda.valor % derecha.valor, Tipo.DOUBLE);
     }
 }

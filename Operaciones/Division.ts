@@ -14,6 +14,9 @@ class Division{
                 //si son enteros y caracter
                 return this.dividirintchar(izquierda,derecha);
             }
+            else{
+                throw new ErrorOperacion(0,0,"NO SE PUEDE DIVIDIR BOOLEANOS Y/O STRINGS",null)
+            }
         }
         else if(izquierda.tipo == Tipo.DOUBLE){
             if(derecha.tipo == Tipo.INTEGER){
@@ -27,6 +30,9 @@ class Division{
             if(derecha.tipo == Tipo.CHAR){
                 //si son decimal y caracter 
                 return this.dividirdoublechar(izquierda,derecha);
+            }
+            else{
+                throw new ErrorOperacion(0,0,"NO SE PUEDE DIVIDIR BOOLEANOS Y/O STRINGS",null)
             }
         }
         else if(izquierda.tipo == Tipo.CHAR){
@@ -42,6 +48,12 @@ class Division{
                 // si son decimal y decimal 
                 return this.dividircharchar(izquierda,derecha);
             }
+            else{
+                throw new ErrorOperacion(0,0,"NO SE PUEDE DIVIDIR BOOLEANOS Y/O STRINGS",null)
+            }
+        }
+        else{
+            throw new ErrorOperacion(0,0,"NO SE PUEDE DIVIDIR BOOLEANOS Y/O STRINGS",null)
         }
     }
     //------------ IZQUIERDA ENTERO DERECHA OTROS

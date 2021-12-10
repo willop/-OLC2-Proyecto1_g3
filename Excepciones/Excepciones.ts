@@ -57,3 +57,12 @@ class VariableYaDeclarada extends ErrorInterprete{
     }
 
 }
+
+class Logico extends ErrorInterprete{
+    
+    constructor (linea:number,columna:number,descripcion:any,ambito:any){
+        super(linea,columna,TipoError.ERROR_LOGICO,descripcion,ambito)
+        
+    }
+
+}

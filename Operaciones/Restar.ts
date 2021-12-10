@@ -13,12 +13,11 @@ class Restar{
                 return this.restarintdouble(izquierda,derecha); 
             }
             else if(derecha.tipo == Tipo.CHAR){
-                //r
+                
                 return this.restarintchar(izquierda,derecha); 
             }            
             else{
-                //bolean 
-                //codigo de Rul
+                throw new ErrorOperacion(0,0,"NO SE PUEDE RESTAR BOOLEANOS Y/O STRINGS",null)
             }
         }
         //IZQUIERDA CON DOUBLE Y SUS DERIVACIONES
@@ -36,7 +35,7 @@ class Restar{
                 return this.restardoublechar(izquierda,derecha); 
             }
             else {
-
+                throw new ErrorOperacion(0,0,"NO SE PUEDE RESTAR BOOLEANOS Y/O STRINGS",null)
             }
         }
         //IZQUIERDA CON CHAR 
@@ -54,13 +53,12 @@ class Restar{
                 return this.restarcharchar(izquierda,derecha); 
             }
             else{
-                
+                throw new ErrorOperacion(0,0,"NO SE PUEDE RESTAR BOOLEANOS Y/O STRINGS",null)
             }
         }
         //De lo contrario error ya que no se puede efectuar esa operacion con los tipos restantes
         else{
-            //bolean 
-            //codigo de Rul
+            throw new ErrorOperacion(0,0,"NO SE PUEDE RESTAR BOOLEANOS Y/O STRINGS",null)
         }
     }
 

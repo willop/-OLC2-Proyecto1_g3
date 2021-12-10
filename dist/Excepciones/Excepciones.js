@@ -34,3 +34,8 @@ class VariableYaDeclarada extends ErrorInterprete {
         super(linea, columna, TipoError.VARIABLE_YA_DECLARADA, descripcion, ambito);
     }
 }
+class Logico extends ErrorInterprete {
+    constructor(linea, columna, descripcion, ambito) {
+        super(linea, columna, TipoError.ERROR_LOGICO, descripcion, ambito);
+    }
+}

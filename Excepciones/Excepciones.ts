@@ -88,3 +88,12 @@ class EBoolean extends ErrorInterprete{
     }
 
 }
+// ******** ERRORES IF
+class EIf extends ErrorInterprete{
+    
+    constructor (linea:number,columna:number,descripcion:any,ambito:any){
+        super(linea,columna,TipoError.TIPO_INCORRECTO,descripcion,ambito)
+        
+    }
+
+}

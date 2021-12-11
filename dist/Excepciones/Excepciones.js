@@ -52,3 +52,9 @@ class EBoolean extends ErrorInterprete {
         super(linea, columna, TipoError.ERROR_BOOLEANO, descripcion, ambito);
     }
 }
+// ******** ERRORES IF
+class EIf extends ErrorInterprete {
+    constructor(linea, columna, descripcion, ambito) {
+        super(linea, columna, TipoError.TIPO_INCORRECTO, descripcion, ambito);
+    }
+}

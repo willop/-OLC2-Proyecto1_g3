@@ -199,6 +199,9 @@ INSTRUCCION: INSTRUCCION DECLARACION 			{$1.push($2); $$ = $1}
 	
 ;
 
+LISTA_INSTRUCCIONES: INSTRUCCION {$$ = new Instrucciones($1,this._$.first_line,this._$.first_column,null)}
+;
+
 INSTRUCCIONES_GLOBALES: INSTRUCCIONES_GLOBALES ASIGNACION			{$1.push($2); $$ = $1}
 					| INSTRUCCIONES_GLOBALES DECLARACION			{$1.push($2); $$ = $1}
 					| INSTRUCCIONES_GLOBALES FUNCIONES				{$1.push($2); $$ = $1}
@@ -207,14 +210,15 @@ INSTRUCCIONES_GLOBALES: INSTRUCCIONES_GLOBALES ASIGNACION			{$1.push($2); $$ = $
 					| FUNCIONES										{$$ = [$1]}
 ;
 
-INSTRUCCION2: DECLARACION 			{$$ = $1}
-	| IMPRESION						{$$ = $1}
-	| ASIGNACION					{$$ = $1}	
-	| FUNCIONES_NATIVAS				{$$ = $1}
-	| FUNCIONES						{$$ = $1}
-	| RETURN						{$$ = $1}
-	| BUCLES						{$$ = $1}	
+INSTRUCCION2: DECLARACION 			{$$ = new Instrucciones([$1],this._$.first_line,this._$.first_column,null)}
+	| IMPRESION						{$$ = new Instrucciones([$1],this._$.first_line,this._$.first_column,null)}
+	| ASIGNACION					{$$ = new Instrucciones([$1],this._$.first_line,this._$.first_column,null)}	
+	| FUNCIONES_NATIVAS				{$$ = new Instrucciones([$1],this._$.first_line,this._$.first_column,null)}
+	| FUNCIONES						{$$ = new Instrucciones([$1],this._$.first_line,this._$.first_column,null)}
+	| RETURN						{$$ = new Instrucciones([$1],this._$.first_line,this._$.first_column,null)}
+	| BUCLES						{$$ = new Instrucciones([$1],this._$.first_line,this._$.first_column,null)}	
 ;
+
 
 
 DECLARACION: TIPO_VALOR TIPO_DECLARACION												{var asignacion = $2; asignacion.tipo = $1; $$ = asignacion}
@@ -276,7 +280,7 @@ MAS_VARIABLES: MAS_VARIABLES TK_coma TK_ID
 
 ;
 
-VALORES: TK_CADENA															{var a = $1; var al=a.length; var c = a.substring(1,al-1);    $$ = new Literal(c,Tipo.STRING,this._$.first_line,this._$.first_column);}
+VALORES: TK_CADENA															{console.log("cadena"+$1);var a = $1; var al=a.length; var c = a.substring(1,al-1);    $$ = new Literal(c,Tipo.STRING,this._$.first_line,this._$.first_column);}
 		|TK_NULL															{}
 		|TK_TRUE															{$$ = new Literal(true,Tipo.BOOLEAN,this._$.first_line,this._$.first_column);}
 		|TK_FALSE															{$$ = new Literal(false,Tipo.BOOLEAN,this._$.first_line,this._$.first_column);}
@@ -438,26 +442,47 @@ RETURN: TK_RETURN EXPRESIONARIT FIN_LINEA															{}
 		| TK_RETURN  FIN_LINEA
 ;
 
-CONDICIONALES: FUNCION_IF																	{}
-			| FUNCION_SWITCH																{}
+CONDICIONALES: FUNCION_IF																	{$$ = $1}
+			| FUNCION_SWITCH																{$$ = $1}
+;
+																																			//condicion:any,instrucciones:any,condicionelse
+FUNCION_IF:  TK_IF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre 					{$6.nombre = "AmbienteIf"; $$ = new If($3,$6,null,this._$.first_line,this._$.first_column)}
+			|TK_IF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre  FUNCION_ELSEIF  {$6.nombre = "AmbienteIf"; $$ = new If($3,$6,$8,this._$.first_line,this._$.first_column)}
+			|TK_IF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre  FUNCION_ELSE    {$6.nombre = "AmbienteIf"; $$ = new If($3,$6,$8,this._$.first_line,this._$.first_column)}
+			|TK_IF TK_par_apertura EXPRESIONARIT TK_par_cierre  INSTRUCCION2 					{$5.nombre = "AmbienteIf"; $$ = new If($3,$5,null,this._$.first_line,this._$.first_column)}
+			|TK_IF TK_par_apertura EXPRESIONARIT TK_par_cierre  INSTRUCCION2  FUNCION_ELSEIF		{$5.nombre = "AmbienteIf"; $$ = new If($3,$5,$6,this._$.first_line,this._$.first_column)}
+			|TK_IF TK_par_apertura EXPRESIONARIT TK_par_cierre  INSTRUCCION2  FUNCION_ELSE		{$5.nombre = "AmbienteIf"; $$ = new If($3,$5,$6,this._$.first_line,this._$.first_column)}
 ;
 
-FUNCION_IF:  TK_IF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre 					{}
-			|TK_IF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre  FUNCION_ELSEIF		{}
-			|TK_IF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre  FUNCION_ELSE		{}
-			|TK_IF TK_par_apertura EXPRESIONARIT TK_par_cierre  INSTRUCCION2 					{}
-			|TK_IF TK_par_apertura EXPRESIONARIT TK_par_cierre  INSTRUCCION2  FUNCION_ELSEIF		{}
-			|TK_IF TK_par_apertura EXPRESIONARIT TK_par_cierre  INSTRUCCION2  FUNCION_ELSE		{}
-;
-
-FUNCION_ELSEIF: FUNCION_ELSEIF TK_ELSEIF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre 		{}
-			|FUNCION_ELSEIF TK_ELSEIF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre  FUNCION_ELSE	{}
-			|TK_ELSEIF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre  		{}
-			//|TK_ELSEIF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura INSTRUCCIONES TK_corchete_cierre 				 		{}
+FUNCION_ELSEIF: FUNCION_ELSEIF TK_ELSEIF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre 		        {console.log("else if 457");
+																																								$7.nombre = "AmbienteElseIf"; 
+																																				var Velse = new If($4,$7,null,this._$.first_line,this._$.first_column); 
+																																								var valorcondicion = $1;
+																																								while(valorcondicion.condicionelse!=null){
+																																									valorcondicion = valorcondicion.condicionelse;
+																																								}
+																																								valorcondicion.condicionelse = Velse; 
+																																								$$ = $1}
+			  | FUNCION_ELSEIF TK_ELSEIF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre  FUNCION_ELSE	{console.log("else if 458");
+			  																																					$7.nombre = "AmbienteElseIf"; 
+			  																																	var Velse = new If($4,$7,$9,this._$.first_line,this._$.first_column);
+																																				  				var valorcondicion = $1;
+																																								while(valorcondicion.condicionelse!=null){
+																																									valorcondicion = valorcondicion.condicionelse;
+																																								}
+																																								valorcondicion.condicionelse = Velse;
+																																								$$ = $1}
+			  | TK_ELSEIF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre FUNCION_ELSE					{console.log("else if 459");
+			  																																					$6.nombre = "AmbienteElseIf"; 
+																																								$$ = new If($3,$6,$8,this._$.first_line,this._$.first_column)}
+			  | TK_ELSEIF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre  		 						{console.log("else if 460");
+			  																																					$6.nombre = "AmbienteElseIf";
+																																								$$ = new If($3,$6,null,this._$.first_line,this._$.first_column)}
+			//|TK_ELSEIF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre 				 		{}
 ;	
 
-FUNCION_ELSE:TK_ELSE TK_corchete_apertura INSTRUCCION TK_corchete_cierre	
-			|TK_ELSE INSTRUCCION2 
+FUNCION_ELSE:TK_ELSE TK_corchete_apertura INSTRUCCION2 TK_corchete_cierre	{$3.nombre = "AmbienteElse";$$ = $3}	
+			|TK_ELSE INSTRUCCION2 											{$2.nombre = "AmbienteElse";$$ = $2}
 			//| MAS_SALTOS_LINEA TK_ELSE TK_corchete_apertura INSTRUCCIONES TK_corchete_cierre
 
 ;

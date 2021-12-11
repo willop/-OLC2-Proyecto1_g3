@@ -78,3 +78,13 @@ class ERelacional extends ErrorInterprete{
     }
 
 }
+
+//************** Errores de tipo Boolean (true,false) 
+class EBoolean extends ErrorInterprete{
+    
+    constructor (linea:number,columna:number,descripcion:any,ambito:any){
+        super(linea,columna,TipoError.ERROR_BOOLEANO,descripcion,ambito)
+        
+    }
+
+}

@@ -46,3 +46,9 @@ class ERelacional extends ErrorInterprete {
         super(linea, columna, TipoError.ERROR_RELACIONAL, descripcion, ambito);
     }
 }
+//************** Errores de tipo Boolean (true,false) 
+class EBoolean extends ErrorInterprete {
+    constructor(linea, columna, descripcion, ambito) {
+        super(linea, columna, TipoError.ERROR_BOOLEANO, descripcion, ambito);
+    }
+}

@@ -25,6 +25,26 @@ class Relacional {
                     resultado = vdesigualdad.desigualdad(izquierda, derecha);
                     console.log("igualdad " + resultado);
                     break;
+                case TipoRelacional.MAYOR_QUE:
+                    var vmayorque = new MayorQue();
+                    resultado = vmayorque.mayorque(izquierda, derecha);
+                    console.log("mayor que " + resultado);
+                    break;
+                case TipoRelacional.MENOR_QUE:
+                    var vmenorque = new MenorQue();
+                    resultado = vmenorque.menorque(izquierda, derecha);
+                    console.log("menor que " + resultado);
+                    break;
+                case TipoRelacional.MAYOR_IGUAL:
+                    var vmayorigual = new MayorIgual();
+                    resultado = vmayorigual.mayorigual(izquierda, derecha);
+                    console.log("mayor igual " + resultado);
+                    break;
+                case TipoRelacional.MENOR_IGUAL:
+                    var vmenorigual = new MenorIgual();
+                    resultado = vmenorigual.menorigual(izquierda, derecha);
+                    console.log("menor igual " + resultado.valor);
+                    break;
             }
             return resultado;
         }

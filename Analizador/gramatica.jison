@@ -278,8 +278,8 @@ MAS_VARIABLES: MAS_VARIABLES TK_coma TK_ID
 
 VALORES: TK_CADENA															{var a = $1; var al=a.length; var c = a.substring(1,al-1);    $$ = new Literal(c,Tipo.STRING,this._$.first_line,this._$.first_column);}
 		|TK_NULL															{}
-		|TK_TRUE															{$$ = new Literal($1,Tipo.BOOLEAN,this._$.first_line,this._$.first_column);}
-		|TK_FALSE															{$$ = new Literal($1,Tipo.BOOLEAN,this._$.first_line,this._$.first_column);}
+		|TK_TRUE															{$$ = new Literal(true,Tipo.BOOLEAN,this._$.first_line,this._$.first_column);}
+		|TK_FALSE															{$$ = new Literal(false,Tipo.BOOLEAN,this._$.first_line,this._$.first_column);}
 		|TK_CARACTER														{var a = $1; var al=a.length; var c = a.substring(1,al-1);    $$ = new Literal(c,Tipo.CHAR,this._$.first_line,this._$.first_column);}
 		|TK_ID 																{$$ = new Acceso($1,this._$.first_line,this._$.first_column);}
 		|TK_ID TK_par_apertura TK_par_cierre								{}
@@ -308,12 +308,12 @@ ARREGLO: TK_llave_apertura EXPRESIONARIT TK_llave_cierre										{}
 
 EXPRESIONARIT
 	: TK_MENOS EXPRESIONARIT %prec UMENOS  							{ $$ = -Math.abs($2); } //new Aritmetica(1,-$2,TipoAritmetica.MULTIPLICACION,this._$.first_line,this._$.first_column)   ////Duda
-	| EXPRESIONARIT TK_and EXPRESIONARIT       						{}
-	| EXPRESIONARIT TK_or EXPRESIONARIT								{}
-	| EXPRESIONARIT TK_mayor_igual EXPRESIONARIT       				{}
-	| EXPRESIONARIT TK_menor_igual EXPRESIONARIT       				{}
-	| EXPRESIONARIT TK_mayor EXPRESIONARIT       					{}
-	| EXPRESIONARIT TK_menor EXPRESIONARIT							{}
+	| EXPRESIONARIT TK_and EXPRESIONARIT       						{$$ = new Logica($1,$3,TipoLogica.AND,this._$.first_line,this._$.first_column);}
+	| EXPRESIONARIT TK_or EXPRESIONARIT								{$$ = new Logica($1,$3,TipoLogica.OR,this._$.first_line,this._$.first_column);}
+	| EXPRESIONARIT TK_mayor_igual EXPRESIONARIT       				{$$ = new Relacional($1,$3,TipoRelacional.MAYOR_IGUAL,this._$.first_line,this._$.first_column);}
+	| EXPRESIONARIT TK_menor_igual EXPRESIONARIT       				{$$ = new Relacional($1,$3,TipoRelacional.MENOR_IGUAL,this._$.first_line,this._$.first_column);}
+	| EXPRESIONARIT TK_mayor EXPRESIONARIT       					{$$ = new Relacional($1,$3,TipoRelacional.MAYOR_QUE,this._$.first_line,this._$.first_column);}
+	| EXPRESIONARIT TK_menor EXPRESIONARIT							{$$ = new Relacional($1,$3,TipoRelacional.MENOR_QUE,this._$.first_line,this._$.first_column);}
 	| EXPRESIONARIT TK_igualacion EXPRESIONARIT						{$$ = new Relacional($1,$3,TipoRelacional.IGUALDAD,this._$.first_line,this._$.first_column);}
 	| EXPRESIONARIT TK_desigual EXPRESIONARIT						{$$ = new Relacional($1,$3,TipoRelacional.DESIGUALDAD,this._$.first_line,this._$.first_column);}
 	| EXPRESIONARIT TK_INCREMENTO									{}
@@ -323,8 +323,8 @@ EXPRESIONARIT
 	| EXPRESIONARIT TK_numeral TK_POR EXPRESIONARIT       			{}
 	| EXPRESIONARIT TK_POR EXPRESIONARIT       						{$$ = new Aritmetica($1,$3,TipoAritmetica.MULTIPLICACION,this._$.first_line,this._$.first_column)}
 	| EXPRESIONARIT TK_DIVIDIDO EXPRESIONARIT  						{$$ = new Aritmetica($1,$3,TipoAritmetica.DIVISION,this._$.first_line,this._$.first_column)}
-	| TK_par_apertura EXPRESIONARIT TK_par_cierre       			{}
-	| TK_not EXPRESIONARIT											{}
+	| TK_par_apertura EXPRESIONARIT TK_par_cierre       			{$$ = $2}
+	| TK_not EXPRESIONARIT											{$$ = new Logica($2,$2,TipoLogica.NOT,this._$.first_line,this._$.first_column);}
 	| TK_SIN TK_par_apertura EXPRESIONARIT TK_par_cierre			{}
 	| TK_COS TK_par_apertura EXPRESIONARIT TK_par_cierre			{}
 	| TK_LOG TK_par_apertura EXPRESIONARIT TK_par_cierre			{}

@@ -25,6 +25,10 @@ var TipoRelacional;
 (function (TipoRelacional) {
     TipoRelacional[TipoRelacional["IGUALDAD"] = 0] = "IGUALDAD";
     TipoRelacional[TipoRelacional["DESIGUALDAD"] = 1] = "DESIGUALDAD";
+    TipoRelacional[TipoRelacional["MAYOR_QUE"] = 2] = "MAYOR_QUE";
+    TipoRelacional[TipoRelacional["MENOR_QUE"] = 3] = "MENOR_QUE";
+    TipoRelacional[TipoRelacional["MAYOR_IGUAL"] = 4] = "MAYOR_IGUAL";
+    TipoRelacional[TipoRelacional["MENOR_IGUAL"] = 5] = "MENOR_IGUAL";
 })(TipoRelacional || (TipoRelacional = {}));
 var TipoError;
 (function (TipoError) {
@@ -35,4 +39,5 @@ var TipoError;
     TipoError[TipoError["VARIABLE_YA_DECLARADA"] = 4] = "VARIABLE_YA_DECLARADA";
     TipoError[TipoError["ERROR_LOGICO"] = 5] = "ERROR_LOGICO";
     TipoError[TipoError["ERROR_RELACIONAL"] = 6] = "ERROR_RELACIONAL";
+    TipoError[TipoError["ERROR_BOOLEANO"] = 7] = "ERROR_BOOLEANO";
 })(TipoError || (TipoError = {}));

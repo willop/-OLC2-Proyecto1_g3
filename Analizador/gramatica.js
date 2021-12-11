@@ -137,8 +137,11 @@ break;
 case 68:
 var a = $$[$0]; var al=a.length; var c = a.substring(1,al-1);    this.$ = new Literal(c,Tipo.STRING,this._$.first_line,this._$.first_column);
 break;
-case 70: case 71:
-this.$ = new Literal($$[$0],Tipo.BOOLEAN,this._$.first_line,this._$.first_column);
+case 70:
+this.$ = new Literal(true,Tipo.BOOLEAN,this._$.first_line,this._$.first_column);
+break;
+case 71:
+this.$ = new Literal(false,Tipo.BOOLEAN,this._$.first_line,this._$.first_column);
 break;
 case 72:
 var a = $$[$0]; var al=a.length; var c = a.substring(1,al-1);    this.$ = new Literal(c,Tipo.CHAR,this._$.first_line,this._$.first_column);
@@ -154,6 +157,24 @@ this.$ = new Literal(parseFloat($$[$0]),Tipo.DOUBLE,this._$.first_line,this._$.f
 break;
 case 93:
  this.$ = -Math.abs($$[$0]); 
+break;
+case 94:
+this.$ = new Logica($$[$0-2],$$[$0],TipoLogica.AND,this._$.first_line,this._$.first_column);
+break;
+case 95:
+this.$ = new Logica($$[$0-2],$$[$0],TipoLogica.OR,this._$.first_line,this._$.first_column);
+break;
+case 96:
+this.$ = new Relacional($$[$0-2],$$[$0],TipoRelacional.MAYOR_IGUAL,this._$.first_line,this._$.first_column);
+break;
+case 97:
+this.$ = new Relacional($$[$0-2],$$[$0],TipoRelacional.MENOR_IGUAL,this._$.first_line,this._$.first_column);
+break;
+case 98:
+this.$ = new Relacional($$[$0-2],$$[$0],TipoRelacional.MAYOR_QUE,this._$.first_line,this._$.first_column);
+break;
+case 99:
+this.$ = new Relacional($$[$0-2],$$[$0],TipoRelacional.MENOR_QUE,this._$.first_line,this._$.first_column);
 break;
 case 100:
 this.$ = new Relacional($$[$0-2],$$[$0],TipoRelacional.IGUALDAD,this._$.first_line,this._$.first_column);
@@ -172,6 +193,12 @@ this.$ = new Aritmetica($$[$0-2],$$[$0],TipoAritmetica.MULTIPLICACION,this._$.fi
 break;
 case 108:
 this.$ = new Aritmetica($$[$0-2],$$[$0],TipoAritmetica.DIVISION,this._$.first_line,this._$.first_column)
+break;
+case 109:
+this.$ = $$[$0-1]
+break;
+case 110:
+this.$ = new Logica($$[$0],$$[$0],TipoLogica.NOT,this._$.first_line,this._$.first_column);
 break;
 case 119:
  var a = $$[$0-2]; var al=a.length; var b = $$[$0]; var bl = b.length; var c = a.substring(1,al-1); var d = b.substring(1,bl-1); var total = c+d;  this.$ = total;

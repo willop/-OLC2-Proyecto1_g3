@@ -58,3 +58,9 @@ class EIf extends ErrorInterprete {
         super(linea, columna, TipoError.TIPO_INCORRECTO, descripcion, ambito);
     }
 }
+// ******** ERRORES while
+class EWHILE extends ErrorInterprete {
+    constructor(linea, columna, descripcion, ambito) {
+        super(linea, columna, TipoError.TIPO_INCORRECTO, descripcion, ambito);
+    }
+}

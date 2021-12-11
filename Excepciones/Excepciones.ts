@@ -97,3 +97,14 @@ class EIf extends ErrorInterprete{
     }
 
 }
+
+
+// ******** ERRORES while
+class EWHILE extends ErrorInterprete{
+    
+    constructor (linea:number,columna:number,descripcion:any,ambito:any){
+        super(linea,columna,TipoError.TIPO_INCORRECTO,descripcion,ambito)
+        
+    }
+
+}

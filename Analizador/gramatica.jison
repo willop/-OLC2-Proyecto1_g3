@@ -138,6 +138,9 @@
 		return{tipo:_tipo,Caracter:_caracter,Fila:_fila,Columna:_columna,Descripcion:_descrip};
 	}
 
+	var GexpresionSwitch ;
+
+
 %}
 
 
@@ -454,29 +457,29 @@ FUNCION_IF:  TK_IF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apert
 			|TK_IF TK_par_apertura EXPRESIONARIT TK_par_cierre  INSTRUCCION2  FUNCION_ELSE		{$5.nombre = "AmbienteIf"; $$ = new If($3,$5,$6,this._$.first_line,this._$.first_column)}
 ;
 
-FUNCION_ELSEIF: FUNCION_ELSEIF TK_ELSEIF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre 		        {console.log("else if 457");
-																																								$7.nombre = "AmbienteElseIf"; 
-																																				var Velse = new If($4,$7,null,this._$.first_line,this._$.first_column); 
-																																								var valorcondicion = $1;
-																																								while(valorcondicion.condicionelse!=null){
-																																									valorcondicion = valorcondicion.condicionelse;
+FUNCION_ELSEIF: FUNCION_ELSEIF TK_ELSEIF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre 		        {
+																																									$7.nombre = "AmbienteElseIf"; 
+																																									var Velse = new If($4,$7,null,this._$.first_line,this._$.first_column); 
+																																									var valorcondicion = $1;
+																																									while(valorcondicion.condicionelse!=null){
+																																										valorcondicion = valorcondicion.condicionelse;
+																																									}
+																																									valorcondicion.condicionelse = Velse; 
+																																									$$ = $1
 																																								}
-																																								valorcondicion.condicionelse = Velse; 
-																																								$$ = $1}
-			  | FUNCION_ELSEIF TK_ELSEIF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre  FUNCION_ELSE	{console.log("else if 458");
-			  																																					$7.nombre = "AmbienteElseIf"; 
-			  																																	var Velse = new If($4,$7,$9,this._$.first_line,this._$.first_column);
-																																				  				var valorcondicion = $1;
-																																								while(valorcondicion.condicionelse!=null){
-																																									valorcondicion = valorcondicion.condicionelse;
+			  | FUNCION_ELSEIF TK_ELSEIF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre  FUNCION_ELSE	{
+																																									$7.nombre = "AmbienteElseIf"; 
+																																									var Velse = new If($4,$7,$9,this._$.first_line,this._$.first_column);
+																																									var valorcondicion = $1;
+																																									while(valorcondicion.condicionelse!=null){
+																																										valorcondicion = valorcondicion.condicionelse;
+																																									}
+																																									valorcondicion.condicionelse = Velse;
+																																									$$ = $1
 																																								}
-																																								valorcondicion.condicionelse = Velse;
-																																								$$ = $1}
-			  | TK_ELSEIF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre FUNCION_ELSE					{console.log("else if 459");
-			  																																					$6.nombre = "AmbienteElseIf"; 
+			  | TK_ELSEIF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre FUNCION_ELSE					{$6.nombre = "AmbienteElseIf"; 
 																																								$$ = new If($3,$6,$8,this._$.first_line,this._$.first_column)}
-			  | TK_ELSEIF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre  		 						{console.log("else if 460");
-			  																																					$6.nombre = "AmbienteElseIf";
+			  | TK_ELSEIF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre  		 						{$6.nombre = "AmbienteElseIf";
 																																								$$ = new If($3,$6,null,this._$.first_line,this._$.first_column)}
 			//|TK_ELSEIF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre 				 		{}
 ;	
@@ -487,15 +490,62 @@ FUNCION_ELSE:TK_ELSE TK_corchete_apertura INSTRUCCION2 TK_corchete_cierre	{$3.no
 
 ;
 
-FUNCION_SWITCH: TK_SWITCH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura SENTENCIAS_CASE TK_corchete_cierre	{}
-;
-``````
-SENTENCIAS_CASE: TK_CASE EXPRESIONARIT TK_dos_puntos  INSTRUCCION TK_BREAK TK_pcoma							{}
-				|TK_CASE EXPRESIONARIT TK_dos_puntos  INSTRUCCION TK_BREAK  TK_pcoma  SENTENCIAS_CASE							{}
-				|TK_CASE EXPRESIONARIT TK_dos_puntos  INSTRUCCION SENTENCIAS_CASE
-				|TK_DEFAULT TK_dos_puntos INSTRUCCION
+FUNCION_SWITCH: TK_SWITCH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura   TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES TK_BREAK TK_pcoma TK_corchete_cierre													{$9.nombre= "AmbienteSwitch";
+																																																											$$ = new Switch( $3,$7,$9,null,this._$.first_line,this._$.first_column);
+																																																											}
+				|TK_SWITCH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura   TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES TK_BREAK TK_pcoma  SENTENCIAS_CASE	TK_corchete_cierre								{$9.nombre= "AmbienteSwitch";
+																																																											$12.condicionswitch = $3;  $$ = new Switch( $3,$7,$9,$12,this._$.first_line,this._$.first_column);
+																																																											}
+				|TK_SWITCH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura   TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES TK_BREAK TK_pcoma  TK_DEFAULT TK_dos_puntos LISTA_INSTRUCCIONES	TK_corchete_cierre  {$9.nombre= "AmbienteSwitch";
+																																																											$15.condicionswitch = $3;  $$ = new Switch( $3,$7,$9,$15,this._$.first_line,this._$.first_column);
+																																																											}
 ;
 
+SENTENCIAS_CASE: SENTENCIAS_CASE TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES TK_BREAK  TK_pcoma  							{
+																																			console.log("entra en case:");
+																																			$4.nombre= "AmbienteCase";
+																																			var Vcase = new Switch(null,$3,$5,null,this._$.first_line,this._$.first_column);
+																																			var valorcondicion = $1;
+																																			while(valorcondicion.condiciondefault!= null){
+																																				valorcondicion = valorcondicion.condiciondefault;
+																																			}
+																																			$1.condicionswitch = valorcondicion.condicionswitch;
+																																			valorcondicion.condiciondefault = Vcase;
+																																			console.log("sube el valor nulo creo: "+$1.condicionswitch+"  aca tambien vacio creo anterior "+valorcondicion.condicionswitch);
+																																			$$ = $1;
+																																		}
+				| SENTENCIAS_CASE TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES TK_BREAK  TK_pcoma  	TK_DEFAULT TK_dos_puntos LISTA_INSTRUCCIONES				{
+																																			//console.log("case: "+$2.valor);
+																																			$4.nombre= "AmbienteCase";
+																																			var Vcase = new Switch(null,$3,$5,$10,this._$.first_line,this._$.first_column);
+																																			var valorcondicion = $1;
+																																			while(valorcondicion.condiciondefault!= null){
+																																				valorcondicion = valorcondicion.condiciondefault;
+																																			}
+																																			if(valorcondicion.condicionswitch == null){
+																																				console.log("la condicion switch de la ultima iteracion es null")
+																																			}
+																																			$1.condicionswitch = valorcondicion.condicionswitch;
+																																			valorcondicion.condiciondefault = Vcase;
+																																			$$ = $1;
+																																		}
+				/* | SENTENCIAS_CASE TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES 												{
+																																			//console.log("case: "+$2.valor);
+																																			$4.nombre= "AmbienteCase";
+																																			var Vcase = new Switch(null,$2,$4,$5,this._$.first_line,this._$.first_column);
+																																			var valorcondicion = $6;
+																																			while(valorcondicion.condiciondefault!= null){
+																																				valorcondicion = valorcondicion.condiciondefault;
+																																			}
+																																			valorcondicion.condiciondefault = Vcase;
+																																			$$ = $1;
+																																		} */
+																																		//|																			{$3.nombre= "AmbienteCaseDefault";$$ = new Switch(null,null,$3,true,this._$.first_line,this._$.first_column)}			
+				|TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES TK_BREAK TK_pcoma												{console.log("entra al solitario case");$4.nombre= "AmbienteCase";$$ = new Switch(null,$2,$4,null,this._$.first_line,this._$.first_column)}
+;
+
+//FUN_DEFAULT:TK_DEFAULT TK_dos_puntos LISTA_INSTRUCCIONES																				{$3.nombre = "AmbienteDefault";$$ = $3}
+//;
 
 BUCLES: BUCLE_WHILE
 		|BUCLE_DO_WHILE
@@ -503,15 +553,15 @@ BUCLES: BUCLE_WHILE
 ;
 
 
-BUCLE_WHILE: TK_WHILE TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura  INSTRUCCION TK_corchete_cierre
+BUCLE_WHILE: TK_WHILE TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura  LISTA_INSTRUCCIONES TK_corchete_cierre												{$$ = new While($3,$6,this._$.first_line,this._$.first_column);}
 ;
 
-BUCLE_DO_WHILE: TK_DO TK_corchete_apertura INSTRUCCION TK_corchete_cierre TK_WHILE TK_par_apertura EXPRESIONARIT TK_par_cierre TK_pcoma
+BUCLE_DO_WHILE: TK_DO TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre TK_WHILE TK_par_apertura EXPRESIONARIT TK_par_cierre TK_pcoma								{$$ = new DoWhile($7,$3,this._$.first_line,this._$.first_column);}
 ;
 
-BUCLE_FOR: TK_FOR TK_par_apertura DECLARACION  EXPRESIONARIT TK_pcoma EXPRESIONARIT TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre
-		| TK_FOR TK_par_apertura ASIGNACION  EXPRESIONARIT TK_pcoma EXPRESIONARIT TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre
-		| TK_FOR TK_ID TK_IN EXPRESIONARIT TK_corchete_apertura INSTRUCCION TK_corchete_cierre 
-		| TK_FOR TK_ID TK_IN ARREGLO TK_corchete_apertura INSTRUCCION TK_corchete_cierre 
+BUCLE_FOR: TK_FOR TK_par_apertura DECLARACION  EXPRESIONARIT TK_pcoma EXPRESIONARIT TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre
+		| TK_FOR TK_par_apertura ASIGNACION  EXPRESIONARIT TK_pcoma EXPRESIONARIT TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre
+		| TK_FOR TK_ID TK_IN EXPRESIONARIT TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre 
+		| TK_FOR TK_ID TK_IN ARREGLO TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre 
 		//| TK_FOR TK_ID TK_IN TK_ID ARREGLO TK_corchete_apertura INSTRUCCIONES TK_corchete_cierre 
 ;

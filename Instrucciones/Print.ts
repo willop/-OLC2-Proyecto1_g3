@@ -27,25 +27,29 @@ class Print implements Instruccion {
                 if(salida.charAt(i) == '$'){
                     //console.log("Si se reconocio el caracter");
                     i++;
-                    console.log("ahora el nuevo caracter es: "+salida.charAt(i))
-                    if(!salida.charAt(i).match(/[a-z]/i) && i<tam-1){
-                        while(!salida.charAt(i).match(/[a-z]/i) && i<tam-1){
+                    //console.log("ahora el nuevo caracter es: "+salida.charAt(i))
+                    if(!salida.charAt(i).match(/[a-z]/i)){
+                        while(!salida.charAt(i).match(/[a-z]/i)){
                             console.log("dentro del primer while con: "+salida.charAt(i)+" valor i: "+i+" y tam: "+tam)
-                            if(i==tam-1){
-                                console.log("llego a igual")
-                                break;
-                            }
-                            else if(salida.charAt(i) == "$"){
+                            if(salida.charAt(i) == "$"){
                                 console.log("aca ni entra");
                                 i--;
                                 break;
                             }
                             else{
-                            expresion+=salida.charAt(i);
-                            i++
+                                expresion+=salida.charAt(i);
+                                if(i+1 == tam){
+                                    break;                    
+                                }
+                                else{
+                                    i++;
+                                    if(salida.charAt(i+1).match(/[a-z]/i)){
+                                        i--;
+                                        break;
+                                    }
+                                }
                             }
                         }//fin while
-                        i=i-1;
                         //console.log("saliendo del while siendo numero: "+expresion);
                         expresion = eval(expresion);
                         textosalida+=expresion;

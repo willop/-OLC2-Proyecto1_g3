@@ -38,9 +38,32 @@ class Aritmetica {
                     //console.log(resultado);
                     break;
                 case TipoAritmetica.MODULO:
-                    console.log("entro a Aritmetica");
                     var vmodulo = new Modulo();
                     resultado = vmodulo.modulo(izquierda, derecha);
+                    break;
+                case TipoAritmetica.COSENO:
+                    var vcoseno = new Coseno();
+                    resultado = vcoseno.coseno(izquierda, derecha);
+                    break;
+                case TipoAritmetica.SENO:
+                    var vseno = new Seno();
+                    resultado = vseno.seno(izquierda, derecha);
+                    break;
+                case TipoAritmetica.TANGENTE:
+                    var vtangente = new Tangente();
+                    resultado = vtangente.tangente(izquierda, derecha);
+                    break;
+                case TipoAritmetica.RAIZ:
+                    var vraiz = new Raiz();
+                    resultado = vraiz.raiz(izquierda, derecha);
+                    break;
+                case TipoAritmetica.LOGARITMO:
+                    var vlogaritmo = new Logaritmo();
+                    resultado = vlogaritmo.logaritmo(izquierda, derecha);
+                    break;
+                case TipoAritmetica.POW:
+                    var vpow = new Pow();
+                    resultado = vpow.pow(izquierda, derecha);
                     break;
             }
             return resultado;

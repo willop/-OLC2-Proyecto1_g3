@@ -1,17 +1,38 @@
 enum Tipo {
-    STRING,INTEGER,CHAR,DOUBLE,BOOLEAN
+    STRING,
+    INTEGER,
+    CHAR,
+    DOUBLE,
+    BOOLEAN
 }
 
 enum TipoAritmetica{
-    SUMA,RESTA,MULTIPLICACION,DIVISION,MODULO
+    SUMA,
+    RESTA,
+    MULTIPLICACION,
+    DIVISION,
+    MODULO,
+    COSENO,
+    SENO,
+    TANGENTE,
+    RAIZ,
+    LOGARITMO,
+    POW
 }
 
 enum TipoLogica{
-    AND,OR,NOT
+    AND,
+    OR,
+    NOT
 }
 
 enum TipoRelacional{
-    IGUALDAD,DESIGUALDAD,MAYOR_QUE,MENOR_QUE,MAYOR_IGUAL,MENOR_IGUAL
+    IGUALDAD,
+    DESIGUALDAD,
+    MAYOR_QUE,
+    MENOR_QUE,
+    MAYOR_IGUAL,
+    MENOR_IGUAL
 }
 
 enum TipoError{

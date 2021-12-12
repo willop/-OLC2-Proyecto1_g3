@@ -14,6 +14,12 @@ var TipoAritmetica;
     TipoAritmetica[TipoAritmetica["MULTIPLICACION"] = 2] = "MULTIPLICACION";
     TipoAritmetica[TipoAritmetica["DIVISION"] = 3] = "DIVISION";
     TipoAritmetica[TipoAritmetica["MODULO"] = 4] = "MODULO";
+    TipoAritmetica[TipoAritmetica["COSENO"] = 5] = "COSENO";
+    TipoAritmetica[TipoAritmetica["SENO"] = 6] = "SENO";
+    TipoAritmetica[TipoAritmetica["TANGENTE"] = 7] = "TANGENTE";
+    TipoAritmetica[TipoAritmetica["RAIZ"] = 8] = "RAIZ";
+    TipoAritmetica[TipoAritmetica["LOGARITMO"] = 9] = "LOGARITMO";
+    TipoAritmetica[TipoAritmetica["POW"] = 10] = "POW";
 })(TipoAritmetica || (TipoAritmetica = {}));
 var TipoLogica;
 (function (TipoLogica) {

@@ -312,7 +312,6 @@ ARREGLO: TK_llave_apertura EXPRESIONARIT TK_llave_cierre										{}
 		|TK_llave_apertura EXPRESIONARIT TK_dos_puntos EXPRESIONARIT TK_llave_cierre					{}
 ;
 
-
 EXPRESIONARIT
 	: TK_MENOS EXPRESIONARIT %prec UMENOS  							{ $$ = -Math.abs($2); } //new Aritmetica(1,-$2,TipoAritmetica.MULTIPLICACION,this._$.first_line,this._$.first_column)   ////Duda
 	| EXPRESIONARIT TK_and EXPRESIONARIT       						{$$ = new Logica($1,$3,TipoLogica.AND,this._$.first_line,this._$.first_column);}
@@ -332,12 +331,12 @@ EXPRESIONARIT
 	| EXPRESIONARIT TK_DIVIDIDO EXPRESIONARIT  						{$$ = new Aritmetica($1,$3,TipoAritmetica.DIVISION,this._$.first_line,this._$.first_column)}
 	| TK_par_apertura EXPRESIONARIT TK_par_cierre       			{$$ = $2}
 	| TK_not EXPRESIONARIT											{$$ = new Logica($2,$2,TipoLogica.NOT,this._$.first_line,this._$.first_column);}
-	| TK_SIN TK_par_apertura EXPRESIONARIT TK_par_cierre			{}
-	| TK_COS TK_par_apertura EXPRESIONARIT TK_par_cierre			{}
-	| TK_LOG TK_par_apertura EXPRESIONARIT TK_par_cierre			{}
-	| TK_TAN TK_par_apertura EXPRESIONARIT TK_par_cierre			{}
-	| TK_SQRT TK_par_apertura EXPRESIONARIT TK_par_cierre			{}
-	| TK_POW TK_par_apertura EXPRESIONARIT TK_par_cierre			{}
+	| TK_SIN TK_par_apertura EXPRESIONARIT TK_par_cierre			{$$ = new Aritmetica($3,$3,TipoAritmetica.SENO,this._$.first_line,this._$.first_column)}
+	| TK_COS TK_par_apertura EXPRESIONARIT TK_par_cierre			{$$ = new Aritmetica($3,$3,TipoAritmetica.COSENO,this._$.first_line,this._$.first_column)}
+	| TK_LOG TK_par_apertura EXPRESIONARIT TK_par_cierre			{$$ = new Aritmetica($3,$3,TipoAritmetica.LOGARITMO,this._$.first_line,this._$.first_column)}
+	| TK_TAN TK_par_apertura EXPRESIONARIT TK_par_cierre			{$$ = new Aritmetica($3,$3,TipoAritmetica.TANGENTE,this._$.first_line,this._$.first_column)}
+	| TK_SQRT TK_par_apertura EXPRESIONARIT TK_par_cierre			{$$ = new Aritmetica($3,$3,TipoAritmetica.RAIZ,this._$.first_line,this._$.first_column)}
+	| TK_POW TK_par_apertura EXPRESIONARIT TK_coma EXPRESIONARIT TK_par_cierre			{$$ = new Aritmetica($3,$5,TipoAritmetica.POW,this._$.first_line,this._$.first_column)}
 	| TK_PARSE TK_par_apertura EXPRESIONARIT TK_par_cierre			{}
 	| TK_numeral EXPRESIONARIT										{}
 	| EXPRESIONARIT TK_concat EXPRESIONARIT       					{ var a = $1; var al=a.length; var b = $3; var bl = b.length; var c = a.substring(1,al-1); var d = b.substring(1,bl-1); var total = c+d;  $$ = total;}

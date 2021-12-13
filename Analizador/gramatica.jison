@@ -224,7 +224,7 @@ INSTRUCCION2: DECLARACION 			{$$ = new Instrucciones([$1],this._$.first_line,thi
 
 
 
-DECLARACION: TIPO_VALOR TIPO_DECLARACION												{var asignacion = $2; asignacion.tipo = $1; $$ = asignacion}
+DECLARACION: TIPO_VALOR TIPO_DECLARACION												{var asignacion = $2; asignacion.tipo = $1; $$ = asignacion;}   //asig = [exp=58,tipo=null,id=TK_ID] asgi.tipo = string [exp=58,tipo=string,id=TK_ID]
 			| TIPO_VALOR TK_punto TK_PARSE TK_par_apertura TK_CADENA TK_par_cierre		{}
 			| TIPO_VALOR TK_par_apertura ARREGLO TK_par_cierre FIN_LINEA				{}
 			| TIPO_VALOR TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA			{}
@@ -251,9 +251,15 @@ FIN_LINEA_STRUCT: TK_coma
 				| TK_pcoma
 ;
 
-TIPO_DECLARACION : TK_ID IGUALACION																									{var asignacion = $2; asignacion.id = $1; $$ = asignacion}
+TIPO_DECLARACION : TK_ID IGUALACION																									{var asignacion = $2; asignacion.id = $1; $$ = asignacion}  // asig = [exp=58,tipo=null,id=null] asig.id=TK_ID  lo que subo es [exp=58,tipo=null,id=TK_ID]
+				| TK_ID  MAS_VARIABLES FIN_LINEA																					{}
 				| TK_ID TK_par_apertura PARAMETRO_FUNSION TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre			{}
 				| COND_ARREGLO TK_ID IGUALACION																						{}
+				| TK_ID FIN_LINEA																									{$$ = new Declaracion(null,this._$.first_line,this._$.first_column,null,$1);}
+;
+
+MAS_VARIABLES: MAS_VARIABLES TK_coma TK_ID																							{}//$$ = $3.push($1); $$ = $3;}
+			|TK_coma TK_ID																											{$$ = new Declaracion(null,this._$.first_line,this._$.first_column,null,$2);}
 ;
 
 FIN_LINEA: TK_pcoma																													{}
@@ -271,17 +277,12 @@ COND_ARREGLO: TK_llave_apertura TK_llave_cierre																						{}
 
 ;
 
-IGUALACION: TK_igual EXPRESIONARIT FIN_LINEA						{$$ = new Declaracion($2,this._$.first_line,this._$.first_column,null,null)}
+IGUALACION: TK_igual EXPRESIONARIT FIN_LINEA						{$$ = new Declaracion($2,this._$.first_line,this._$.first_column,null,null)} //Declaracion = 58
 			|TK_igual EXPRESIONARIT ASIGNACION_TERNARIA FIN_LINEA	{}
 			|TK_igual ARREGLO FIN_LINEA								{}
-			|MAS_VARIABLES FIN_LINEA								{}
-			|FIN_LINEA
 ;
 
-MAS_VARIABLES: MAS_VARIABLES TK_coma TK_ID
-			|TK_coma TK_ID
 
-;
 
 VALORES: TK_CADENA															{console.log("cadena"+$1);var a = $1; var al=a.length; var c = a.substring(1,al-1);    $$ = new Literal(c,Tipo.STRING,this._$.first_line,this._$.first_column);}
 		|TK_NULL															{}
@@ -398,7 +399,6 @@ FIN_LINEA_ASIGNACION: TK_pcoma										{}
 
 
 ASIGNACION_TERNARIA: ASIGNACION_TERNARIA TK_pregunta EXPRESIONARIT TK_dos_puntos EXPRESIONARIT 
-					| 
 					| TK_pregunta EXPRESIONARIT TK_dos_puntos EXPRESIONARIT 
 ;
 

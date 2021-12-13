@@ -62,11 +62,21 @@ class Print implements Instruccion {
                             }
                             else{
                             expresion+=salida.charAt(i);
-                            i++
+                            if(i+1 == tam){
+                                break;                    
+                            }
+                            else{
+                                i++;
+                                if(!salida.charAt(i+1).match(/[a-z]/i)){
+                                    i--;
+                                    break;
+                                }
+                            }
                             }
                         }//fin while
-                        //expresion = eval(expresion);
-                        textosalida+="--"+expresion+"--";
+                         var expresionvalor = entorno.ObtenerSimbolo(expresion);
+                        console.log("********* la variable contiene el valor: "+expresionvalor.valor);
+                        textosalida+=expresionvalor.valor;
                     }
                 }else{
                     textosalida+=salida.charAt(i);

@@ -9,11 +9,17 @@ class Declaracion {
     }
     interpretar(entorno, recolector) {
         try {
-            var valor = this.expresion.interpretar(entorno, recolector);
-            if (this.tipo != valor.tipo) {
-                throw new TipoIncorrecto(this.linea, this.columna, "EL TIPO DECLARADO NO ES IGUAL AL TIPO ASIGNADO" + Tipo[valor.tipo] + " " + Tipo[this.tipo], entorno);
+            //si viene expresion nula
+            if (this.expresion == null) {
+                entorno.GuardarSimbolo(null, this.id, this.tipo);
+            } //si la expresion tiene un valor
+            else {
+                var valor = this.expresion.interpretar(entorno, recolector);
+                if (this.tipo != valor.tipo) {
+                    throw new TipoIncorrecto(this.linea, this.columna, "EL TIPO DECLARADO NO ES IGUAL AL TIPO ASIGNADO" + Tipo[valor.tipo] + " " + Tipo[this.tipo], entorno);
+                }
+                entorno.GuardarSimbolo(valor.valor, this.id, this.tipo);
             }
-            entorno.GuardarSimbolo(valor.valor, this.id, this.tipo);
         }
         catch (e) {
             recolector.listaerrores.push(e);

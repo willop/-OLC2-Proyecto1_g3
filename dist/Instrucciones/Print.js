@@ -17,16 +17,16 @@ class Print {
                 var textosalida = "";
                 for (var i = 0; i < tam; i++) {
                     expresion = "";
-                    console.log("Analizando el caracter: " + salida.charAt(i));
+                    //console.log("Analizando el caracter: "+salida.charAt(i))
                     if (salida.charAt(i) == '$') {
                         //console.log("Si se reconocio el caracter");
                         i++;
                         //console.log("ahora el nuevo caracter es: "+salida.charAt(i))
                         if (!salida.charAt(i).match(/[a-z]/i)) {
                             while (!salida.charAt(i).match(/[a-z]/i)) {
-                                console.log("dentro del primer while con: " + salida.charAt(i) + " valor i: " + i + " y tam: " + tam);
+                                //console.log("dentro del primer while con: "+salida.charAt(i)+" valor i: "+i+" y tam: "+tam)
                                 if (salida.charAt(i) == "$") {
-                                    console.log("aca ni entra");
+                                    //console.log("aca ni entra");
                                     i--;
                                     break;
                                 }
@@ -56,11 +56,21 @@ class Print {
                                 }
                                 else {
                                     expresion += salida.charAt(i);
-                                    i++;
+                                    if (i + 1 == tam) {
+                                        break;
+                                    }
+                                    else {
+                                        i++;
+                                        if (!salida.charAt(i + 1).match(/[a-z]/i)) {
+                                            i--;
+                                            break;
+                                        }
+                                    }
                                 }
                             } //fin while
-                            //expresion = eval(expresion);
-                            textosalida += "--" + expresion + "--";
+                            var expresionvalor = entorno.ObtenerSimbolo(expresion);
+                            console.log("********* la variable contiene el valor: " + expresionvalor.valor);
+                            textosalida += expresionvalor.valor;
                         }
                     }
                     else {
@@ -68,7 +78,7 @@ class Print {
                     }
                 } //fin del for
                 salida = textosalida;
-                console.log("La salida es de: " + textosalida);
+                //console.log("La salida es de: "+textosalida);
             }
             //fin del algoritmo
             if (this.lineanueva) {

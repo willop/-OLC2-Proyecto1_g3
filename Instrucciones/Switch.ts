@@ -29,7 +29,6 @@ class Switch implements Instruccion {
             }else if(this.condiciondefault != null){
                 return this.condiciondefault.interpretar(entorno,recolector);
             }
-
             
         }catch(e){
             recolector.listaerrores.push(e);

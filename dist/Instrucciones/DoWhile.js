@@ -15,7 +15,17 @@ class DoWhile {
             else {
                 do {
                     console.log("Ejecutando el  Do while " + resultado.valor);
-                    this.instrucciones.interpretar(entorno, recolector);
+                    var aux = this.instrucciones.interpretar(entorno, recolector);
+                    if (aux != null) { // validas que tenga retorno
+                        if (aux instanceof Return) { //que se de tipo retorno
+                            if (aux.tipo == Tipo.CONTINUE) { //depende si es continue o break
+                                continue;
+                            }
+                            else if (aux.tipo == Tipo.BRAKE) {
+                                break;
+                            }
+                        }
+                    }
                     resultado = this.condiciondowhile.interpretar(entorno, recolector);
                 } while (resultado.valor);
             }

@@ -3,7 +3,9 @@ enum Tipo {
     INTEGER,
     CHAR,
     DOUBLE,
-    BOOLEAN
+    BOOLEAN,
+    CONTINUE,
+    BRAKE
 }
 
 enum TipoAritmetica{
@@ -44,4 +46,14 @@ enum TipoError{
     ERROR_LOGICO,
     ERROR_RELACIONAL,
     ERROR_BOOLEANO,
+}
+
+
+enum TipoFor{
+    CLASICO,
+}
+
+enum TipoAumento{
+    INCREMENTO,
+    DECREMENTO
 }

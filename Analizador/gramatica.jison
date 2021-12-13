@@ -149,7 +149,7 @@
 /* Asociación de operadores y precedencia */
 //presedencia hacia abajo
 %left  'TK_igual'  'TK_punto'
-%left 'TK_pregunta'
+%left 'TK_pregunta' 
 %left 'TK_or'
 %left 'TK_and'
 %left 'TK_potencia'
@@ -161,6 +161,7 @@
 %left 'TK_not' 'TK_numeral' 
 %left 'TK_INCREMENTO' 'TK_DECREMENTO' 
 %left UMENOS
+
  
 
 
@@ -278,7 +279,6 @@ COND_ARREGLO: TK_llave_apertura TK_llave_cierre																						{}
 ;
 
 IGUALACION: TK_igual EXPRESIONARIT FIN_LINEA						{$$ = new Declaracion($2,this._$.first_line,this._$.first_column,null,null)} //Declaracion = 58
-			|TK_igual EXPRESIONARIT ASIGNACION_TERNARIA FIN_LINEA	{}
 			|TK_igual ARREGLO FIN_LINEA								{}
 ;
 
@@ -314,44 +314,43 @@ ARREGLO: TK_llave_apertura EXPRESIONARIT TK_llave_cierre										{}
 ;
 
 EXPRESIONARIT
-	: TK_MENOS EXPRESIONARIT %prec UMENOS  							{ $$ = -Math.abs($2); } //new Aritmetica(1,-$2,TipoAritmetica.MULTIPLICACION,this._$.first_line,this._$.first_column)   ////Duda
-	| EXPRESIONARIT TK_and EXPRESIONARIT       						{$$ = new Logica($1,$3,TipoLogica.AND,this._$.first_line,this._$.first_column);}
-	| EXPRESIONARIT TK_or EXPRESIONARIT								{$$ = new Logica($1,$3,TipoLogica.OR,this._$.first_line,this._$.first_column);}
-	| EXPRESIONARIT TK_mayor_igual EXPRESIONARIT       				{$$ = new Relacional($1,$3,TipoRelacional.MAYOR_IGUAL,this._$.first_line,this._$.first_column);}
-	| EXPRESIONARIT TK_menor_igual EXPRESIONARIT       				{$$ = new Relacional($1,$3,TipoRelacional.MENOR_IGUAL,this._$.first_line,this._$.first_column);}
-	| EXPRESIONARIT TK_mayor EXPRESIONARIT       					{$$ = new Relacional($1,$3,TipoRelacional.MAYOR_QUE,this._$.first_line,this._$.first_column);}
-	| EXPRESIONARIT TK_menor EXPRESIONARIT							{$$ = new Relacional($1,$3,TipoRelacional.MENOR_QUE,this._$.first_line,this._$.first_column);}
-	| EXPRESIONARIT TK_igualacion EXPRESIONARIT						{$$ = new Relacional($1,$3,TipoRelacional.IGUALDAD,this._$.first_line,this._$.first_column);}
-	| EXPRESIONARIT TK_desigual EXPRESIONARIT						{$$ = new Relacional($1,$3,TipoRelacional.DESIGUALDAD,this._$.first_line,this._$.first_column);}
-	| EXPRESIONARIT TK_INCREMENTO									{}
-	| EXPRESIONARIT TK_DECREMENTO									{}
-	| EXPRESIONARIT TK_MAS EXPRESIONARIT       						{$$ = new Aritmetica($1,$3,TipoAritmetica.SUMA,this._$.first_line,this._$.first_column)}
-	| EXPRESIONARIT TK_MENOS EXPRESIONARIT     						{$$ = new Aritmetica($1,$3,TipoAritmetica.RESTA,this._$.first_line,this._$.first_column)}
-	| EXPRESIONARIT TK_numeral TK_POR EXPRESIONARIT       			{}
-	| EXPRESIONARIT TK_POR EXPRESIONARIT       						{$$ = new Aritmetica($1,$3,TipoAritmetica.MULTIPLICACION,this._$.first_line,this._$.first_column)}
-	| EXPRESIONARIT TK_DIVIDIDO EXPRESIONARIT  						{$$ = new Aritmetica($1,$3,TipoAritmetica.DIVISION,this._$.first_line,this._$.first_column)}
-	| TK_par_apertura EXPRESIONARIT TK_par_cierre       			{$$ = $2}
-	| TK_not EXPRESIONARIT											{$$ = new Logica($2,$2,TipoLogica.NOT,this._$.first_line,this._$.first_column);}
-	| TK_SIN TK_par_apertura EXPRESIONARIT TK_par_cierre			{$$ = new Aritmetica($3,$3,TipoAritmetica.SENO,this._$.first_line,this._$.first_column)}
-	| TK_COS TK_par_apertura EXPRESIONARIT TK_par_cierre			{$$ = new Aritmetica($3,$3,TipoAritmetica.COSENO,this._$.first_line,this._$.first_column)}
-	| TK_LOG TK_par_apertura EXPRESIONARIT TK_par_cierre			{$$ = new Aritmetica($3,$3,TipoAritmetica.LOGARITMO,this._$.first_line,this._$.first_column)}
-	| TK_TAN TK_par_apertura EXPRESIONARIT TK_par_cierre			{$$ = new Aritmetica($3,$3,TipoAritmetica.TANGENTE,this._$.first_line,this._$.first_column)}
-	| TK_SQRT TK_par_apertura EXPRESIONARIT TK_par_cierre			{$$ = new Aritmetica($3,$3,TipoAritmetica.RAIZ,this._$.first_line,this._$.first_column)}
+	: TK_MENOS EXPRESIONARIT %prec UMENOS  												{ $$ = -Math.abs($2); } //new Aritmetica(1,-$2,TipoAritmetica.MULTIPLICACION,this._$.first_line,this._$.first_column)   ////Duda
+	| EXPRESIONARIT TK_and EXPRESIONARIT       											{$$ = new Logica($1,$3,TipoLogica.AND,this._$.first_line,this._$.first_column);}
+	| EXPRESIONARIT TK_or EXPRESIONARIT													{$$ = new Logica($1,$3,TipoLogica.OR,this._$.first_line,this._$.first_column);}
+	| EXPRESIONARIT TK_mayor_igual EXPRESIONARIT       									{$$ = new Relacional($1,$3,TipoRelacional.MAYOR_IGUAL,this._$.first_line,this._$.first_column);}
+	| EXPRESIONARIT TK_menor_igual EXPRESIONARIT       									{$$ = new Relacional($1,$3,TipoRelacional.MENOR_IGUAL,this._$.first_line,this._$.first_column);}
+	| EXPRESIONARIT TK_mayor EXPRESIONARIT       										{$$ = new Relacional($1,$3,TipoRelacional.MAYOR_QUE,this._$.first_line,this._$.first_column);}
+	| EXPRESIONARIT TK_menor EXPRESIONARIT												{$$ = new Relacional($1,$3,TipoRelacional.MENOR_QUE,this._$.first_line,this._$.first_column);}
+	| EXPRESIONARIT TK_igualacion EXPRESIONARIT											{$$ = new Relacional($1,$3,TipoRelacional.IGUALDAD,this._$.first_line,this._$.first_column);}
+	| EXPRESIONARIT TK_desigual EXPRESIONARIT											{$$ = new Relacional($1,$3,TipoRelacional.DESIGUALDAD,this._$.first_line,this._$.first_column);}
+	| EXPRESIONARIT TK_INCREMENTO														{}
+	| EXPRESIONARIT TK_DECREMENTO														{}
+	| EXPRESIONARIT TK_MAS EXPRESIONARIT       											{$$ = new Aritmetica($1,$3,TipoAritmetica.SUMA,this._$.first_line,this._$.first_column)}
+	| EXPRESIONARIT TK_MENOS EXPRESIONARIT     											{$$ = new Aritmetica($1,$3,TipoAritmetica.RESTA,this._$.first_line,this._$.first_column)}
+	| EXPRESIONARIT TK_numeral TK_POR EXPRESIONARIT       								{}
+	| EXPRESIONARIT TK_POR EXPRESIONARIT       											{$$ = new Aritmetica($1,$3,TipoAritmetica.MULTIPLICACION,this._$.first_line,this._$.first_column)}
+	| EXPRESIONARIT TK_DIVIDIDO EXPRESIONARIT  											{$$ = new Aritmetica($1,$3,TipoAritmetica.DIVISION,this._$.first_line,this._$.first_column)}
+	| TK_par_apertura EXPRESIONARIT TK_par_cierre       								{$$ = $2}
+	| TK_not EXPRESIONARIT																{$$ = new Logica($2,$2,TipoLogica.NOT,this._$.first_line,this._$.first_column);}
+	| TK_SIN TK_par_apertura EXPRESIONARIT TK_par_cierre								{$$ = new Aritmetica($3,$3,TipoAritmetica.SENO,this._$.first_line,this._$.first_column)}
+	| TK_COS TK_par_apertura EXPRESIONARIT TK_par_cierre								{$$ = new Aritmetica($3,$3,TipoAritmetica.COSENO,this._$.first_line,this._$.first_column)}
+	| TK_LOG TK_par_apertura EXPRESIONARIT TK_par_cierre								{$$ = new Aritmetica($3,$3,TipoAritmetica.LOGARITMO,this._$.first_line,this._$.first_column)}
+	| TK_TAN TK_par_apertura EXPRESIONARIT TK_par_cierre								{$$ = new Aritmetica($3,$3,TipoAritmetica.TANGENTE,this._$.first_line,this._$.first_column)}
+	| TK_SQRT TK_par_apertura EXPRESIONARIT TK_par_cierre								{$$ = new Aritmetica($3,$3,TipoAritmetica.RAIZ,this._$.first_line,this._$.first_column)}
 	| TK_POW TK_par_apertura EXPRESIONARIT TK_coma EXPRESIONARIT TK_par_cierre			{$$ = new Aritmetica($3,$5,TipoAritmetica.POW,this._$.first_line,this._$.first_column)}
-	| TK_PARSE TK_par_apertura EXPRESIONARIT TK_par_cierre			{}
-	| TK_numeral EXPRESIONARIT										{}
-	| EXPRESIONARIT TK_concat EXPRESIONARIT       					{ var a = $1; var al=a.length; var b = $3; var bl = b.length; var c = a.substring(1,al-1); var d = b.substring(1,bl-1); var total = c+d;  $$ = total;}
-	| EXPRESIONARIT TK_potencia EXPRESIONARIT		       			{ $$ = new Potencia($1,$3,this._$.first_line,this._$.first_column);}
-	| EXPRESIONARIT TK_punto EXPRESIONARIT       					{}
-	| EXPRESIONARIT TK_MODULO EXPRESIONARIT       					{$$ = new Aritmetica($1,$3,TipoAritmetica.MODULO,this._$.first_line,this._$.first_column);}
-	| VALORES														{$$ = $1;}
+	| TK_PARSE TK_par_apertura EXPRESIONARIT TK_par_cierre								{}
+	| TK_numeral EXPRESIONARIT															{}
+	| EXPRESIONARIT TK_concat EXPRESIONARIT       										{ var a = $1; var al=a.length; var b = $3; var bl = b.length; var c = a.substring(1,al-1); var d = b.substring(1,bl-1); var total = c+d;  $$ = total;}
+	| EXPRESIONARIT TK_potencia EXPRESIONARIT		       								{ $$ = new Potencia($1,$3,this._$.first_line,this._$.first_column);}
+	| EXPRESIONARIT TK_punto EXPRESIONARIT       										{}
+	| EXPRESIONARIT TK_MODULO EXPRESIONARIT       										{$$ = new Aritmetica($1,$3,TipoAritmetica.MODULO,this._$.first_line,this._$.first_column);}
+	| EXPRESIONARIT TK_pregunta EXPRESIONARIT TK_dos_puntos EXPRESIONARIT 				{$$ = new Ternario($1,$3,$5,this._$.first_line,this._$.first_column);}
+	| VALORES 																			{$$ = $1;}
 ;
 
 
 IMPRESION: TK_PRINT TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA							{$$ = new Print($3,this._$.first_line,this._$.first_column,false);}  
 		|TK_PRINTLN TK_par_apertura EXPRESIONARIT TK_par_cierre	FIN_LINEA							{$$ = new Print($3,this._$.first_line,this._$.first_column,true);}
-		|TK_PRINT TK_par_apertura EXPRESIONARIT ASIGNACION_TERNARIA TK_par_cierre FIN_LINEA			{}
-		|TK_PRINTLN TK_par_apertura EXPRESIONARIT ASIGNACION_TERNARIA TK_par_cierre	FIN_LINEA		{}
 		|TK_PRINT TK_par_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_par_cierre FIN_LINEA		{var a = $4.valor; var b = $3.valor; var c = b+a; $3.valor = c;  $$ = new Print($3,this._$.first_line,this._$.first_column,false);}
 		|TK_PRINTLN TK_par_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_par_cierre FIN_LINEA		{var a = $4.valor; var b = $3.valor; var c = b+a; $3.valor = c;  $$ = new Print($3,this._$.first_line,this._$.first_column,true);}
 ;
@@ -393,14 +392,14 @@ FUNCIONES_ARREGLO: TK_punto TK_PUSH TK_par_apertura EXPRESIONARIT TK_par_cierre 
 ;
 
 
-FIN_LINEA_ASIGNACION: TK_pcoma										{}
-					| ASIGNACION_TERNARIA FIN_LINEA					{}
-;
+//FIN_LINEA_ASIGNACION: TK_pcoma										{}
+//					| ASIGNACION_TERNARIA FIN_LINEA					{}
+//;
 
 
-ASIGNACION_TERNARIA: ASIGNACION_TERNARIA TK_pregunta EXPRESIONARIT TK_dos_puntos EXPRESIONARIT 
-					| TK_pregunta EXPRESIONARIT TK_dos_puntos EXPRESIONARIT 
-;
+//ASIGNACION_TERNARIA: ASIGNACION_TERNARIA TK_pregunta EXPRESIONARIT TK_dos_puntos EXPRESIONARIT 
+//					| TK_pregunta EXPRESIONARIT TK_dos_puntos EXPRESIONARIT 
+//;
 
 SIGNOS_COMPARACION: TK_mayor_igual        				{}
 	|  TK_menor_igual        							{}
@@ -493,8 +492,13 @@ FUNCION_ELSE:TK_ELSE TK_corchete_apertura INSTRUCCION2 TK_corchete_cierre	{$3.no
 FUNCION_SWITCH: TK_SWITCH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura   TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES TK_BREAK TK_pcoma TK_corchete_cierre													{$9.nombre= "AmbienteSwitch";
 																																																											$$ = new Switch( $3,$7,$9,null,this._$.first_line,this._$.first_column);
 																																																											}
-				|TK_SWITCH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura   TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES TK_BREAK TK_pcoma  SENTENCIAS_CASE	TK_corchete_cierre								{$9.nombre= "AmbienteSwitch";
-																																																											$12.condicionswitch = $3;  $$ = new Switch( $3,$7,$9,$12,this._$.first_line,this._$.first_column);
+				|TK_SWITCH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura   TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES TK_BREAK TK_pcoma  SENTENCIAS_CASE	TK_corchete_cierre								{$9.nombre= "AmbienteSwitch"; 
+																																																											var sentenciascase = $12;
+																																																											while(sentenciascase!= null){
+																																																												sentenciascase.condicionswitch = $3;
+																																																												sentenciascase = sentenciascase.condiciondefault;
+																																																											}
+																																																											$$ = new Switch( $3,$7,$9,$12,this._$.first_line,this._$.first_column);
 																																																											}
 				|TK_SWITCH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura   TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES TK_BREAK TK_pcoma  TK_DEFAULT TK_dos_puntos LISTA_INSTRUCCIONES	TK_corchete_cierre  {$9.nombre= "AmbienteSwitch";
 																																																											$15.condicionswitch = $3;  $$ = new Switch( $3,$7,$9,$15,this._$.first_line,this._$.first_column);
@@ -504,7 +508,7 @@ FUNCION_SWITCH: TK_SWITCH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchet
 SENTENCIAS_CASE: SENTENCIAS_CASE TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES TK_BREAK  TK_pcoma  							{
 																																			console.log("entra en case:");
 																																			$4.nombre= "AmbienteCase";
-																																			var Vcase = new Switch(null,$3,$5,null,this._$.first_line,this._$.first_column);
+																																			var Vcase = new Switch($1.condicionswitch,$3,$5,null,this._$.first_line,this._$.first_column);
 																																			var valorcondicion = $1;
 																																			while(valorcondicion.condiciondefault!= null){
 																																				valorcondicion = valorcondicion.condiciondefault;
@@ -517,7 +521,7 @@ SENTENCIAS_CASE: SENTENCIAS_CASE TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INST
 				| SENTENCIAS_CASE TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES TK_BREAK  TK_pcoma  	TK_DEFAULT TK_dos_puntos LISTA_INSTRUCCIONES				{
 																																			//console.log("case: "+$2.valor);
 																																			$4.nombre= "AmbienteCase";
-																																			var Vcase = new Switch(null,$3,$5,$10,this._$.first_line,this._$.first_column);
+																																			var Vcase = new Switch($1.condicionswitch,$3,$5,$10,this._$.first_line,this._$.first_column);
 																																			var valorcondicion = $1;
 																																			while(valorcondicion.condiciondefault!= null){
 																																				valorcondicion = valorcondicion.condiciondefault;
@@ -559,8 +563,8 @@ BUCLE_WHILE: TK_WHILE TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_ap
 BUCLE_DO_WHILE: TK_DO TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre TK_WHILE TK_par_apertura EXPRESIONARIT TK_par_cierre TK_pcoma								{$$ = new DoWhile($7,$3,this._$.first_line,this._$.first_column);}
 ;
 
-BUCLE_FOR: TK_FOR TK_par_apertura DECLARACION  EXPRESIONARIT TK_pcoma EXPRESIONARIT TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre
-		| TK_FOR TK_par_apertura ASIGNACION  EXPRESIONARIT TK_pcoma EXPRESIONARIT TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre
+BUCLE_FOR: TK_FOR TK_par_apertura DECLARACION  EXPRESIONARIT TK_pcoma TK_ID TK_INCREMENTO TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre			{$$ = new For($3.id,$3,$4,TipoAumento.INCREMENTO,TipoFor.CLASICO,$10,this._$.first_line,this._$.first_column);}
+		| TK_FOR TK_par_apertura ASIGNACION  EXPRESIONARIT TK_pcoma TK_ID TK_DECREMENTO TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre		{$$ = new For($3.id,$3,$4,TipoAumento.DECREMENTO,TipoFor.CLASICO,$10,this._$.first_line,this._$.first_column);}
 		| TK_FOR TK_ID TK_IN EXPRESIONARIT TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre 
 		| TK_FOR TK_ID TK_IN ARREGLO TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre 
 		//| TK_FOR TK_ID TK_IN TK_ID ARREGLO TK_corchete_apertura INSTRUCCIONES TK_corchete_cierre 

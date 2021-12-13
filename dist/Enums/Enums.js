@@ -6,6 +6,8 @@ var Tipo;
     Tipo[Tipo["CHAR"] = 2] = "CHAR";
     Tipo[Tipo["DOUBLE"] = 3] = "DOUBLE";
     Tipo[Tipo["BOOLEAN"] = 4] = "BOOLEAN";
+    Tipo[Tipo["CONTINUE"] = 5] = "CONTINUE";
+    Tipo[Tipo["BRAKE"] = 6] = "BRAKE";
 })(Tipo || (Tipo = {}));
 var TipoAritmetica;
 (function (TipoAritmetica) {
@@ -47,3 +49,12 @@ var TipoError;
     TipoError[TipoError["ERROR_RELACIONAL"] = 6] = "ERROR_RELACIONAL";
     TipoError[TipoError["ERROR_BOOLEANO"] = 7] = "ERROR_BOOLEANO";
 })(TipoError || (TipoError = {}));
+var TipoFor;
+(function (TipoFor) {
+    TipoFor[TipoFor["CLASICO"] = 0] = "CLASICO";
+})(TipoFor || (TipoFor = {}));
+var TipoAumento;
+(function (TipoAumento) {
+    TipoAumento[TipoAumento["INCREMENTO"] = 0] = "INCREMENTO";
+    TipoAumento[TipoAumento["DECREMENTO"] = 1] = "DECREMENTO";
+})(TipoAumento || (TipoAumento = {}));

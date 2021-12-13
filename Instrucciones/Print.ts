@@ -23,16 +23,16 @@ class Print implements Instruccion {
             
             for(var i =0;i<tam;i++){
                 expresion = "";
-                console.log("Analizando el caracter: "+salida.charAt(i))
+                //console.log("Analizando el caracter: "+salida.charAt(i))
                 if(salida.charAt(i) == '$'){
                     //console.log("Si se reconocio el caracter");
                     i++;
                     //console.log("ahora el nuevo caracter es: "+salida.charAt(i))
                     if(!salida.charAt(i).match(/[a-z]/i)){
                         while(!salida.charAt(i).match(/[a-z]/i)){
-                            console.log("dentro del primer while con: "+salida.charAt(i)+" valor i: "+i+" y tam: "+tam)
+                            //console.log("dentro del primer while con: "+salida.charAt(i)+" valor i: "+i+" y tam: "+tam)
                             if(salida.charAt(i) == "$"){
-                                console.log("aca ni entra");
+                                //console.log("aca ni entra");
                                 i--;
                                 break;
                             }
@@ -74,7 +74,7 @@ class Print implements Instruccion {
                 
             }//fin del for
             salida = textosalida;
-            console.log("La salida es de: "+textosalida);
+            //console.log("La salida es de: "+textosalida);
             }
             //fin del algoritmo
 

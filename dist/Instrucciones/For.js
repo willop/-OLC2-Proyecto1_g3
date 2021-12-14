@@ -18,6 +18,24 @@ class For {
                 return this.ejecutarfclasico(this.idcontrol, this.inicio, this.final, entorno, recolector);
             }
             else {
+                //var a = entorno.ObtenerSimbolo("letra");
+                //console.log(a);
+                // aca viene solo el id - letra
+                console.log("dentro de ForIn con la palabra: " + this.idcontrol);
+                this.final.valor = Array.from(this.final.valor); //convierto en un array
+                console.log("valor es: " + this.final.valor[0]); //H
+                var lit = new Declaracion(null, this.linea, this.columna, Tipo.STRING, this.idcontrol);
+                lit.interpretar(entorno, recolector);
+                var simbolo = entorno.ObtenerSimbolo(this.idcontrol);
+                console.log(simbolo);
+                //todo bien
+                var asig = new Asignacion(new Literal(this.final.valor[0], Tipo.STRING, this.linea, this.columna), this.linea, this.columna, simbolo.id);
+                asig.interpretar(entorno, recolector);
+                //console.log("var asig: "+asig.id+" tipo "+asig.expresion);
+                //ahora que me muestre el valor                     
+                var variable = entorno.ObtenerSimbolo(this.idcontrol);
+                console.log("El valor de la variable es: " + variable.valor);
+                this.ejecutarforin(this.idcontrol, this.inicio, this.final, entorno, recolector);
             }
         }
         catch (e) {
@@ -25,6 +43,7 @@ class For {
             recolector.listaerrores.push(new ErrorGeneral(this.linea, this.columna, "ERROR EN FOR", entorno));
         }
     }
+    //***************************************** FOR CLASICO ************************************************* */
     ejecutarfclasico(idcontrol, inicio, final, entorno, recolector) {
         this.inicio.interpretar(entorno, recolector); //se ejecuta la variable
         return this.iteracionClasica(final, entorno, recolector);
@@ -61,6 +80,48 @@ class For {
         }
         else {
             throw new EBoolean(this.linea, this.columna, "ERROR TIPO INCORRECTO EN CONDICION", null);
+        }
+    }
+    //***************************************** FOR IN ************************************************* */
+    ejecutarforin(idcontrol, inicio, final, entorno, recolector) {
+        //this.inicio.interpretar(entorno, recolector); //se ejecuta la variable
+        return this.iteracionforin(final, entorno, recolector, 1);
+    }
+    iteracionforin(final, entorno, recolector, iniciofor1) {
+        var iniciofor = iniciofor1;
+        var finalfor = final.valor.length + 1; /// hola = 4
+        var variable = entorno.ObtenerSimbolo(this.idcontrol);
+        console.log("valor de la variable: " + variable.expresion + " e id: " + variable.id); //primero se verifica si es un string o un arreglo y a la variable la dejamos como arreglo
+        //finalfor 4 >= 0 true,  0 <= 4
+        console.log("final " + finalfor + " , iniccio: " + iniciofor);
+        if (finalfor >= 0 && iniciofor < finalfor) {
+            console.log("Estas entrando pa?");
+            var aux = this.listainstrucciones.interpretar(entorno, recolector); //print  imprime solo h
+            if (aux != null) { // validas que tenga retorno
+                if (aux instanceof Return) { //que se de tipo retorno
+                    if (aux.tipo == Tipo.CONTINUE) { //depende si es continue o break
+                        return this.iteracionClasica(final, entorno, recolector);
+                    }
+                    else if (aux.tipo == Tipo.BRAKE) {
+                        return;
+                    }
+                }
+            }
+            //hacer el break
+            console.log("antes de ingresar al incremento del For In con un valor de: " + variable.expresion);
+            console.log(entorno.ObtenerSimbolo(this.idcontrol)); //devuelve h
+            var asig = new Asignacion(new Literal(this.final.valor[iniciofor], Tipo.STRING, this.linea, this.columna), this.linea, this.columna, variable.id);
+            asig.interpretar(entorno, recolector);
+            iniciofor = iniciofor + 1;
+            if (iniciofor > finalfor) {
+                console.log("ACA JAMAS TIENE QUE ENTRAR");
+            }
+            else {
+                console.log("entra aca con valores: " + iniciofor + " y finalfor " + finalfor);
+                return this.iteracionforin(final, entorno, recolector, iniciofor);
+            }
+        }
+        else {
         }
     }
 }

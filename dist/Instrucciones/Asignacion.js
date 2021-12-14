@@ -8,6 +8,7 @@ class Asignacion {
     }
     interpretar(entorno, recolector) {
         try {
+            console.log("Hola desde asignacion viene con valores: id: " + this.id + " con expresion: " + this.expresion);
             var valor = this.expresion.interpretar(entorno, recolector);
             var variable = entorno.ObtenerSimbolo(this.id);
             if (variable.tipo != valor.tipo) {

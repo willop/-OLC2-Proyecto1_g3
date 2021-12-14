@@ -225,7 +225,26 @@ INSTRUCCION2: DECLARACION 			{$$ = new Instrucciones([$1],this._$.first_line,thi
 
 
 
-DECLARACION: TIPO_VALOR TIPO_DECLARACION												{var asignacion = $2; asignacion.tipo = $1; $$ = asignacion;}   //asig = [exp=58,tipo=null,id=TK_ID] asgi.tipo = string [exp=58,tipo=string,id=TK_ID]
+DECLARACION: TIPO_VALOR TIPO_DECLARACION												{	var asignacion = $2; console.log(asignacion.expresion);
+																							if(!Array.isArray(asignacion)){
+																								console.log("entra al if");
+																								 asignacion.tipo = $1; 
+																								$$ = asignacion;
+																							}
+																							else{
+																								var tam = asignacion.length; console.log("el tamaño del vector es:" +tam);
+																								for(var i=0;i<tam;i++){
+																								console.log("DENTRO DEL FOR");
+																								asignacion[i].tipo = $1;
+																								var rec = asignacion[i];
+																								console.log(asignacion[i].tipo+" "+asignacion[i].id);
+																										//new Instrucciones([rec],this._$.first_line,this._$.first_column,null);
+																								$$ = asignacion[i];
+																								}
+																								//$$ = asignacion;
+																							}
+																							
+																						}   //asig = [exp=58,tipo=null,id=TK_ID] asgi.tipo = string [exp=58,tipo=string,id=TK_ID]
 			| TIPO_VALOR TK_punto TK_PARSE TK_par_apertura TK_CADENA TK_par_cierre		{}
 			| TIPO_VALOR TK_par_apertura ARREGLO TK_par_cierre FIN_LINEA				{}
 			| TIPO_VALOR TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA			{}
@@ -253,14 +272,14 @@ FIN_LINEA_STRUCT: TK_coma
 ;
 
 TIPO_DECLARACION : TK_ID IGUALACION																									{var asignacion = $2; asignacion.id = $1; $$ = asignacion}  // asig = [exp=58,tipo=null,id=null] asig.id=TK_ID  lo que subo es [exp=58,tipo=null,id=TK_ID]
-				| TK_ID  MAS_VARIABLES FIN_LINEA																					{}
+				| TK_ID  MAS_VARIABLES FIN_LINEA																					{var vec = $2; vec.push(new Declaracion(null,this._$.first_line,this._$.first_column,null,$1)); $$ = vec;}
 				| TK_ID TK_par_apertura PARAMETRO_FUNSION TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre			{}
 				| COND_ARREGLO TK_ID IGUALACION																						{}
 				| TK_ID FIN_LINEA																									{$$ = new Declaracion(null,this._$.first_line,this._$.first_column,null,$1);}
 ;
 
-MAS_VARIABLES: MAS_VARIABLES TK_coma TK_ID																							{}//$$ = $3.push($1); $$ = $3;}
-			|TK_coma TK_ID																											{$$ = new Declaracion(null,this._$.first_line,this._$.first_column,null,$2);}
+MAS_VARIABLES: MAS_VARIABLES TK_coma TK_ID																							{var vec = $1; vec.push(new Declaracion(null,this._$.first_line,this._$.first_column,null,$3)); $$ = vec;}
+			|TK_coma TK_ID																											{var vec = [new Declaracion(null,this._$.first_line,this._$.first_column,null,$2)]; $$ = vec;}
 ;
 
 FIN_LINEA: TK_pcoma																													{}
@@ -362,14 +381,14 @@ MAS_VALORES_IMPRESION: MAS_VALORES_IMPRESION TK_coma EXPRESIONARIT									{var 
 ;
 
 
-ASIGNACION: TK_ID TK_igual EXPRESIONARIT FIN_LINEA_ASIGNACION					 {$$ = new Asignacion($3,this._$.first_line,this._$.first_column,$1)}
+ASIGNACION: TK_ID TK_igual EXPRESIONARIT FIN_LINEA					 {$$ = new Asignacion($3,this._$.first_line,this._$.first_column,$1)}
 			|TK_ID TK_ID FIN_LINEA												 {}
-			|TK_ID TK_ID TK_igual EXPRESIONARIT FIN_LINEA_ASIGNACION			 {}
+			|TK_ID TK_ID TK_igual EXPRESIONARIT FIN_LINEA			 {}
 			|TK_ID MAS_ATRIBUTOS TK_igual EXPRESIONARIT FIN_LINEA 				 {}
 			|TK_ID MAS_ATRIBUTOS ARREGLO TK_igual EXPRESIONARIT FIN_LINEA 		 {}
-			|TK_ID SIGNOS_COMPARACION EXPRESIONARIT FIN_LINEA_ASIGNACION		 {}
-			|TK_ID TK_igual TK_llave_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_llave_cierre FIN_LINEA_ASIGNACION					{}
-			|TK_ID TK_igual TK_llave_apertura EXPRESIONARIT TK_llave_cierre FIN_LINEA_ASIGNACION					{}
+			|TK_ID SIGNOS_COMPARACION EXPRESIONARIT FIN_LINEA					 {}
+			|TK_ID TK_igual TK_llave_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_llave_cierre FIN_LINEA					{}
+			|TK_ID TK_igual TK_llave_apertura EXPRESIONARIT TK_llave_cierre FIN_LINEA					{}
 			|TK_ID TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA	{}
 			|TK_ID TK_par_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_par_cierre FIN_LINEA	{}
 			|TK_ID TK_par_apertura  TK_par_cierre FIN_LINEA										{}
@@ -564,8 +583,8 @@ BUCLE_DO_WHILE: TK_DO TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierr
 ;
 
 BUCLE_FOR: TK_FOR TK_par_apertura DECLARACION  EXPRESIONARIT TK_pcoma TK_ID TK_INCREMENTO TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre			{$$ = new For($3.id,$3,$4,TipoAumento.INCREMENTO,TipoFor.CLASICO,$10,this._$.first_line,this._$.first_column);}
-		| TK_FOR TK_par_apertura ASIGNACION  EXPRESIONARIT TK_pcoma TK_ID TK_DECREMENTO TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre		{$$ = new For($3.id,$3,$4,TipoAumento.DECREMENTO,TipoFor.CLASICO,$10,this._$.first_line,this._$.first_column);}
-		| TK_FOR TK_ID TK_IN EXPRESIONARIT TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre 
-		| TK_FOR TK_ID TK_IN ARREGLO TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre 
+		| TK_FOR TK_par_apertura ASIGNACION  EXPRESIONARIT TK_pcoma TK_ID TK_DECREMENTO TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre			{$$ = new For($3.id,$3,$4,TipoAumento.DECREMENTO,TipoFor.CLASICO,$10,this._$.first_line,this._$.first_column);}
+		| TK_FOR TK_ID TK_IN EXPRESIONARIT TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre 		{console.log("Tipo en forin: "+$4.tipo);$$ = new For($2,0,$4,TipoAumento.DECREMENTO,TipoFor.FORIN,$6,this._$.first_line,this._$.first_column);}
+		| TK_FOR TK_ID TK_IN ARREGLO TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre 			//{$$ = new For($3.id,$3,$4,TipoAumento.DECREMENTO,TipoFor.CLASICO,$10,this._$.first_line,this._$.first_column);}
 		//| TK_FOR TK_ID TK_IN TK_ID ARREGLO TK_corchete_apertura INSTRUCCIONES TK_corchete_cierre 
 ;

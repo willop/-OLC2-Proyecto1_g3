@@ -51,6 +51,7 @@ enum TipoError{
 
 enum TipoFor{
     CLASICO,
+    FORIN,
 }
 
 enum TipoAumento{

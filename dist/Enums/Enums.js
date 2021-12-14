@@ -52,6 +52,7 @@ var TipoError;
 var TipoFor;
 (function (TipoFor) {
     TipoFor[TipoFor["CLASICO"] = 0] = "CLASICO";
+    TipoFor[TipoFor["FORIN"] = 1] = "FORIN";
 })(TipoFor || (TipoFor = {}));
 var TipoAumento;
 (function (TipoAumento) {

@@ -9,8 +9,10 @@ class Declaracion {
     }
     interpretar(entorno, recolector) {
         try {
+            console.log("esta entrando aca declaracion? " + this.id + " tipo: " + this.tipo + " exp: " + this.expresion);
             //si viene expresion nula
             if (this.expresion == null) {
+                console.log("entonces aca tambien entras?");
                 entorno.GuardarSimbolo(null, this.id, this.tipo);
             } //si la expresion tiene un valor
             else {

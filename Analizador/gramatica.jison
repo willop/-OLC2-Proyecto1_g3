@@ -533,6 +533,9 @@ FUNCION_ELSE:TK_ELSE TK_corchete_apertura INSTRUCCION2 TK_corchete_cierre	{$3.no
 FUNCION_SWITCH: TK_SWITCH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura   TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES TK_BREAK TK_pcoma TK_corchete_cierre													{$9.nombre= "AmbienteSwitch";
 																																																											$$ = new Switch( $3,$7,$9,null,this._$.first_line,this._$.first_column);
 																																																											}
+				|TK_SWITCH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura   TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES  TK_corchete_cierre																	{$9.nombre= "AmbienteSwitch";
+																																																											$$ = new Switch( $3,$7,$9,null,this._$.first_line,this._$.first_column);
+																																																											}
 				|TK_SWITCH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura   TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES TK_BREAK TK_pcoma  SENTENCIAS_CASE	TK_corchete_cierre								{$9.nombre= "AmbienteSwitch"; 
 																																																											var sentenciascase = $12;
 																																																											while(sentenciascase!= null){
@@ -541,6 +544,16 @@ FUNCION_SWITCH: TK_SWITCH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchet
 																																																											}
 																																																											$$ = new Switch( $3,$7,$9,$12,this._$.first_line,this._$.first_column);
 																																																											}
+				|TK_SWITCH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura   TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES  SENTENCIAS_CASE	TK_corchete_cierre													{$9.nombre= "AmbienteSwitch"; 
+																																																											var sentenciascase = $10;
+																																																											var expresiones = $3;
+																																																											while(sentenciascase!= null){
+																																																												sentenciascase.condicionswitch = $3;
+																																																												expresiones.push(sentenciascase.instrucciones);
+																																																												sentenciascase = sentenciascase.condiciondefault;
+																																																											}
+																																																											$$ = new Switch( $3,$7,$9,$12,this._$.first_line,this._$.first_column);
+																																																											}																																																											
 				|TK_SWITCH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura   TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES TK_BREAK TK_pcoma  TK_DEFAULT TK_dos_puntos LISTA_INSTRUCCIONES	TK_corchete_cierre  {$9.nombre= "AmbienteSwitch";
 																																																											$15.condicionswitch = $3;  $$ = new Switch( $3,$7,$9,$15,this._$.first_line,this._$.first_column);
 																																																											}

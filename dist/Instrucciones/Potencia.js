@@ -10,8 +10,20 @@ class Potencia {
         //validacion de tipo
         if (this.numpotencia.tipo == Tipo.INTEGER) {
             var re = "";
-            for (var i = 0; i < this.numpotencia.valor; i++) {
-                re += this.expresion.valor;
+            console.log("como viene la expresion: " + this.expresion.id);
+            if (this.expresion.id != null) {
+                console.log("Es una variable");
+                var variable = entorno.ObtenerSimbolo(this.expresion.id);
+                console.log("Se obtuvo: " + variable.valor);
+                for (var i = 0; i < this.numpotencia.valor; i++) {
+                    re += variable.valor;
+                }
+            }
+            else {
+                console.log("Es un string");
+                for (var i = 0; i < this.numpotencia.valor; i++) {
+                    re += this.expresion.valor;
+                }
             }
             return new Return(re, Tipo.STRING);
         }

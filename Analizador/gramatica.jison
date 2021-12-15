@@ -148,7 +148,7 @@
 
 /* Asociación de operadores y precedencia */
 //presedencia hacia abajo
-%left  'TK_igual'  'TK_punto'
+%left  'TK_igual'  'TK_punto' 'TK_coma'
 %left 'TK_pregunta' 
 %left 'TK_or'
 %left 'TK_and'
@@ -246,7 +246,7 @@ DECLARACION: TIPO_VALOR TIPO_DECLARACION												{	var asignacion = $2; conso
 																							
 																						}   //asig = [exp=58,tipo=null,id=TK_ID] asgi.tipo = string [exp=58,tipo=string,id=TK_ID]
 			| TIPO_VALOR TK_punto TK_PARSE TK_par_apertura TK_CADENA TK_par_cierre		{}
-			| TIPO_VALOR TK_par_apertura ARREGLO TK_par_cierre FIN_LINEA				{}
+			| TIPO_VALOR TK_par_apertura ARREGLO TK_par_cierre FIN_LINEA				{} // int ([asdf,fdd,f])
 			| TIPO_VALOR TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA			{}
 			| STRUCT																	{}
 ;
@@ -325,12 +325,20 @@ VALORES: TK_CADENA															{console.log("cadena"+$1);var a = $1; var al=a.
 		|FUNCIONES_NATIVAS													{}
 ;
 
-ARREGLO: TK_llave_apertura EXPRESIONARIT TK_llave_cierre										{}
-		|TK_llave_apertura ARREGLO TK_llave_cierre										{}
-		|TK_llave_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_llave_cierre					{}
-		|TK_llave_apertura ARREGLO MAS_VALORES_IMPRESION TK_llave_cierre					{}
-		|TK_llave_apertura EXPRESIONARIT TK_dos_puntos EXPRESIONARIT TK_llave_cierre					{}
+ARREGLO: TK_llave_apertura LISTA_ARREGLO TK_llave_cierre 
+		//TK_llave_apertura EXPRESIONARIT TK_llave_cierre										{} // [5]
+		//|TK_llave_apertura ARREGLO TK_llave_cierre											{} //[[A]]
+		//|TK_llave_apertura EXPRESIONARIT TK_coma TK_ TK_llave_cierre							{} //[A]
+		//|TK_llave_apertura ARREGLO MAS_VALORES_IMPRESION TK_llave_cierre						{}
+		//|TK_llave_apertura EXPRESIONARIT TK_dos_puntos EXPRESIONARIT TK_llave_cierre			{}
 ;
+
+LISTA_ARREGLO: LISTA_ARREGLO TK_coma EXPRESIONARIT												{}
+			|LISTA_ARREGLO TK_coma TK_llave_apertura LISTA_ARREGLO TK_llave_cierre				{}
+			|TK_llave_apertura LISTA_ARREGLO TK_llave_cierre									{}
+			|EXPRESIONARIT																		{}
+;
+
 
 EXPRESIONARIT
 	: TK_MENOS EXPRESIONARIT %prec UMENOS  												{ $$ = -Math.abs($2); } //new Aritmetica(1,-$2,TipoAritmetica.MULTIPLICACION,this._$.first_line,this._$.first_column)   ////Duda
@@ -370,29 +378,31 @@ EXPRESIONARIT
 
 IMPRESION: TK_PRINT TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA							{$$ = new Print($3,this._$.first_line,this._$.first_column,false);}  
 		|TK_PRINTLN TK_par_apertura EXPRESIONARIT TK_par_cierre	FIN_LINEA							{$$ = new Print($3,this._$.first_line,this._$.first_column,true);}
-		|TK_PRINT TK_par_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_par_cierre FIN_LINEA		{var a = $4.valor; var b = $3.valor; var c = b+a; $3.valor = c;  $$ = new Print($3,this._$.first_line,this._$.first_column,false);}
-		|TK_PRINTLN TK_par_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_par_cierre FIN_LINEA		{var a = $4.valor; var b = $3.valor; var c = b+a; $3.valor = c;  $$ = new Print($3,this._$.first_line,this._$.first_column,true);}
+		|TK_PRINT TK_par_apertura EXPRESIONARIT TK_coma EXPRESIONARIT TK_par_cierre FIN_LINEA  		{$$ = new Print( new ExpComa($3,$5,this._$.first_line,this._$.first_column),this._$.first_line,this._$.first_column,false);}
+		|TK_PRINTLN TK_par_apertura EXPRESIONARIT TK_coma EXPRESIONARIT TK_par_cierre FIN_LINEA     {$$ = new Print( new ExpComa($3,$5,this._$.first_line,this._$.first_column),this._$.first_line,this._$.first_column,true);}
 ;
 
+/*
 MAS_VALORES_IMPRESION: MAS_VALORES_IMPRESION TK_coma EXPRESIONARIT									{var a = $1.valor; var b = $3.valor; $1.valor= " "+a+" "+b; $$ = $1;}
 					|MAS_VALORES_IMPRESION TK_coma ARREGLO											{}
 					|TK_coma ARREGLO																{}
 					|TK_coma EXPRESIONARIT															{$$ = $2;}
-;
+;*/
 
-
-ASIGNACION: TK_ID TK_igual EXPRESIONARIT FIN_LINEA					 {$$ = new Asignacion($3,this._$.first_line,this._$.first_column,$1)}
-			|TK_ID TK_ID FIN_LINEA												 {}
-			|TK_ID TK_ID TK_igual EXPRESIONARIT FIN_LINEA			 {}
-			|TK_ID MAS_ATRIBUTOS TK_igual EXPRESIONARIT FIN_LINEA 				 {}
-			|TK_ID MAS_ATRIBUTOS ARREGLO TK_igual EXPRESIONARIT FIN_LINEA 		 {}
-			|TK_ID SIGNOS_COMPARACION EXPRESIONARIT FIN_LINEA					 {}
-			|TK_ID TK_igual TK_llave_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_llave_cierre FIN_LINEA					{}
-			|TK_ID TK_igual TK_llave_apertura EXPRESIONARIT TK_llave_cierre FIN_LINEA					{}
-			|TK_ID TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA	{}
-			|TK_ID TK_par_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_par_cierre FIN_LINEA	{}
-			|TK_ID TK_par_apertura  TK_par_cierre FIN_LINEA										{}
-			|TK_ID TK_DECREMENTO FIN_LINEA 													{}
+ASIGNACION: TK_ID TK_igual EXPRESIONARIT FIN_LINEA					 											{$$ = new Asignacion($3,this._$.first_line,this._$.first_column,$1)}
+			|TK_ID TK_ID FIN_LINEA												 								{}
+			|TK_ID TK_ID TK_igual EXPRESIONARIT FIN_LINEA			 			 								{}
+			|TK_ID MAS_ATRIBUTOS TK_igual EXPRESIONARIT FIN_LINEA 				 								{}
+			|TK_ID MAS_ATRIBUTOS ARREGLO TK_igual EXPRESIONARIT FIN_LINEA 		 								{}
+			|TK_ID SIGNOS_COMPARACION EXPRESIONARIT FIN_LINEA					 								{}
+			|TK_ID TK_igual ARREGLO FIN_LINEA																	{} // esta sustituye las dos de abajo
+			//|TK_ID TK_igual TK_llave_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_llave_cierre FIN_LINEA	{}
+			//|TK_ID TK_igual TK_llave_apertura EXPRESIONARIT TK_llave_cierre FIN_LINEA							{}
+			|TK_ID TK_par_apertura PARAMETROS_EXTRA TK_par_cierre FIN_LINEA 									{}
+			//|TK_ID TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA										{} //a(s)
+			//|TK_ID TK_par_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_par_cierre FIN_LINEA				{} //a(s,d,[sddd])
+			|TK_ID TK_par_apertura  TK_par_cierre FIN_LINEA														{} //a()
+			|TK_ID TK_DECREMENTO FIN_LINEA 														{}
 			|TK_ID TK_INCREMENTO FIN_LINEA														{}
 			|TK_ID TK_llave_apertura EXPRESIONARIT TK_llave_cierre 								{}
 			|TK_ID TK_llave_apertura TK_llave_cierre											{}
@@ -401,8 +411,14 @@ ASIGNACION: TK_ID TK_igual EXPRESIONARIT FIN_LINEA					 {$$ = new Asignacion($3,
 			|TK_ID FUNCIONES_ARREGLO															{}
 ;
 
-MAS_ATRIBUTOS: MAS_ATRIBUTOS TK_punto TK_ID 													{}
-			| TK_punto TK_ID 																	{}
+PARAMETROS_EXTRA: EXPRESIONARIT																	{console.log("si es correcto")}
+				| ARREGLO																		{console.log("si es correcto")}
+				| EXPRESIONARIT TK_coma PARAMETROS_EXTRA										{console.log("si es correcto")}
+				| ARREGLO TK_coma PARAMETROS_EXTRA												{console.log("si es correcto")}
+;
+
+
+MAS_ATRIBUTOS: TK_punto TK_ID MAS_ATRIBUTOS 													{}
 ;
 
 FUNCIONES_ARREGLO: TK_punto TK_PUSH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_pcoma		{}

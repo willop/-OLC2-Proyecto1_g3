@@ -233,15 +233,20 @@ DECLARACION: TIPO_VALOR TIPO_DECLARACION												{	var asignacion = $2; conso
 																							}
 																							else{
 																								var tam = asignacion.length; console.log("el tamaño del vector es:" +tam);
+																								//var inst = new Instrucciones([asignacion[0]],this._$.first_line,this._$.first_column,null);
 																								for(var i=0;i<tam;i++){
 																								console.log("DENTRO DEL FOR");
 																								asignacion[i].tipo = $1;
-																								var rec = asignacion[i];
-																								console.log(asignacion[i].tipo+" "+asignacion[i].id);
-																										//new Instrucciones([rec],this._$.first_line,this._$.first_column,null);
-																								$$ = asignacion[i];
+																								//var rec = asignacion[i];
+																								//console.log(asignacion[i].tipo+" "+asignacion[i].id);
+																								//$$ = asignacion[i];
+																								//console.log("el valor en inst es null = ")
+																								//inst.instrucciones.push(asignacion[i]);
+																								//$$ = inst;
 																								}
+																								$$ = asignacion;
 																								//$$ = asignacion;
+																								//$$ = new Instrucciones([asignacion],this._$.first_line,this._$.first_column,null);
 																							}
 																							
 																						}   //asig = [exp=58,tipo=null,id=TK_ID] asgi.tipo = string [exp=58,tipo=string,id=TK_ID]
@@ -271,17 +276,8 @@ FIN_LINEA_STRUCT: TK_coma
 				| TK_pcoma
 ;
 
-TIPO_DECLARACION : TK_ID IGUALACION																									{ var asignacion = $2; console.log("lo que sube a tipo->id igualacion: "+asignacion.expresion)
-																																		if(!Array.isArray(asignacion)){
-																																			console.log("entra al if en igualacion sin ser array solo regreso el id");
-																																			$$ = $2;
-																																		}else{
-																																			var tam = asignacion.length; console.log("El tamaño del vector es: "+tam);
-																																			for(var i=0;i<tam;i++){
-																																				console.log("dentro del for");// cada uno de los arreglos de array?
-																																			}
-																																		}
-																																	}  // asig = [exp=58,tipo=null,id=null] asig.id=TK_ID  lo que subo es [exp=58,tipo=null,id=TK_ID]    //necesito verificar si es un vector
+TIPO_DECLARACION : TK_ID TK_igual EXPRESIONARIT FIN_LINEA																			{$$ = new Declaracion($3,this._$.first_line,this._$.first_column,null,$1)} //Declaracion = 58}	 // asig = [exp=58,tipo=null,id=null] asig.id=TK_ID  lo que subo es [exp=58,tipo=null,id=TK_ID]    //necesito verificar si es un vector
+				| TK_ID TK_igual ARREGLO FIN_LINEA																					{}
 				| TK_ID  MAS_VARIABLES FIN_LINEA																					{var vec = $2; vec.push(new Declaracion(null,this._$.first_line,this._$.first_column,null,$1)); $$ = vec;}
 				| TK_ID TK_par_apertura PARAMETRO_FUNSION TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre			{}
 				| COND_ARREGLO TK_ID IGUALACION																						{}
@@ -306,11 +302,11 @@ TIPO_VALOR: TK_STRING 																												{$$= Tipo.STRING}
 COND_ARREGLO: TK_llave_apertura TK_llave_cierre																						{}
 
 ;
-
-IGUALACION: TK_igual EXPRESIONARIT FIN_LINEA						{$$ = new Declaracion($2,this._$.first_line,this._$.first_column,null,null)} //Declaracion = 58
+/*
+IGUALACION: TK_igual EXPRESIONARIT FIN_LINEA	
 			|TK_igual ARREGLO FIN_LINEA								{$$ = [$2]} //aca ahora es un vector
 ;
-
+*/
 
 
 VALORES: TK_CADENA															{console.log("cadena"+$1);var a = $1; var al=a.length; var c = a.substring(1,al-1);    $$ = new Literal(c,Tipo.STRING,this._$.first_line,this._$.first_column);}
@@ -351,7 +347,7 @@ LISTA_ARREGLO: LISTA_ARREGLO TK_coma EXPRESIONARIT												{$1.append($3);$$=
 
 
 EXPRESIONARIT
-	: TK_MENOS EXPRESIONARIT %prec UMENOS  												{ $$ = -Math.abs($2); } //new Aritmetica(1,-$2,TipoAritmetica.MULTIPLICACION,this._$.first_line,this._$.first_column)   ////Duda
+	: TK_MENOS EXPRESIONARIT %prec UMENOS  												{$$ = new Aritmetica( new Literal(-1,Tipo.INTEGER,this._$.first_line,this._$.first_column) ,$2,TipoAritmetica.MULTIPLICACION,this._$.first_line,this._$.first_column)}  ////Duda
 	| EXPRESIONARIT TK_and EXPRESIONARIT       											{$$ = new Logica($1,$3,TipoLogica.AND,this._$.first_line,this._$.first_column);}
 	| EXPRESIONARIT TK_or EXPRESIONARIT													{$$ = new Logica($1,$3,TipoLogica.OR,this._$.first_line,this._$.first_column);}
 	| EXPRESIONARIT TK_mayor_igual EXPRESIONARIT       									{$$ = new Relacional($1,$3,TipoRelacional.MAYOR_IGUAL,this._$.first_line,this._$.first_column);}
@@ -416,8 +412,8 @@ ASIGNACION: TK_ID TK_igual EXPRESIONARIT FIN_LINEA					 											{$$ = new Asi
 			|TK_ID TK_INCREMENTO FIN_LINEA														{}
 			|TK_ID TK_llave_apertura EXPRESIONARIT TK_llave_cierre 								{}
 			|TK_ID TK_llave_apertura TK_llave_cierre											{}
-			|TK_ID TK_llave_apertura EXPRESIONARIT TK_llave_cierre IGUALACION					{}
-			|TK_ID TK_llave_apertura TK_llave_cierre IGUALACION									{}
+			|TK_ID TK_llave_apertura EXPRESIONARIT TK_llave_cierre TK_igual ARREGLO FIN_LINEA	{}
+			|TK_ID TK_llave_apertura TK_llave_cierre TK_igual ARREGLO FIN_LINEA					{}
 			|TK_ID FUNCIONES_ARREGLO															{}
 ;
 

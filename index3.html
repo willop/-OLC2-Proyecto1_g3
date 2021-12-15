@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./estilo.css" type="text/css"/>
+    <title>Pagina Principal</title>
+
+    <script src="./codemirror-5.64.0/lib/codemirror.js" ></script>
+    <link href="./codemirror-5.64.0/lib/codemirror.css"rel="stylesheet" type="text/css"/> 
+    <script src="./codemirror-5.64.0/mode/javascript/javascript.js" ></script>
+    <link href="./codemirror-5.64.0/theme/lucario.css" rel="stylesheet" type="text/css"/>
+    <link href="./codemirror-5.64.0/theme/3024-night.css" rel="stylesheet" type="text/css"/>
+    <link href="./codemirror-5.64.0/theme/gruvbox-dark.css" rel="stylesheet" type="text/css"/>
+
+</head>
+<body>
+    <div id="Logo">
+        <br/>
+        <center><img src="IMGS/Logo USAC.png" alt="" height="150"></center>
+        <br/>
+    </div>
+    <div id="Navbar">
+        <input type="file" id="File1"/>
+    </div>
+    <!-- cuerpo -->
+    <div id="cuerpo">
+        <div id="div_edicionTexto">
+            <textarea id="TextoEdicion"></textarea>
+        </div>
+        <button id="boton_Compilar"><a href="#textarea2">Compilar</a> </button>
+        <div id="cuerpo_resultado"> 
+            <textarea id="textarea2" rows="59" cols="80" readonly></textarea>     
+        </div>
+    </div>
+    <div id="Consola">
+        <div id="consola">
+            <textarea id="textconsola"></textarea>
+        </div>
+    </div>    
+
+    <script src="./Analizador/gramatica.js"></script>    
+    <script src="./functions.js" type="module"></script>
+    <script src="./dist/Enums/Enums.js"></script>
+    <script src="./dist/Expresiones/Literal.js"></script>
+    <script src="./dist/Expresiones/Aritmetica.js"></script>
+    <script src="./dist/Expresiones/Acceso.js"></script>
+    <script src="./dist/Expresiones/Logica.js"></script>
+    <script src="./dist/Expresiones/Relacional.js"></script>
+    <script src="./dist/Instrucciones/Print.js"></script>
+    <script src="./dist/Instrucciones/Asignacion.js"></script>
+    <script src="./dist/Instrucciones/Instrucciones.js"></script>
+    <script src="./dist/Instrucciones/Declaracion.js"></script>
+    <script src="./dist/Instrucciones/DoWhile.js"></script>
+    <script src="./dist/Instrucciones/Potencia.js"></script>
+    <script src="./dist/Instrucciones/If.js"></script>
+    <script src="./dist/Instrucciones/For.js"></script>
+    <script src="./dist/Instrucciones/Switch.js"></script>
+    <script src="./dist/Instrucciones/While.js"></script>
+    <script src="./dist/Interfaz/Expresion.js"></script>
+    <script src="./dist/Interfaz/Instruccion.js"></script>
+    <script src="./dist/Interfaz/Return.js"></script>
+    <script src="./dist/Logicas/And.js"></script>
+    <script src="./dist/Logicas/Or.js"></script>
+    <script src="./dist/Logicas/Not.js"></script>
+    <script src="./dist/Operaciones/Sumar.js"></script>`
+    <script src="./dist/Operaciones/Restar.js"></script>
+    <script src="./dist/Operaciones/Multiplicacion.js"></script>
+    <script src="./dist/Operaciones/Division.js"></script>
+    <script src="./dist/Operaciones/Modulo.js"></script>
+    <script src="./dist/Operaciones/Coseno.js"></script>
+    <script src="./dist/Operaciones/Seno.js"></script>
+    <script src="./dist/Operaciones/Tangente.js"></script>
+    <script src="./dist/Operaciones/Raiz.js"></script>
+    <script src="./dist/Operaciones/ExpComa.js"></script>
+    <script src="./dist/Operaciones/Logaritmo.js"></script>
+    <script src="./dist/Operaciones/Pow.js"></script>  
+    <script src="./dist/Relacionales/Igualdad.js"></script>
+    <script src="./dist/Relacionales/Desigualdad.js"></script>
+    <script src="./dist/Relacionales/MayorQue.js"></script>
+    <script src="./dist/Relacionales/MenorQue.js"></script>
+    <script src="./dist/Relacionales/MayorIgual.js"></script>
+    <script src="./dist/Relacionales/MenorIgual.js"></script>
+    <script src="./dist/Relacionales/Ternario.js"></script>
+    <script src="./dist/Utilitario/Recolector.js"></script>
+    <script src="./dist/Excepciones/Excepciones.js"></script>
+    <script src="./dist/Simbolos/Entorno.js"></script>
+    <script src="./dist/Simbolos/Simbolos.js"></script>
+    
+
+    
+</body>
+</html>

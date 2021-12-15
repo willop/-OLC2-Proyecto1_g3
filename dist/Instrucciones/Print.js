@@ -49,25 +49,24 @@ class Print {
                             textosalida += expresion;
                         } //fin if para de digitos
                         else {
-                            //console.log("Entra al else? con:"+salida.charAt(i))
+                            console.log("Entra al else? con:" + salida.charAt(i));
                             expresion = "";
                             while (salida.charAt(i) != ' ') {
+                                console.log("dentro del primer while con: " + salida.charAt(i) + " valor i: " + i + " y tam: " + tam);
                                 if (i == tam) {
                                 }
                                 else {
-                                    expresion += salida.charAt(i);
+                                    expresion += salida.charAt(i); //a
+                                    console.log("el valor de expresion despues: " + expresion + " y i:" + i);
                                     if (i + 1 == tam) {
                                         break;
                                     }
                                     else {
                                         i++;
-                                        if (!salida.charAt(i + 1).match(/[a-z]/i)) {
-                                            i--;
-                                            break;
-                                        }
                                     }
                                 }
                             } //fin while
+                            console.log("el valor de la variable es: " + expresion);
                             var expresionvalor = entorno.ObtenerSimbolo(expresion);
                             console.log("********* la variable contiene el valor: " + expresionvalor.valor);
                             textosalida += expresionvalor.valor;

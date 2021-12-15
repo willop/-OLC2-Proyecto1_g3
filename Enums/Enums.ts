@@ -5,7 +5,9 @@ enum Tipo {
     DOUBLE,
     BOOLEAN,
     CONTINUE,
-    BRAKE
+    BRAKE,
+    NULL,
+    ARRAY
 }
 
 enum TipoAritmetica{

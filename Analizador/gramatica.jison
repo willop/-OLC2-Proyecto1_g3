@@ -271,7 +271,17 @@ FIN_LINEA_STRUCT: TK_coma
 				| TK_pcoma
 ;
 
-TIPO_DECLARACION : TK_ID IGUALACION																									{var asignacion = $2; asignacion.id = $1; $$ = asignacion}  // asig = [exp=58,tipo=null,id=null] asig.id=TK_ID  lo que subo es [exp=58,tipo=null,id=TK_ID]
+TIPO_DECLARACION : TK_ID IGUALACION																									{ var asignacion = $2; console.log("lo que sube a tipo->id igualacion: "+asignacion.expresion)
+																																		if(!Array.isArray(asignacion)){
+																																			console.log("entra al if en igualacion sin ser array solo regreso el id");
+																																			$$ = $2;
+																																		}else{
+																																			var tam = asignacion.length; console.log("El tamaño del vector es: "+tam);
+																																			for(var i=0;i<tam;i++){
+																																				console.log("dentro del for");// cada uno de los arreglos de array?
+																																			}
+																																		}
+																																	}  // asig = [exp=58,tipo=null,id=null] asig.id=TK_ID  lo que subo es [exp=58,tipo=null,id=TK_ID]    //necesito verificar si es un vector
 				| TK_ID  MAS_VARIABLES FIN_LINEA																					{var vec = $2; vec.push(new Declaracion(null,this._$.first_line,this._$.first_column,null,$1)); $$ = vec;}
 				| TK_ID TK_par_apertura PARAMETRO_FUNSION TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre			{}
 				| COND_ARREGLO TK_ID IGUALACION																						{}
@@ -298,7 +308,7 @@ COND_ARREGLO: TK_llave_apertura TK_llave_cierre																						{}
 ;
 
 IGUALACION: TK_igual EXPRESIONARIT FIN_LINEA						{$$ = new Declaracion($2,this._$.first_line,this._$.first_column,null,null)} //Declaracion = 58
-			|TK_igual ARREGLO FIN_LINEA								{}
+			|TK_igual ARREGLO FIN_LINEA								{$$ = [$2]} //aca ahora es un vector
 ;
 
 
@@ -325,7 +335,7 @@ VALORES: TK_CADENA															{console.log("cadena"+$1);var a = $1; var al=a.
 		|FUNCIONES_NATIVAS													{}
 ;
 
-ARREGLO: TK_llave_apertura LISTA_ARREGLO TK_llave_cierre 
+ARREGLO: TK_llave_apertura LISTA_ARREGLO TK_llave_cierre										{$$=$2;}
 		//TK_llave_apertura EXPRESIONARIT TK_llave_cierre										{} // [5]
 		//|TK_llave_apertura ARREGLO TK_llave_cierre											{} //[[A]]
 		//|TK_llave_apertura EXPRESIONARIT TK_coma TK_ TK_llave_cierre							{} //[A]
@@ -333,10 +343,10 @@ ARREGLO: TK_llave_apertura LISTA_ARREGLO TK_llave_cierre
 		//|TK_llave_apertura EXPRESIONARIT TK_dos_puntos EXPRESIONARIT TK_llave_cierre			{}
 ;
 
-LISTA_ARREGLO: LISTA_ARREGLO TK_coma EXPRESIONARIT												{}
-			|LISTA_ARREGLO TK_coma TK_llave_apertura LISTA_ARREGLO TK_llave_cierre				{}
-			|TK_llave_apertura LISTA_ARREGLO TK_llave_cierre									{}
-			|EXPRESIONARIT																		{}
+LISTA_ARREGLO: LISTA_ARREGLO TK_coma EXPRESIONARIT												{$1.append($3);$$=$1;}
+			|LISTA_ARREGLO TK_coma TK_llave_apertura LISTA_ARREGLO TK_llave_cierre				{var nuevo = new ConstruirArray($4,this._$.first_line,this._$.first_column); $1.append(nuevo);$$=$1;}
+			|TK_llave_apertura LISTA_ARREGLO TK_llave_cierre									{var nuevo = new ConstruirArray($2,this._$.first_line,this._$.first_column); $$ = [nuevo];}
+			|EXPRESIONARIT																		{$$=[$1]}
 ;
 
 

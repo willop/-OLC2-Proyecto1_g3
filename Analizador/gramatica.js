@@ -189,6 +189,18 @@ break;
 case 78:
 this.$ = new Literal(parseFloat($$[$0]),Tipo.DOUBLE,this._$.first_line,this._$.first_column);
 break;
+case 89:
+$$[$0-2].append($$[$0]);this.$=$$[$0-2];
+break;
+case 90:
+var nuevo = new ConstruirArray($$[$0-1],this._$.first_line,this._$.first_column); $$[$0-4].append(nuevo);this.$=$$[$0-4];
+break;
+case 91:
+var nuevo = new ConstruirArray($$[$0-1],this._$.first_line,this._$.first_column); this.$ = [nuevo];
+break;
+case 92:
+this.$=[$$[$0]]
+break;
 case 93:
  this.$ = -Math.abs($$[$0]); 
 break;

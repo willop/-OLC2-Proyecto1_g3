@@ -1,4 +1,4 @@
-class Declaracion implements Instruccion {
+class Arreglo implements Instruccion {
     expresion: any;
     linea: number;
     columna: number;

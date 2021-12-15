@@ -8,6 +8,8 @@ var Tipo;
     Tipo[Tipo["BOOLEAN"] = 4] = "BOOLEAN";
     Tipo[Tipo["CONTINUE"] = 5] = "CONTINUE";
     Tipo[Tipo["BRAKE"] = 6] = "BRAKE";
+    Tipo[Tipo["NULL"] = 7] = "NULL";
+    Tipo[Tipo["ARRAY"] = 8] = "ARRAY";
 })(Tipo || (Tipo = {}));
 var TipoAritmetica;
 (function (TipoAritmetica) {

@@ -108,3 +108,13 @@ class EWHILE extends ErrorInterprete{
     }
 
 }
+
+// ** VALORES DE ARRAY SON VARIABLES
+class ETipoValorArray extends ErrorInterprete{
+    
+    constructor (linea:number,columna:number,descripcion:any,ambito:any){
+        super(linea,columna,TipoError.ERROR_TIPO_VARIABLES_ARRAY,descripcion,ambito)
+        
+    }
+
+}

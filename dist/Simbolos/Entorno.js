@@ -8,17 +8,17 @@ class Entorno {
         this.numero = numero;
         this.variables = new Map();
     }
-    GuardarSimbolo(valor, id, tipo) {
+    GuardarSimbolo(valor, id, tipo, auxtipo = null) {
         var entactual = this;
-        var nuevosimbolo = new Simbolo(valor, id, tipo);
+        var nuevosimbolo = new Simbolo(valor, id, tipo, auxtipo);
         if (entactual.variables.has(id)) {
             throw new VariableYaDeclarada(0, 0, "LA VARIABLE " + id + " YA ESTA DECLARADA", this);
         }
         this.variables.set(id, nuevosimbolo);
     }
-    ActualizarSimbolo(valor, id, tipo) {
+    ActualizarSimbolo(valor, id, tipo, auxtipo = null) {
         var entactual = this;
-        var nuevosimbolo = new Simbolo(valor, id, tipo);
+        var nuevosimbolo = new Simbolo(valor, id, tipo, auxtipo);
         while (entactual != null) {
             if (entactual.variables.has(id)) {
                 entactual.variables.set(id, nuevosimbolo);

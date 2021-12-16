@@ -276,11 +276,12 @@ FIN_LINEA_STRUCT: TK_coma
 				| TK_pcoma
 ;
 
-TIPO_DECLARACION : TK_ID TK_igual EXPRESIONARIT FIN_LINEA																			{$$ = new Declaracion($3,this._$.first_line,this._$.first_column,null,$1)} //Declaracion = 58}	 // asig = [exp=58,tipo=null,id=null] asig.id=TK_ID  lo que subo es [exp=58,tipo=null,id=TK_ID]    //necesito verificar si es un vector
-				| TK_ID TK_igual ARREGLO FIN_LINEA																					{}
+TIPO_DECLARACION : TK_ID TK_igual EXPRESIONARIT FIN_LINEA																			{$$ = new Declaracion($3,this._$.first_line,this._$.first_column,null,$1)} //Declaracion = 58}	 // asig = [exp=58,tipo=null,id=null] asig.id=TK_ID  lo que subo es [exp=58,tipo=null,id=TK_ID]    //necesito verificar si es un vector																																
 				| TK_ID  MAS_VARIABLES FIN_LINEA																					{var vec = $2; vec.push(new Declaracion(null,this._$.first_line,this._$.first_column,null,$1)); $$ = vec;}
 				| TK_ID TK_par_apertura PARAMETRO_FUNSION TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre			{}
-				| COND_ARREGLO TK_ID IGUALACION																						{}
+				| COND_ARREGLO TK_ID TK_igual EXPRESIONARIT FIN_LINEA																{}
+				| COND_ARREGLO TK_ID TK_igual ARREGLO FIN_LINEA																		{$$ = new DeclararArray($2, new ConstruirArray($4,this._$.first_line,this._$.first_column),null,this._$.first_line,this._$.first_column);}
+				| COND_ARREGLO TK_ID FIN_LINEA
 				| TK_ID FIN_LINEA																									{$$ = new Declaracion(null,this._$.first_line,this._$.first_column,null,$1);}
 ;
 
@@ -317,7 +318,7 @@ VALORES: TK_CADENA															{console.log("cadena"+$1);var a = $1; var al=a.
 		|TK_ID 																{$$ = new Acceso($1,this._$.first_line,this._$.first_column);}
 		|TK_ID TK_par_apertura TK_par_cierre								{}
 		|TK_ID TK_par_apertura PARAMETROS TK_par_cierre						{}
-		|TK_ID ARREGLO														{}
+		|TK_ID ARREGLO 														{$$ = new AccesoArray($2[0],new Acceso($1,this._$.first_line,this._$.first_column), this._$.first_line,this._$.first_column);}
 		|TK_ENTERO                        									{$$ = new Literal(parseInt($1),Tipo.INTEGER,this._$.first_line,this._$.first_column)}
 		|TK_DECIMAL                       									{$$ = new Literal(parseFloat($1),Tipo.DOUBLE,this._$.first_line,this._$.first_column);}
 		|TK_BEGIN 															{}
@@ -339,8 +340,8 @@ ARREGLO: TK_llave_apertura LISTA_ARREGLO TK_llave_cierre										{$$=$2;}
 		//|TK_llave_apertura EXPRESIONARIT TK_dos_puntos EXPRESIONARIT TK_llave_cierre			{}
 ;
 
-LISTA_ARREGLO: LISTA_ARREGLO TK_coma EXPRESIONARIT												{$1.append($3);$$=$1;}
-			|LISTA_ARREGLO TK_coma TK_llave_apertura LISTA_ARREGLO TK_llave_cierre				{var nuevo = new ConstruirArray($4,this._$.first_line,this._$.first_column); $1.append(nuevo);$$=$1;}
+LISTA_ARREGLO: LISTA_ARREGLO TK_coma EXPRESIONARIT												{$1.push($3);$$=$1;}
+			|LISTA_ARREGLO TK_coma TK_llave_apertura LISTA_ARREGLO TK_llave_cierre				{var nuevo = new ConstruirArray($4,this._$.first_line,this._$.first_column); $1.push(nuevo);$$=$1;}
 			|TK_llave_apertura LISTA_ARREGLO TK_llave_cierre									{var nuevo = new ConstruirArray($2,this._$.first_line,this._$.first_column); $$ = [nuevo];}
 			|EXPRESIONARIT																		{$$=[$1]}
 ;
@@ -412,7 +413,8 @@ ASIGNACION: TK_ID TK_igual EXPRESIONARIT FIN_LINEA					 											{$$ = new Asi
 			|TK_ID TK_INCREMENTO FIN_LINEA														{}
 			|TK_ID TK_llave_apertura EXPRESIONARIT TK_llave_cierre 								{}
 			|TK_ID TK_llave_apertura TK_llave_cierre											{}
-			|TK_ID TK_llave_apertura EXPRESIONARIT TK_llave_cierre TK_igual ARREGLO FIN_LINEA	{}
+			|TK_ID TK_llave_apertura EXPRESIONARIT TK_llave_cierre TK_igual EXPRESIONARIT FIN_LINEA	{$$ = new AsignarValorArray($6,new AccesoArray($3,new Acceso($1,this._$.first_line,this._$.first_column), this._$.first_line,this._$.first_column), this._$.first_line,this._$.first_column);} // AGREGAR UN ARREGLO
+			//|TK_ID TK_llave_apertura EXPRESIONARIT TK_llave_cierre TK_igual TK_ID ARREGLO FIN_LINEA	{}
 			|TK_ID TK_llave_apertura TK_llave_cierre TK_igual ARREGLO FIN_LINEA					{}
 			|TK_ID FUNCIONES_ARREGLO															{}
 ;

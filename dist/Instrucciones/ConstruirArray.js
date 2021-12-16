@@ -1,21 +1,24 @@
 "use strict";
 class ConstruirArray {
-    constructor(expresion, generador, atributostipo, linea, columna) {
+    constructor(expresion, linea, columna) {
         this.linea = linea;
         this.columna = columna;
-        this.atributostipo = atributostipo;
         this.expresion = expresion;
-        this.generador = generador;
     }
     interpretar(entorno, recolector) {
         try {
             var valores = [];
             var i;
-            for (i in this.expresion.length) {
+            var tipoAnterior = null;
+            for (let i = 0; i < this.expresion.length; i++) {
                 var valor = this.expresion[i].interpretar(entorno, recolector);
                 valores[i] = valor;
+                if (tipoAnterior != null && valor.tipo != tipoAnterior) {
+                    throw new ETipoValorArray(this.linea, this.columna, "ERROR TIPO VARIABLE ARRAY", null);
+                }
+                tipoAnterior = valor.tipo;
             }
-            return new Return(valores, Tipo.ARRAY);
+            return new Return(valores, Tipo.ARRAY, tipoAnterior);
         }
         catch (e) {
             recolector.listaerrores.push(e);

@@ -50,6 +50,7 @@ var TipoError;
     TipoError[TipoError["ERROR_LOGICO"] = 5] = "ERROR_LOGICO";
     TipoError[TipoError["ERROR_RELACIONAL"] = 6] = "ERROR_RELACIONAL";
     TipoError[TipoError["ERROR_BOOLEANO"] = 7] = "ERROR_BOOLEANO";
+    TipoError[TipoError["ERROR_TIPO_VARIABLES_ARRAY"] = 8] = "ERROR_TIPO_VARIABLES_ARRAY";
 })(TipoError || (TipoError = {}));
 var TipoFor;
 (function (TipoFor) {

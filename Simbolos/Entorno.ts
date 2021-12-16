@@ -13,20 +13,20 @@ class Entorno {
         this.variables = new Map<String, Simbolo>();
     }
 
-    GuardarSimbolo(valor: any, id: any, tipo: any) {
+    GuardarSimbolo(valor: any, id: any, tipo: any, auxtipo=null) {
         var entactual = this;
 
-        var nuevosimbolo = new Simbolo(valor, id, tipo);
+        var nuevosimbolo = new Simbolo(valor, id, tipo,auxtipo);
         if (entactual.variables.has(id)) {
             throw new VariableYaDeclarada(0, 0, "LA VARIABLE " + id + " YA ESTA DECLARADA", this);
         }
         this.variables.set(id, nuevosimbolo);
     }
 
-    ActualizarSimbolo(valor: any, id: any, tipo: any) {
+    ActualizarSimbolo(valor: any, id: any, tipo: any,auxtipo = null) {
         var entactual = this;
 
-        var nuevosimbolo = new Simbolo(valor, id, tipo);
+        var nuevosimbolo = new Simbolo(valor, id, tipo,auxtipo);
         while (entactual != null) {
             if (entactual.variables.has(id)) {
                 entactual.variables.set(id, nuevosimbolo);

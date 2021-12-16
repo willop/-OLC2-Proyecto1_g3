@@ -64,3 +64,9 @@ class EWHILE extends ErrorInterprete {
         super(linea, columna, TipoError.TIPO_INCORRECTO, descripcion, ambito);
     }
 }
+// ** VALORES DE ARRAY SON VARIABLES
+class ETipoValorArray extends ErrorInterprete {
+    constructor(linea, columna, descripcion, ambito) {
+        super(linea, columna, TipoError.ERROR_TIPO_VARIABLES_ARRAY, descripcion, ambito);
+    }
+}

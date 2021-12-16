@@ -25,6 +25,9 @@ class While {
                                 break;
                             }
                         }
+                        else {
+                            return aux;
+                        }
                     }
                     resultado = this.condicionwhile.interpretar(entorno, recolector);
                 }

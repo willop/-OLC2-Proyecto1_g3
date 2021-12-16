@@ -106,5 +106,6 @@ function accionBoton(e){
     }
     consola.setValue(salidaConsola);
     console.log(entorno.variables);
+    console.log(entorno.funciones);
     
 }

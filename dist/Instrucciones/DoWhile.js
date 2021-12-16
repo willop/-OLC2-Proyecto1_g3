@@ -25,6 +25,9 @@ class DoWhile {
                                 break;
                             }
                         }
+                        else {
+                            return aux;
+                        }
                     }
                     resultado = this.condiciondowhile.interpretar(entorno, recolector);
                 } while (resultado.valor);

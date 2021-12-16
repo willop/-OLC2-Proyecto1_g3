@@ -22,11 +22,13 @@ class DoWhile implements Instruccion {
                     if(aux != null){ // validas que tenga retorno
                         if(aux instanceof Return){ //que se de tipo retorno
                             if(aux.tipo == Tipo.CONTINUE){ //depende si es continue o break
-                                continue
+                                continue;
                             }
                             else if(aux.tipo == Tipo.BRAKE){
-                                break
+                                break;
                             }
+                        }else{
+                            return aux;
                         }
                     }
                     resultado = this.condiciondowhile.interpretar(entorno,recolector);

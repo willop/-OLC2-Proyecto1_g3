@@ -1,12 +1,12 @@
 "use strict";
 class Entorno {
     constructor(prev, nombre, numero) {
-        this.funciones = {};
         this.estructuras = {};
         this.prev = prev;
         this.nombre = nombre;
         this.numero = numero;
         this.variables = new Map();
+        this.funciones = new Map();
     }
     GuardarSimbolo(valor, id, tipo, auxtipo = null) {
         var entactual = this;
@@ -37,5 +37,14 @@ class Entorno {
             entactual = entactual.prev;
         }
         return null;
+    }
+    guardarfuncion(funcion) {
+        if (this.funciones.has(funcion.id)) {
+            throw new FuncionYaDeclarada(0, 0, "FUNCION YA DECLARADA", this);
+        }
+        this.funciones.set(funcion.id, funcion);
+    }
+    obtenerfuncion(funcion) {
+        return this.funciones.get(funcion.id);
     }
 }

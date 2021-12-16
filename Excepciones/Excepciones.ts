@@ -118,3 +118,12 @@ class ETipoValorArray extends ErrorInterprete{
     }
 
 }
+
+class FuncionYaDeclarada extends ErrorInterprete{
+    
+    constructor (linea:number,columna:number,descripcion:any,ambito:any){
+        super(linea,columna,TipoError.FUNCION_YA_DECLARADA,descripcion,ambito)
+        
+    }
+
+}

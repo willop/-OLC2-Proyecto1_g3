@@ -415,7 +415,7 @@ ASIGNACION: TK_ID TK_igual EXPRESIONARIT FIN_LINEA					 											{$$ = new Asi
 			|TK_ID TK_llave_apertura TK_llave_cierre											{}
 			|TK_ID TK_llave_apertura EXPRESIONARIT TK_llave_cierre TK_igual EXPRESIONARIT FIN_LINEA	{$$ = new AsignarValorArray($6,new AccesoArray($3,new Acceso($1,this._$.first_line,this._$.first_column), this._$.first_line,this._$.first_column), this._$.first_line,this._$.first_column);} // AGREGAR UN ARREGLO
 			//|TK_ID TK_llave_apertura EXPRESIONARIT TK_llave_cierre TK_igual TK_ID ARREGLO FIN_LINEA	{}
-			|TK_ID TK_llave_apertura TK_llave_cierre TK_igual ARREGLO FIN_LINEA					{}
+			|TK_ID TK_llave_apertura TK_llave_cierre TK_igual ARREGLO FIN_LINEA					{} 
 			|TK_ID FUNCIONES_ARREGLO															{}
 ;
 
@@ -462,24 +462,25 @@ FUNCIONES_NATIVAS: TK_TOINT TK_par_apertura EXPRESIONARIT TK_par_cierre				{}
 
 ;
 
-FUNCIONES: TK_FUNCTION TK_ID TK_par_apertura PARAMETRO_FUNSION TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre		{}
-		| TK_FUNCTION TK_ID TK_par_apertura TK_ID TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre		{}
-		| TK_FUNCTION TK_ID TK_par_apertura TK_ID MAS_PARAMETROS_FUNSION TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre		{}
-		| TK_FUNCTION TK_ID TK_par_apertura  TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre						{}
+FUNCIONES: TK_FUNCTION TK_ID TK_par_apertura PARAMETRO_FUNSION TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre			{$$ = new Funcion($1,$2,$4,$7,this._$.first_line,this._$.first_column);}
+		| TK_FUNCTION TK_ID TK_par_apertura TK_ID TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre							{$$ = new Funcion($1,$2,[new Parametro($4,null,null,this._$.first_line,this._$.first_column)],$7,this._$.first_line,this._$.first_column);}
+		| TK_FUNCTION TK_ID TK_par_apertura TK_ID MAS_PARAMETROS_FUNSION TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre	{var nuevo = new Parametro($4,null,null,this._$.first_line,this._$.first_column);
+																																			 $$ = new Funcion($1,$2,[nuevo].concat($5),$7,this._$.first_line,this._$.first_column);}
+		| TK_FUNCTION TK_ID TK_par_apertura  TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre								{$$ = new Funcion($1,$2,[],$6,this._$.first_line,this._$.first_column);}
 ;
 
-PARAMETRO_FUNSION: TIPO_VALOR TK_ID							{}
-				| TIPO_VALOR TK_ID MAS_PARAMETROS_FUNSION   {}
-				| TK_ID TK_ID								{}
-				| TK_ID TK_ID MAS_PARAMETROS_FUNSION		{}
+PARAMETRO_FUNSION: TIPO_VALOR TK_ID							{$$ = [new Parametro($2,$1,null,this._$.first_line,this._$.first_column)];}
+				| TIPO_VALOR TK_ID MAS_PARAMETROS_FUNSION   {$$ = [new Parametro($2,$1,null,this._$.first_line,this._$.first_column)].concat($3);}
+				| TK_ID TK_ID								{$$ = [new Parametro($2,Tipo.STRUCT,$1,this._$.first_line,this._$.first_column)];}
+				| TK_ID TK_ID MAS_PARAMETROS_FUNSION		{$$ = [new Parametro($2,Tipo.STRUCT,$1,this._$.first_line,this._$.first_column)].concat($3);}
 ;
 
-MAS_PARAMETROS_FUNSION: MAS_PARAMETROS_FUNSION TK_coma TIPO_VALOR TK_ID		{}
-				|MAS_PARAMETROS_FUNSION TK_coma TK_ID TK_ID					{}
-				|MAS_PARAMETROS_FUNSION TK_coma TK_ID 						{}
-				|TK_coma TIPO_VALOR TK_ID									{}
-				|TK_coma TK_ID TK_ID										{}
-				|TK_coma TK_ID												{}
+MAS_PARAMETROS_FUNSION: MAS_PARAMETROS_FUNSION TK_coma TIPO_VALOR TK_ID		{$$ = $1.push(new Parametro($4,$3,null,this._$.first_line,this._$.first_column));}
+				|MAS_PARAMETROS_FUNSION TK_coma TK_ID TK_ID					{$$ = $1.push(new Parametro($3,Tipo.STRUCT,$3,this._$.first_line,this._$.first_column));}
+				|MAS_PARAMETROS_FUNSION TK_coma TK_ID 						{$$ = $1.push(new Parametro($3,null,null,this._$.first_line,this._$.first_column));}
+				|TK_coma TIPO_VALOR TK_ID									{$$ = [new Parametro($2,$1,null,this._$.first_line,this._$.first_column)];}
+				|TK_coma TK_ID TK_ID										{$$ = [new Parametro($2,Tipo.STRUCT,$1,this._$.first_line,this._$.first_column)];}
+				|TK_coma TK_ID												{$$ = [new Parametro($2,null,null,this._$.first_line,this._$.first_column)];}
 ;
 
 RETURN: TK_RETURN EXPRESIONARIT FIN_LINEA															{}

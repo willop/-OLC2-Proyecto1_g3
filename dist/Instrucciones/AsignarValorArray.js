@@ -16,7 +16,7 @@ class AsignarValorArray {
                 console.log("Imprimiendo variable");
                 console.log(variable);
             }
-            if (variable.auxtipo != value.tipo) {
+            if (variable.tipo != value.tipo) {
                 throw new TipoIncorrecto(this.linea, this.columna, "ERROR EN ASIGNACION DE TIPO ARRAY", null);
             }
             variable.valor = value.valor;

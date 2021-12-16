@@ -311,6 +311,49 @@ break;
 case 145: case 146: case 147: case 148:
 console.log("si es correcto")
 break;
+case 164:
+this.$ = new Funcion($$[$0-7],$$[$0-6],$$[$0-4],$$[$0-1],this._$.first_line,this._$.first_column);
+break;
+case 165:
+this.$ = new Funcion($$[$0-7],$$[$0-6],[new Parametro($$[$0-4],null,null,this._$.first_line,this._$.first_column)],$$[$0-1],this._$.first_line,this._$.first_column);
+break;
+case 166:
+var nuevo = new Parametro($$[$0-5],null,null,this._$.first_line,this._$.first_column);
+																																			 this.$ = new Funcion($$[$0-8],$$[$0-7],[nuevo].concat($$[$0-4]),$$[$0-2],this._$.first_line,this._$.first_column);
+break;
+case 167:
+this.$ = new Funcion($$[$0-6],$$[$0-5],[],$$[$0-1],this._$.first_line,this._$.first_column);
+break;
+case 168:
+this.$ = [new Parametro($$[$0],$$[$0-1],null,this._$.first_line,this._$.first_column)];
+break;
+case 169:
+this.$ = [new Parametro($$[$0-1],$$[$0-2],null,this._$.first_line,this._$.first_column)].concat($$[$0]);
+break;
+case 170:
+this.$ = [new Parametro($$[$0],Tipo.STRUCT,$$[$0-1],this._$.first_line,this._$.first_column)];
+break;
+case 171:
+this.$ = [new Parametro($$[$0-1],Tipo.STRUCT,$$[$0-2],this._$.first_line,this._$.first_column)].concat($$[$0]);
+break;
+case 172:
+this.$ = $$[$0-3].push(new Parametro($$[$0],$$[$0-1],null,this._$.first_line,this._$.first_column));
+break;
+case 173:
+this.$ = $$[$0-3].push(new Parametro($$[$0-1],Tipo.STRUCT,$$[$0-1],this._$.first_line,this._$.first_column));
+break;
+case 174:
+this.$ = $$[$0-2].push(new Parametro($$[$0],null,null,this._$.first_line,this._$.first_column));
+break;
+case 175:
+this.$ = [new Parametro($$[$0-1],$$[$0-2],null,this._$.first_line,this._$.first_column)];
+break;
+case 176:
+this.$ = [new Parametro($$[$0-1],Tipo.STRUCT,$$[$0-2],this._$.first_line,this._$.first_column)];
+break;
+case 177:
+this.$ = [new Parametro($$[$0],null,null,this._$.first_line,this._$.first_column)];
+break;
 case 181: case 182:
 this.$ = $$[$0]
 break;

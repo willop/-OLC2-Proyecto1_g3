@@ -10,6 +10,8 @@ var Tipo;
     Tipo[Tipo["BRAKE"] = 6] = "BRAKE";
     Tipo[Tipo["NULL"] = 7] = "NULL";
     Tipo[Tipo["ARRAY"] = 8] = "ARRAY";
+    Tipo[Tipo["STRUCT"] = 9] = "STRUCT";
+    Tipo[Tipo["RETURN"] = 10] = "RETURN";
 })(Tipo || (Tipo = {}));
 var TipoAritmetica;
 (function (TipoAritmetica) {
@@ -51,6 +53,7 @@ var TipoError;
     TipoError[TipoError["ERROR_RELACIONAL"] = 6] = "ERROR_RELACIONAL";
     TipoError[TipoError["ERROR_BOOLEANO"] = 7] = "ERROR_BOOLEANO";
     TipoError[TipoError["ERROR_TIPO_VARIABLES_ARRAY"] = 8] = "ERROR_TIPO_VARIABLES_ARRAY";
+    TipoError[TipoError["FUNCION_YA_DECLARADA"] = 9] = "FUNCION_YA_DECLARADA";
 })(TipoError || (TipoError = {}));
 var TipoFor;
 (function (TipoFor) {

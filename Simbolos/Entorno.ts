@@ -3,7 +3,7 @@ class Entorno {
     nombre: any
     numero: any
     variables: any
-    funciones = {}
+    funciones: any
     estructuras = {}
 
     constructor(prev: any, nombre: any, numero: any) {
@@ -11,6 +11,7 @@ class Entorno {
         this.nombre = nombre;
         this.numero = numero;
         this.variables = new Map<String, Simbolo>();
+        this.funciones = new Map<String, Funcion>();
     }
 
     GuardarSimbolo(valor: any, id: any, tipo: any, auxtipo=null) {
@@ -47,5 +48,17 @@ class Entorno {
             entactual = entactual.prev
         }
         return null;
+    }
+
+    guardarfuncion(funcion:any) {
+        if(this.funciones.has(funcion.id)){
+            throw new FuncionYaDeclarada(0,0,"FUNCION YA DECLARADA",this);
+
+        }
+        this.funciones.set(funcion.id,funcion);
+    }
+
+    obtenerfuncion(funcion:any) {
+        return this.funciones.get(funcion.id);
     }
 }

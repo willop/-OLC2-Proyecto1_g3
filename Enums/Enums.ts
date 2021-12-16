@@ -7,7 +7,9 @@ enum Tipo {
     CONTINUE,
     BRAKE,
     NULL,
-    ARRAY
+    ARRAY,
+    STRUCT,
+    RETURN
 }
 
 enum TipoAritmetica{
@@ -48,7 +50,8 @@ enum TipoError{
     ERROR_LOGICO,
     ERROR_RELACIONAL,
     ERROR_BOOLEANO,
-    ERROR_TIPO_VARIABLES_ARRAY
+    ERROR_TIPO_VARIABLES_ARRAY,
+    FUNCION_YA_DECLARADA
 }
 
 

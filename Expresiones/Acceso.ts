@@ -14,7 +14,7 @@ class Acceso implements Expresion {
             throw new VariableNoDeclarada(this.linea,this.columna,"LA VARIABLE "+this.id+" NO ESTA DECLARADA",entorno);
 
         }        
-        console.log(new Return(a.valor,a.tipo,a.auxtipo));
+        //console.log(new Return(a.valor,a.tipo,a.auxtipo));
         return new Return(a.valor,a.tipo,a.auxtipo);
     }
 }

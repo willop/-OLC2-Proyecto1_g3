@@ -28,7 +28,11 @@ class Instrucciones implements Instruccion {
                         }   
                     } 
                 }           
+                if(aux != null){
+                    return aux;
+                }
             }
+
 
         }catch(e){
             recolector.listaerrores.push(e);

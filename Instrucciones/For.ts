@@ -26,24 +26,13 @@ class For implements Instruccion {
                 return this.ejecutarfclasico(this.idcontrol, this.inicio, this.final, entorno, recolector);
             }
             else {
-                    //var a = entorno.ObtenerSimbolo("letra");
-                    //console.log(a);
-                    // aca viene solo el id - letra
-                    //console.log("dentro de ForIn con la palabra: "+this.idcontrol);
-                    this.final.valor = Array.from(this.final.valor); //convierto en un array
-                    //console.log("valor es: "+this.final.valor[0]) //H
+                    this.final.valor = Array.from(this.final.valor); 
                     var lit = new Declaracion(null,this.linea,this.columna,Tipo.STRING,this.idcontrol)
                     lit.interpretar(entorno, recolector);
                     var simbolo=entorno.ObtenerSimbolo(this.idcontrol);
-                    //console.log(simbolo)
-                    //todo bien
                     var asig = new Asignacion(new Literal(this.final.valor[0],Tipo.STRING,this.linea,this.columna),this.linea,this.columna,simbolo.id);
-                    asig.interpretar(entorno, recolector);
-                    //console.log("var asig: "+asig.id+" tipo "+asig.expresion);
-
-                        //ahora que me muestre el valor                     
+                    asig.interpretar(entorno, recolector);         
                     var variable = entorno.ObtenerSimbolo(this.idcontrol);
-                    //console.log("El valor de la variable es: "+variable.valor);
                     this.ejecutarforin(this.idcontrol, this.inicio, this.final, entorno, recolector)
             }
 
@@ -72,8 +61,10 @@ class For implements Instruccion {
                             return this.iteracionClasica(final, entorno, recolector);
                         }
                         else if(aux.tipo == Tipo.BRAKE){
-                            return
+                            return;
                         }
+                    }else{
+                        return aux;
                     }
                 }
                 //hacer el break
@@ -118,8 +109,10 @@ class For implements Instruccion {
                             return this.iteracionClasica(final, entorno, recolector);
                         }
                         else if(aux.tipo == Tipo.BRAKE){
-                            return
+                            return;
                         }
+                    }else{
+                        return aux;
                     }
                 }
                 //hacer el break

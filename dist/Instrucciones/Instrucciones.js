@@ -25,6 +25,9 @@ class Instrucciones {
                         }
                     }
                 }
+                if (aux != null) {
+                    return aux;
+                }
             }
         }
         catch (e) {

@@ -123,22 +123,6 @@
 
 /* constantes */
 %{
-	//para el objeto de impresion
-	function FImpresion(_tipoimpresion,_valorimpresion,_raro){
-		return {tipo:_tipoimpresion, valor:_valorimpresion,What:_raro};
-	}
-
-	//para declaraciones de funciones
-	function FDeclaracion(_tipo,_nombre,_valor){
-		return {tipo:_tipo,nombre:_nombre,valorvar:_valor};
-	}
-
-	//almacenamiento de errores
-	function FErrores(_tipo,_caracter,_fila,_columna,_descrip){
-		return{tipo:_tipo,Caracter:_caracter,Fila:_fila,Columna:_columna,Descripcion:_descrip};
-	}
-
-	var GexpresionSwitch ;
 
 
 %}
@@ -170,48 +154,56 @@
 %% /* Definición de la gramática */
 
 ini
-	: INSTRUCCIONES EOF																									{}
+	: INSTRUCCIONES EOF																									{console.log("Hola desde recorrido;");$$ = new Nodo_arbol("Gramatica","")
+																														$$.sethijo($1);
+																														return $$;
+																														}
 ;
 
-INSTRUCCIONES :INSTRUCCIONES_GLOBALES VOID_MAIN INSTRUCCIONES_GLOBALES													{}
-	| VOID_MAIN INSTRUCCIONES_GLOBALES																					{}
-	| INSTRUCCIONES_GLOBALES VOID_MAIN 																					{}
-	| VOID_MAIN																											{}
+INSTRUCCIONES :VOID_MAIN																											{ $$ = new Nodo_arbol("VOID_MAIN",""); $$.sethijo($1);}
 	//| error{$$=FErrores('Lexico',yytext,this._$.first_line,this._$.first_column,'Necesita metodo main');}											
 	//| error { console.error('Este es un error sintáctico: ' + yytext + ', en la linea: ' + this._$.first_line + ', en la columna: ' + this._$.first_column); }
 ;
 
-VOID_MAIN: TK_VOID TK_MAIN TK_par_apertura TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre			{}	
+VOID_MAIN: TK_VOID TK_MAIN TK_par_apertura TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre			{ $$ = new Nodo_arbol("MAIN","")
+																														$$.sethijo(new Nodo_arbol($1,"Reservada"));
+																														$$.sethijo(new Nodo_arbol($2,"Reservada"));
+																														$$.sethijo(new Nodo_arbol($3,"Simbolo"));
+																														$$.sethijo(new Nodo_arbol($4,"Simbolo"));
+																														$$.sethijo(new Nodo_arbol($5,"Simbolo"));
+																														$$.sethijo($1,"");
+																														$$.sethijo(new Nodo_arbol($6,"Simbolo"));
+																														}	
 ;
 
-INSTRUCCION: INSTRUCCION DECLARACION 			{$1.push($2); $$ = $1}
-	| INSTRUCCION IMPRESION					    {$1.push($2); $$ = $1}
-	| INSTRUCCION ASIGNACION					{$1.push($2); $$ = $1}
-	| INSTRUCCION FUNCIONES_NATIVAS				{$1.push($2); $$ = $1}
-	| INSTRUCCION FUNCIONES						{$1.push($2); $$ = $1}
-	| INSTRUCCION RETURN						{$1.push($2); $$ = $1}
-	| INSTRUCCION CONDICIONALES					{$1.push($2); $$ = $1}
-	| INSTRUCCION BUCLES						{$1.push($2); $$ = $1}
-	| DECLARACION 								{$$ = [$1]}
-	| IMPRESION									{$$ = [$1]}
-	| ASIGNACION								{$$ = [$1]}
-	| FUNCIONES_NATIVAS							{$$ = [$1]}
-	| FUNCIONES									{$$ = [$1]}	
-	| RETURN									{$$ = [$1]}
-	| CONDICIONALES								{$$ = [$1]}
-	| BUCLES									{$$ = [$1]}	
+INSTRUCCION: INSTRUCCION DECLARACION 			{}
+	| INSTRUCCION IMPRESION					    {}
+	| INSTRUCCION ASIGNACION					{}
+	| INSTRUCCION FUNCIONES_NATIVAS				{}
+	| INSTRUCCION FUNCIONES						{}
+	| INSTRUCCION RETURN						{}
+	| INSTRUCCION CONDICIONALES					{}
+	| INSTRUCCION BUCLES						{}
+	| DECLARACION 								{}
+	| IMPRESION									{$$ = new Nodo_arbol("IMPRESION",""); $$.sethijo($1)}
+	| ASIGNACION								{}
+	| FUNCIONES_NATIVAS							{}
+	| FUNCIONES									{}	
+	| RETURN									{}
+	| CONDICIONALES								{}
+	| BUCLES									{}	
 	
 ;
 
-LISTA_INSTRUCCIONES: INSTRUCCION {$$ = new Instrucciones($1,this._$.first_line,this._$.first_column,null)}
+LISTA_INSTRUCCIONES: INSTRUCCION {}
 ;
 
-INSTRUCCIONES_GLOBALES: INSTRUCCIONES_GLOBALES ASIGNACION			{$1.push($2); $$ = $1}
-					| INSTRUCCIONES_GLOBALES DECLARACION			{$1.push($2); $$ = $1}
-					| INSTRUCCIONES_GLOBALES FUNCIONES				{$1.push($2); $$ = $1}
-					| ASIGNACION									{$$ = [$1]}
-					| DECLARACION									{$$ = [$1]}
-					| FUNCIONES										{$$ = [$1]}
+INSTRUCCIONES_GLOBALES: INSTRUCCIONES_GLOBALES ASIGNACION			{}
+					| INSTRUCCIONES_GLOBALES DECLARACION			{}
+					| INSTRUCCIONES_GLOBALES FUNCIONES				{}
+					| ASIGNACION									{}
+					| DECLARACION									{}
+					| FUNCIONES										{}
 ;
 
 INSTRUCCION2: DECLARACION 			{}
@@ -285,7 +277,7 @@ IGUALACION: TK_igual EXPRESIONARIT FIN_LINEA
 */
 
 
-VALORES: TK_CADENA															{}
+VALORES: TK_CADENA															{$$ = new Nodo_arbol($1,"cadena");}
 		|TK_NULL															{}
 		|TK_TRUE															{}
 		|TK_FALSE															{}
@@ -307,7 +299,7 @@ VALORES: TK_CADENA															{}
 		|FUNCIONES_NATIVAS													{}
 ;
 
-ARREGLO: TK_llave_apertura LISTA_ARREGLO TK_llave_cierre										{$$=$2;}
+ARREGLO: TK_llave_apertura LISTA_ARREGLO TK_llave_cierre										{}
 		//TK_llave_apertura EXPRESIONARIT TK_llave_cierre										{} // [5]
 		//|TK_llave_apertura ARREGLO TK_llave_cierre											{} //[[A]]
 		//|TK_llave_apertura EXPRESIONARIT TK_coma TK_ TK_llave_cierre							{} //[A]
@@ -339,7 +331,7 @@ EXPRESIONARIT
 	| EXPRESIONARIT TK_numeral TK_POR EXPRESIONARIT       								{}
 	| EXPRESIONARIT TK_POR EXPRESIONARIT       											{}
 	| EXPRESIONARIT TK_DIVIDIDO EXPRESIONARIT  											{}
-	| TK_par_apertura EXPRESIONARIT TK_par_cierre       								{$$ = $2}
+	| TK_par_apertura EXPRESIONARIT TK_par_cierre       								{}
 	| TK_not EXPRESIONARIT																{}
 	| TK_SIN TK_par_apertura EXPRESIONARIT TK_par_cierre								{}
 	| TK_COS TK_par_apertura EXPRESIONARIT TK_par_cierre								{}
@@ -354,11 +346,17 @@ EXPRESIONARIT
 	| EXPRESIONARIT TK_punto EXPRESIONARIT       										{}
 	| EXPRESIONARIT TK_MODULO EXPRESIONARIT       										{}
 	| EXPRESIONARIT TK_pregunta EXPRESIONARIT TK_dos_puntos EXPRESIONARIT 				{}
-	| VALORES 																			{}
+	| VALORES 																			{ $$ = new Nodo_arbol("VALORES",""); $$.sethijo($1)}
 ;
 
 
-IMPRESION: TK_PRINT TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA							{}  
+IMPRESION: TK_PRINT TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA							{ $$ = new Nodo_arbol("Print","");
+																										$$.sethijo(new Nodo_arbol($1,"Reservada"));
+																										$$.sethijo(new Nodo_arbol($2,"Simbolo"));
+																										$$.sethijo($3);
+																										$$.sethijo(new Nodo_arbol($4,"Simbolo"));
+																										$$.sethijo(new Nodo_arbol($5,"Simbolo"));
+																									}  
 		|TK_PRINTLN TK_par_apertura EXPRESIONARIT TK_par_cierre	FIN_LINEA							{}
 		|TK_PRINT TK_par_apertura EXPRESIONARIT TK_coma EXPRESIONARIT TK_par_cierre FIN_LINEA  		{}
 		|TK_PRINTLN TK_par_apertura EXPRESIONARIT TK_coma EXPRESIONARIT TK_par_cierre FIN_LINEA     {}
@@ -393,10 +391,10 @@ ASIGNACION: TK_ID TK_igual EXPRESIONARIT FIN_LINEA					 											{}
 			|TK_ID FUNCIONES_ARREGLO															{}
 ;
 
-PARAMETROS_EXTRA: EXPRESIONARIT																	{console.log("si es correcto")}
-				| ARREGLO																		{console.log("si es correcto")}
-				| EXPRESIONARIT TK_coma PARAMETROS_EXTRA										{console.log("si es correcto")}
-				| ARREGLO TK_coma PARAMETROS_EXTRA												{console.log("si es correcto")}
+PARAMETROS_EXTRA: EXPRESIONARIT																	{}
+				| ARREGLO																		{}
+				| EXPRESIONARIT TK_coma PARAMETROS_EXTRA										{}
+				| ARREGLO TK_coma PARAMETROS_EXTRA												{}
 ;
 
 
@@ -461,8 +459,8 @@ RETURN: TK_RETURN EXPRESIONARIT FIN_LINEA															{}
 		| TK_RETURN  FIN_LINEA
 ;
 
-CONDICIONALES: FUNCION_IF																	{$$ = $1}
-			| FUNCION_SWITCH																{$$ = $1}
+CONDICIONALES: FUNCION_IF																	{}
+			| FUNCION_SWITCH																{}
 ;
 																																			//condicion:any,instrucciones:any,condicionelse
 FUNCION_IF:  TK_IF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre 					{}
@@ -506,15 +504,15 @@ BUCLES: BUCLE_WHILE
 ;
 
 
-BUCLE_WHILE: TK_WHILE TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura  LISTA_INSTRUCCIONES TK_corchete_cierre												{$$ = new While($3,$6,this._$.first_line,this._$.first_column);}
+BUCLE_WHILE: TK_WHILE TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura  LISTA_INSTRUCCIONES TK_corchete_cierre												{}
 ;
 
-BUCLE_DO_WHILE: TK_DO TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre TK_WHILE TK_par_apertura EXPRESIONARIT TK_par_cierre TK_pcoma								{$$ = new DoWhile($7,$3,this._$.first_line,this._$.first_column);}
+BUCLE_DO_WHILE: TK_DO TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre TK_WHILE TK_par_apertura EXPRESIONARIT TK_par_cierre TK_pcoma								{}
 ;
 
-BUCLE_FOR: TK_FOR TK_par_apertura DECLARACION  EXPRESIONARIT TK_pcoma TK_ID TK_INCREMENTO TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre			{$$ = new For($3.id,$3,$4,TipoAumento.INCREMENTO,TipoFor.CLASICO,$10,this._$.first_line,this._$.first_column);}
-		| TK_FOR TK_par_apertura ASIGNACION  EXPRESIONARIT TK_pcoma TK_ID TK_DECREMENTO TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre			{$$ = new For($3.id,$3,$4,TipoAumento.DECREMENTO,TipoFor.CLASICO,$10,this._$.first_line,this._$.first_column);}
-		| TK_FOR TK_ID TK_IN EXPRESIONARIT TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre 		{console.log("Tipo en forin: "+$4.tipo);$$ = new For($2,0,$4,TipoAumento.DECREMENTO,TipoFor.FORIN,$6,this._$.first_line,this._$.first_column);}
+BUCLE_FOR: TK_FOR TK_par_apertura DECLARACION  EXPRESIONARIT TK_pcoma TK_ID TK_INCREMENTO TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre			{}
+		| TK_FOR TK_par_apertura ASIGNACION  EXPRESIONARIT TK_pcoma TK_ID TK_DECREMENTO TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre			{}
+		| TK_FOR TK_ID TK_IN EXPRESIONARIT TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre 		{}
 		| TK_FOR TK_ID TK_IN ARREGLO TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre 			//{$$ = new For($3.id,$3,$4,TipoAumento.DECREMENTO,TipoFor.CLASICO,$10,this._$.first_line,this._$.first_column);}
-		//| TK_FOR TK_ID TK_IN TK_ID ARREGLO TK_corchete_apertura INSTRUCCIONES TK_corchete_cierre 
 ;
+		//| TK_FOR TK_ID TK_IN TK_ID ARREGLO TK_corchete_apertura INSTRUCCIONES TK_corchete_cierre 

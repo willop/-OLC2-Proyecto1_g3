@@ -251,7 +251,7 @@ DECLARACION: TIPO_VALOR TIPO_DECLARACION												{	var asignacion = $2; conso
 																							
 																						}   //asig = [exp=58,tipo=null,id=TK_ID] asgi.tipo = string [exp=58,tipo=string,id=TK_ID]
 			| TIPO_VALOR TK_punto TK_PARSE TK_par_apertura TK_CADENA TK_par_cierre		{}
-			| TIPO_VALOR TK_par_apertura ARREGLO TK_par_cierre FIN_LINEA				{} // int ([asdf,fdd,f])
+			//| TIPO_VALOR TK_par_apertura ARREGLO TK_par_cierre FIN_LINEA				{} // int ([asdf,fdd,f])
 			| TIPO_VALOR TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA			{}
 			| STRUCT																	{}
 ;
@@ -280,7 +280,7 @@ TIPO_DECLARACION : TK_ID TK_igual EXPRESIONARIT FIN_LINEA																			{$$ 
 				| TK_ID  MAS_VARIABLES FIN_LINEA																					{var vec = $2; vec.push(new Declaracion(null,this._$.first_line,this._$.first_column,null,$1)); $$ = vec;}
 				| TK_ID TK_par_apertura PARAMETRO_FUNSION TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre			{}
 				| COND_ARREGLO TK_ID TK_igual EXPRESIONARIT FIN_LINEA																{}
-				| COND_ARREGLO TK_ID TK_igual ARREGLO FIN_LINEA																		{$$ = new DeclararArray($2, new ConstruirArray($4,this._$.first_line,this._$.first_column),null,this._$.first_line,this._$.first_column);}
+				//| COND_ARREGLO TK_ID TK_igual ARREGLO FIN_LINEA																		{$$ = new DeclararArray($2, new ConstruirArray($4,this._$.first_line,this._$.first_column),null,this._$.first_line,this._$.first_column);}
 				| COND_ARREGLO TK_ID FIN_LINEA
 				| TK_ID FIN_LINEA																									{$$ = new Declaracion(null,this._$.first_line,this._$.first_column,null,$1);}
 ;
@@ -318,7 +318,7 @@ VALORES: TK_CADENA															{console.log("cadena"+$1);var a = $1; var al=a.
 		|TK_ID 																{$$ = new Acceso($1,this._$.first_line,this._$.first_column);}
 		|TK_ID TK_par_apertura TK_par_cierre								{}
 		|TK_ID TK_par_apertura PARAMETROS TK_par_cierre						{}
-		|TK_ID ARREGLO 														{$$ = new AccesoArray($2[0],new Acceso($1,this._$.first_line,this._$.first_column), this._$.first_line,this._$.first_column);}
+		//|TK_ID ARREGLO 														{$$ = new AccesoArray($2[0],new Acceso($1,this._$.first_line,this._$.first_column), this._$.first_line,this._$.first_column);}
 		|TK_ENTERO                        									{$$ = new Literal(parseInt($1),Tipo.INTEGER,this._$.first_line,this._$.first_column)}
 		|TK_DECIMAL                       									{$$ = new Literal(parseFloat($1),Tipo.DOUBLE,this._$.first_line,this._$.first_column);}
 		|TK_BEGIN 															{}
@@ -341,8 +341,8 @@ ARREGLO: TK_llave_apertura LISTA_ARREGLO TK_llave_cierre										{$$=$2;}
 ;
 
 LISTA_ARREGLO: LISTA_ARREGLO TK_coma EXPRESIONARIT												{$1.push($3);$$=$1;}
-			|LISTA_ARREGLO TK_coma TK_llave_apertura LISTA_ARREGLO TK_llave_cierre				{var nuevo = new ConstruirArray($4,this._$.first_line,this._$.first_column); $1.push(nuevo);$$=$1;}
-			|TK_llave_apertura LISTA_ARREGLO TK_llave_cierre									{var nuevo = new ConstruirArray($2,this._$.first_line,this._$.first_column); $$ = [nuevo];}
+			//|LISTA_ARREGLO TK_coma TK_llave_apertura LISTA_ARREGLO TK_llave_cierre				{var nuevo = new ConstruirArray($4,this._$.first_line,this._$.first_column); $1.push(nuevo);$$=$1;}
+			//|TK_llave_apertura LISTA_ARREGLO TK_llave_cierre									{var nuevo = new ConstruirArray($2,this._$.first_line,this._$.first_column); $$ = [nuevo];}
 			|EXPRESIONARIT																		{$$=[$1]}
 ;
 
@@ -379,6 +379,7 @@ EXPRESIONARIT
 	| EXPRESIONARIT TK_punto EXPRESIONARIT       										{}
 	| EXPRESIONARIT TK_MODULO EXPRESIONARIT       										{$$ = new Aritmetica($1,$3,TipoAritmetica.MODULO,this._$.first_line,this._$.first_column);}
 	| EXPRESIONARIT TK_pregunta EXPRESIONARIT TK_dos_puntos EXPRESIONARIT 				{$$ = new Ternario($1,$3,$5,this._$.first_line,this._$.first_column);}
+	| TK_llave_apertura LISTA_ARREGLO TK_llave_cierre																			{}
 	| VALORES 																			{$$ = $1;}
 ;
 
@@ -400,33 +401,34 @@ ASIGNACION: TK_ID TK_igual EXPRESIONARIT FIN_LINEA					 											{$$ = new Asi
 			|TK_ID TK_ID FIN_LINEA												 								{}
 			|TK_ID TK_ID TK_igual EXPRESIONARIT FIN_LINEA			 			 								{}
 			|TK_ID MAS_ATRIBUTOS TK_igual EXPRESIONARIT FIN_LINEA 				 								{}
-			|TK_ID MAS_ATRIBUTOS ARREGLO TK_igual EXPRESIONARIT FIN_LINEA 		 								{}
+			//|TK_ID MAS_ATRIBUTOS ARREGLO TK_igual EXPRESIONARIT FIN_LINEA 		 								{}
 			|TK_ID SIGNOS_COMPARACION EXPRESIONARIT FIN_LINEA					 								{}
-			|TK_ID TK_igual ARREGLO FIN_LINEA																	{} // esta sustituye las dos de abajo
+			//|TK_ID TK_igual ARREGLO FIN_LINEA																	{} // esta sustituye las dos de abajo
 			//|TK_ID TK_igual TK_llave_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_llave_cierre FIN_LINEA	{}
 			//|TK_ID TK_igual TK_llave_apertura EXPRESIONARIT TK_llave_cierre FIN_LINEA							{}
 			|TK_ID TK_par_apertura PARAMETROS_EXTRA TK_par_cierre FIN_LINEA 									{}
 			//|TK_ID TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA										{} //a(s)
 			//|TK_ID TK_par_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_par_cierre FIN_LINEA				{} //a(s,d,[sddd])
 			|TK_ID TK_par_apertura  TK_par_cierre FIN_LINEA														{} //a()
-			|TK_ID TK_DECREMENTO FIN_LINEA 														{}
-			|TK_ID TK_INCREMENTO FIN_LINEA														{}
-			|TK_ID TK_llave_apertura EXPRESIONARIT TK_llave_cierre 								{}
-			|TK_ID TK_llave_apertura TK_llave_cierre											{}
-			|TK_ID TK_llave_apertura EXPRESIONARIT TK_llave_cierre TK_igual EXPRESIONARIT FIN_LINEA	{$$ = new AsignarValorArray($6,new AccesoArray($3,new Acceso($1,this._$.first_line,this._$.first_column), this._$.first_line,this._$.first_column), this._$.first_line,this._$.first_column);} // AGREGAR UN ARREGLO
+			|TK_ID TK_DECREMENTO FIN_LINEA 																		{}
+			|TK_ID TK_INCREMENTO FIN_LINEA																		{}
+			|TK_ID ARREGLO																						{}
+			|TK_ID TK_llave_apertura TK_llave_cierre															{}
+			|TK_ID ARREGLO TK_igual EXPRESIONARIT FIN_LINEA														{$$ = new AsignarValorArray($6,new AccesoArray($3,new Acceso($1,this._$.first_line,this._$.first_column), this._$.first_line,this._$.first_column), this._$.first_line,this._$.first_column);} // AGREGAR UN ARREGLO
 			//|TK_ID TK_llave_apertura EXPRESIONARIT TK_llave_cierre TK_igual TK_ID ARREGLO FIN_LINEA	{}
-			|TK_ID TK_llave_apertura TK_llave_cierre TK_igual ARREGLO FIN_LINEA					{} 
+			//|TK_ID TK_llave_apertura TK_llave_cierre TK_igual ARREGLO FIN_LINEA					{} 
 			|TK_ID FUNCIONES_ARREGLO															{}
 ;
 
 PARAMETROS_EXTRA: EXPRESIONARIT																	{console.log("si es correcto")}
-				| ARREGLO																		{console.log("si es correcto")}
+				//| ARREGLO																		{console.log("si es correcto")}
 				| EXPRESIONARIT TK_coma PARAMETROS_EXTRA										{console.log("si es correcto")}
-				| ARREGLO TK_coma PARAMETROS_EXTRA												{console.log("si es correcto")}
+				//| ARREGLO TK_coma PARAMETROS_EXTRA												{console.log("si es correcto")}
 ;
 
 
-MAS_ATRIBUTOS: TK_punto TK_ID MAS_ATRIBUTOS 													{}
+MAS_ATRIBUTOS: MAS_ATRIBUTOS TK_punto TK_ID  													{}
+				|TK_punto TK_ID
 ;
 
 FUNCIONES_ARREGLO: TK_punto TK_PUSH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_pcoma		{}
@@ -623,6 +625,6 @@ BUCLE_DO_WHILE: TK_DO TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierr
 BUCLE_FOR: TK_FOR TK_par_apertura DECLARACION  EXPRESIONARIT TK_pcoma TK_ID TK_INCREMENTO TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre			{$$ = new For($3.id,$3,$4,TipoAumento.INCREMENTO,TipoFor.CLASICO,$10,this._$.first_line,this._$.first_column);}
 		| TK_FOR TK_par_apertura ASIGNACION  EXPRESIONARIT TK_pcoma TK_ID TK_DECREMENTO TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre			{$$ = new For($3.id,$3,$4,TipoAumento.DECREMENTO,TipoFor.CLASICO,$10,this._$.first_line,this._$.first_column);}
 		| TK_FOR TK_ID TK_IN EXPRESIONARIT TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre 		{console.log("Tipo en forin: "+$4.tipo);$$ = new For($2,0,$4,TipoAumento.DECREMENTO,TipoFor.FORIN,$6,this._$.first_line,this._$.first_column);}
-		| TK_FOR TK_ID TK_IN ARREGLO TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre 			//{$$ = new For($3.id,$3,$4,TipoAumento.DECREMENTO,TipoFor.CLASICO,$10,this._$.first_line,this._$.first_column);}
+		//| TK_FOR TK_ID TK_IN ARREGLO TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre 			//{$$ = new For($3.id,$3,$4,TipoAumento.DECREMENTO,TipoFor.CLASICO,$10,this._$.first_line,this._$.first_column);}
 		//| TK_FOR TK_ID TK_IN TK_ID ARREGLO TK_corchete_apertura INSTRUCCIONES TK_corchete_cierre 
 ;

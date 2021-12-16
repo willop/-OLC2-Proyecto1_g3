@@ -1,8 +1,7 @@
 "use strict";
 class Retornar {
-    constructor(expresion, numpotencia, linea, columna) {
+    constructor(expresion, linea, columna) {
         this.linea = linea;
-        this.numpotencia = numpotencia;
         this.columna = columna;
         this.expresion = expresion;
     }

@@ -1,14 +1,15 @@
 "use strict";
 class Instrucciones {
-    constructor(instrucciones, linea, columna, nombre) {
+    constructor(instrucciones, linea, columna, nombre, crearentorno = true) {
         this.linea = linea;
         this.columna = columna;
         this.instrucciones = instrucciones;
         this.nombre = nombre;
+        this.crearentorno = crearentorno;
     }
     interpretar(entorno, recolector) {
         try {
-            var Nuevoentorno = new Entorno(entorno, this.nombre, entorno.numero + 1);
+            var Nuevoentorno = this.crearentorno ? new Entorno(entorno, this.nombre, entorno.numero + 1) : entorno;
             for (var inst in this.instrucciones) {
                 console.log(this.instrucciones[inst][inst]);
                 if (typeof this.instrucciones[inst][0] === 'undefined') {

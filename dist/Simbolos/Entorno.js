@@ -45,6 +45,13 @@ class Entorno {
         this.funciones.set(funcion.id, funcion);
     }
     obtenerfuncion(funcion) {
-        return this.funciones.get(funcion.id);
+        var entactual = this;
+        while (entactual != null) {
+            if (entactual.funciones.has(funcion)) {
+                return entactual.funciones.get(funcion);
+            }
+            entactual = entactual.prev;
+        }
+        return null;
     }
 }

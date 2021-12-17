@@ -3,16 +3,18 @@ class Instrucciones implements Instruccion {
     linea:number;
     columna:number;
     nombre:any;
-    constructor (instrucciones:any,linea: number, columna: number,nombre:any){
+    crearentorno: any;
+    constructor (instrucciones:any,linea: number, columna: number,nombre:any,crearentorno=true){
         this.linea = linea;
         this.columna = columna;
         this.instrucciones = instrucciones;
         this.nombre = nombre;
+        this.crearentorno = crearentorno;
     }
     
     interpretar(entorno:any,recolector:any){
         try{
-            var Nuevoentorno = new Entorno(entorno,this.nombre,entorno.numero+1);
+            var Nuevoentorno = this.crearentorno ? new Entorno(entorno,this.nombre,entorno.numero+1) : entorno;
             for(var inst in this.instrucciones){
                 console.log(this.instrucciones[inst][inst]);
                 if(typeof this.instrucciones[inst][0] === 'undefined'){
@@ -32,8 +34,6 @@ class Instrucciones implements Instruccion {
                     return aux;
                 }
             }
-
-
         }catch(e){
             recolector.listaerrores.push(e);
             recolector.listaerrores.push(new ErrorGeneral(this.linea,this.columna,"ERROR EN LISTA DE INSTRUCCIONES",entorno));

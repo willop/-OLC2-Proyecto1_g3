@@ -12,6 +12,8 @@ class Print implements Instruccion {
     
     interpretar(entorno:any,recolector:any){
         try{
+            console.log("entra aca pa?")
+            console.log(entorno)
             var resultado = this.expresion.interpretar(entorno,recolector);
             var salida = resultado.valor;
             

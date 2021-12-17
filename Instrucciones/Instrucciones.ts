@@ -16,7 +16,7 @@ class Instrucciones implements Instruccion {
         try{
             var Nuevoentorno = this.crearentorno ? new Entorno(entorno,this.nombre,entorno.numero+1) : entorno;
             for(var inst in this.instrucciones){
-                console.log(this.instrucciones[inst][inst]);
+                //console.log(this.instrucciones[inst][inst]);
                 if(typeof this.instrucciones[inst][0] === 'undefined'){
                     var aux = this.instrucciones[inst].interpretar(Nuevoentorno,recolector);
                     if(aux != null){

@@ -13,16 +13,17 @@ class ExpComa implements Instruccion {
     interpretar(entorno:any,recolector:any){
             //validacion de tipo
             //string o variable
-            
-                //si derecha es string                 /// string string --  string id            id string       id id
-            if(this.expresionder.tipo == Tipo.STRING){
+                //si derecha es string                 /// string string --  string id            id -- string       id -- id
+            if(this.expresionder.tipo == Tipo.STRING || this.expresionder.tipo == Tipo.INTEGER || this.expresionder.tipo == Tipo.DOUBLE || this.expresionder.tipo == Tipo.CHAR){
                 //izquierda string
-                if(this.expresioniz.tipo == Tipo.STRING){
-                    //console.log("string -- string");
-                    return new Return(this.expresioniz.valor.concat(this.expresionder.valor),Tipo.STRING);
+                if(this.expresioniz.tipo == Tipo.STRING || this.expresioniz.tipo == Tipo.INTEGER || this.expresioniz.tipo == Tipo.DOUBLE || this.expresioniz.tipo == Tipo.CHAR){
+                    //console.log("string -- string");`
+                    //console.log("string -- string: "+this.expresioniz.valor+" -- "+this.expresionder.valor)
+                    return new Return(this.expresioniz.valor.toString().concat(this.expresionder.valor.toString()),Tipo.STRING);
                 //izquierda variable
                 }else if(this.expresioniz.id != null){
                     //console.log("id -- string");
+                    //console.log("id -- string: "+this.expresioniz.valor+" -- "+this.expresionder.valor)
                     var variable = entorno.ObtenerSimbolo(this.expresioniz.id);
                     return new Return(variable.valor.concat(this.expresionder.valor),Tipo.STRING)
                 }
@@ -30,12 +31,14 @@ class ExpComa implements Instruccion {
             else if(this.expresionder.id != null){
                 var variableder = entorno.ObtenerSimbolo(this.expresionder.id);
                 //console.log("string -- id");
-                if(this.expresioniz.tipo == Tipo.STRING){
-                    return new Return(this.expresioniz.valor.concat(variableder.valor),Tipo.STRING)
+                if(this.expresioniz.tipo == Tipo.STRING || this.expresioniz.tipo == Tipo.INTEGER || this.expresioniz.tipo == Tipo.DOUBLE || this.expresioniz.tipo == Tipo.CHAR){
+                    //console.log("string -- id: "+this.expresioniz.valor+" -- "+this.expresionder.valor)
+                    return new Return(this.expresioniz.valor.toString().concat(variableder.valor.toString()),Tipo.STRING)
                 }else{
                     //console.log("id -- id");
+                    //console.log("id -- id: "+this.expresioniz.valor+" -- "+this.expresionder.valor)
                     var variableiz = entorno.ObtenerSimbolo(this.expresioniz.id);
-                    return new Return(variableiz.valor.concat(variableder.valor),Tipo.STRING)
+                    return new Return(variableiz.valor.toString().concat(variableder.valor.toString()),Tipo.STRING)
                 }
             }
             else{

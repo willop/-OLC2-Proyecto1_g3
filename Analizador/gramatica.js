@@ -133,7 +133,7 @@ case 38:
 																																								//inst.instrucciones.push(asignacion[i]);
 																																								//this.$ = inst;
 																																								}
-																																								this.$ = asignacion;
+																																								this.$ = asignacion; 
 																																								//this.$ = asignacion;
 																																								//this.$ = new Instrucciones([asignacion],this._$.first_line,this._$.first_column,null);
 																																							}
@@ -328,14 +328,16 @@ case 130:
 this.$ = new Acceso($$[$0],this._$.first_line,this._$.first_column);
 break;
 case 132:
-
+//console.log("el tipo es acceso? "); console.log($$[$0-3] instanceof Acceso);
 																													if($$[$0-3] instanceof Acceso){
-																														this.$ = new Asignacion($$[$0-1],this._$.first_line,this._$.first_column,$$[$0-3])
+																														//console.log("es asignacion variable");
+																														var a1 = new Asignacion($$[$0-1],this._$.first_line,this._$.first_column,$$[$0-3]);
+																														console.log(a1.expresion);
+																														this.$ = a1;
 																													}
 																													else if($$[$0-3] instanceof AccesoArray){
+																														console.log("AccesoArray - no entrar")
 																														this.$ = new AsignarValorArray($$[$0-1],$$[$0-3], this._$.first_line,this._$.first_column);		
-																													}else{
-
 																													}																													
 																												
 break;

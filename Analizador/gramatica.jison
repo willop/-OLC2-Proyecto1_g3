@@ -210,7 +210,7 @@ LISTA_INSTRUCCIONES: INSTRUCCION {$$ = new Instrucciones($1,this._$.first_line,t
 
 INSTRUCCIONES_GLOBALES: INSTRUCCIONES_GLOBALES ASIGNACION			{$1.push($2); $$ = $1}
 					| INSTRUCCIONES_GLOBALES DECLARACION			{$1.push($2); $$ = $1}
-					//| INSTRUCCIONES_GLOBALES FUNCIONES				{$1.push($2); $$ = $1}
+					//| INSTRUCCIONES_GLOBALES FUNCIONES			{$1.push($2); $$ = $1}
 					| ASIGNACION									{$$ = [$1]}
 					| DECLARACION									{$$ = [$1]}
 					| LLAMADA_FUNCION										{$$ = [$1]}
@@ -246,7 +246,7 @@ DECLARACION: TIPO_VALOR TIPO_DECLARACION																													{	var asign
 																																								//inst.instrucciones.push(asignacion[i]);
 																																								//$$ = inst;
 																																								}
-																																								$$ = asignacion;
+																																								$$ = asignacion; 
 																																								//$$ = asignacion;
 																																								//$$ = new Instrucciones([asignacion],this._$.first_line,this._$.first_column,null);
 																																							}
@@ -416,15 +416,16 @@ ACCESSOATRIBUTO : ACCESSOATRIBUTO TK_punto TK_ID			 													{new AccesoStru
 ;
 
 
-
-ASIGNACION: ACCESSOATRIBUTO TK_igual EXPRESIONARIT FIN_LINEA					 								{
+ASIGNACION: ACCESSOATRIBUTO TK_igual EXPRESIONARIT FIN_LINEA					 								{//console.log("el tipo es acceso? "); console.log($1 instanceof Acceso);
 																													if($1 instanceof Acceso){
-																														$$ = new Asignacion($3,this._$.first_line,this._$.first_column,$1)
+																														//console.log("es asignacion variable");
+																														var a1 = new Asignacion($3,this._$.first_line,this._$.first_column,$1);
+																														console.log(a1.expresion);
+																														$$ = a1;
 																													}
 																													else if($1 instanceof AccesoArray){
+																														console.log("AccesoArray - no entrar")
 																														$$ = new AsignarValorArray($3,$1, this._$.first_line,this._$.first_column);		
-																													}else{
-
 																													}																													
 																												}
 			|ACCESSOATRIBUTO FIN_LINEA																			{} // A[A][b] --- a.a.a.a   = arr[exp]  a = a[0];

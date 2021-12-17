@@ -14,7 +14,15 @@ class Switch {
             //var resultado = this.condicion.interpretar(entorno,recolector);
             //se evalua la expresio si corresonde a un booleano
             if (this.condicionswitch.tipo != this.expresion.tipo) {
-                throw new EIf(this.linea, this.columna, "ERROR TIPO INCORRECTO EN CONDICION", null);
+                //verifico que la condicionswitch sea una varialbe
+                this.condicionswitch = entorno.ObtenerSimbolo(this.condicionswitch.id);
+                if (this.condicionswitch.tipo != null) {
+                    //console.log("la variable contiene: "+this.condicionswitch.valor)
+                }
+                else {
+                    //console.log("no era una variables -- error")
+                    throw new EIf(this.linea, this.columna, "ERROR TIPO INCORRECTO EN CONDICION " + this.condicionswitch.tipo + " - " + this.expresion.tipo, null);
+                }
             }
             //si es verdadero retronara la lista de instruciones 
             if (this.condicionswitch.valor == this.expresion.valor) {

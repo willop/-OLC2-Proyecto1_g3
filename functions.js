@@ -60,7 +60,11 @@ function updateContent(e){
     TextoDeEdicion = editor.getvalue();
     alert(TextoDeEdicion);
 }
+document.getElementById('btnLimpiar').addEventListener('click',accionLimpiar);
 
+function accionLimpiar(e){
+    editor.setValue("");
+}
 
 document.getElementById('boton_Compilar').addEventListener('click', accionBoton);
 
@@ -75,7 +79,7 @@ function accionBoton(e){
     Imprimir(TextoDeEdicion);
     //console.log("\n\n\n********************************************************\n********************************************************\n********************************************************\n Aca inicia el arbol");
     //var recccc = recorrido.parse(TextoDeEdicion);
-    console.log(recccc);
+    //console.log(recccc);
     var variable = gramatica.parse(TextoDeEdicion);
     console.log(variable);
     try{
@@ -110,8 +114,5 @@ function accionBoton(e){
     consola.setValue(salidaConsola);
     console.log(entorno.variables);
     console.log(entorno.funciones);
-
-    
-
     
 }

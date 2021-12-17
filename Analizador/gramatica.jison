@@ -173,10 +173,10 @@ ini
 	: INSTRUCCIONES EOF																									{console.log($1); return $1;}
 ;
 
-INSTRUCCIONES :INSTRUCCIONES_GLOBALES VOID_MAIN INSTRUCCIONES_GLOBALES													{$1.concat($2); $1.concat($3); $$ = $1}
-	| VOID_MAIN INSTRUCCIONES_GLOBALES																					{$$ = $2.concat($1);}
+INSTRUCCIONES :VOID_MAIN																											{$$ =  [$1]}
 	| INSTRUCCIONES_GLOBALES VOID_MAIN 																					{$$ = $1.concat($2);}
-	| VOID_MAIN																											{$$ =  [$1]}
+	| VOID_MAIN INSTRUCCIONES_GLOBALES																					{$$ = $2.concat($1);}
+	|INSTRUCCIONES_GLOBALES VOID_MAIN INSTRUCCIONES_GLOBALES													{$1.concat($2); $1.concat($3); $$ = $1}
 	//| error{$$=FErrores('Lexico',yytext,this._$.first_line,this._$.first_column,'Necesita metodo main');}											
 	//| error { console.error('Este es un error sintáctico: ' + yytext + ', en la linea: ' + this._$.first_line + ', en la columna: ' + this._$.first_column); }
 ;
@@ -189,6 +189,7 @@ INSTRUCCION: INSTRUCCION DECLARACION 			{$1.push($2); $$ = $1}
 	| INSTRUCCION ASIGNACION					{$1.push($2); $$ = $1}
 	| INSTRUCCION FUNCIONES_NATIVAS				{$1.push($2); $$ = $1}
 	| INSTRUCCION FUNCIONES						{$1.push($2); $$ = $1}
+	| INSTRUCCION BREAK							{$1.push($2); $$ = $1}
 	| INSTRUCCION RETURN						{$1.push($2); $$ = $1}
 	| INSTRUCCION CONDICIONALES					{$1.push($2); $$ = $1}
 	| INSTRUCCION BUCLES						{$1.push($2); $$ = $1}
@@ -198,6 +199,7 @@ INSTRUCCION: INSTRUCCION DECLARACION 			{$1.push($2); $$ = $1}
 	| FUNCIONES_NATIVAS							{$$ = [$1]}
 	| FUNCIONES									{$$ = [$1]}	
 	| RETURN									{$$ = [$1]}
+	| BREAK										{$$ = [$1]}
 	| CONDICIONALES								{$$ = [$1]}
 	| BUCLES									{$$ = [$1]}	
 	
@@ -278,7 +280,7 @@ FIN_LINEA_STRUCT: TK_coma
 
 TIPO_DECLARACION : TK_ID TK_igual EXPRESIONARIT FIN_LINEA																			{$$ = new Declaracion($3,this._$.first_line,this._$.first_column,null,$1)} //Declaracion = 58}	 // asig = [exp=58,tipo=null,id=null] asig.id=TK_ID  lo que subo es [exp=58,tipo=null,id=TK_ID]    //necesito verificar si es un vector																																
 				| TK_ID  MAS_VARIABLES FIN_LINEA																					{var vec = $2; vec.push(new Declaracion(null,this._$.first_line,this._$.first_column,null,$1)); $$ = vec;}
-				| TK_ID TK_par_apertura PARAMETRO_FUNSION TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre			{}
+				| TK_ID TK_par_apertura PARAMETRO_FUNSION TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre			{}
 				| COND_ARREGLO TK_ID TK_igual EXPRESIONARIT FIN_LINEA																{}
 				//| COND_ARREGLO TK_ID TK_igual ARREGLO FIN_LINEA																		{$$ = new DeclararArray($2, new ConstruirArray($4,this._$.first_line,this._$.first_column),null,this._$.first_line,this._$.first_column);}
 				| COND_ARREGLO TK_ID FIN_LINEA
@@ -310,7 +312,7 @@ IGUALACION: TK_igual EXPRESIONARIT FIN_LINEA
 */
 
 
-VALORES: TK_CADENA															{console.log("cadena"+$1);var a = $1; var al=a.length; var c = a.substring(1,al-1);    $$ = new Literal(c,Tipo.STRING,this._$.first_line,this._$.first_column);}
+VALORES: TK_CADENA															{var a = $1; var al=a.length; var c = a.substring(1,al-1);    $$ = new Literal(c,Tipo.STRING,this._$.first_line,this._$.first_column);}
 		|TK_NULL															{}
 		|TK_TRUE															{$$ = new Literal(true,Tipo.BOOLEAN,this._$.first_line,this._$.first_column);}
 		|TK_FALSE															{$$ = new Literal(false,Tipo.BOOLEAN,this._$.first_line,this._$.first_column);}
@@ -318,7 +320,7 @@ VALORES: TK_CADENA															{console.log("cadena"+$1);var a = $1; var al=a.
 		|TK_ID 																{$$ = new Acceso($1,this._$.first_line,this._$.first_column);}
 		|TK_ID TK_par_apertura TK_par_cierre								{}
 		|TK_ID TK_par_apertura PARAMETROS TK_par_cierre						{}
-		//|TK_ID ARREGLO 														{$$ = new AccesoArray($2[0],new Acceso($1,this._$.first_line,this._$.first_column), this._$.first_line,this._$.first_column);}
+		|TK_ID ARREGLO 														{$$ = new AccesoArray($2[0],new Acceso($1,this._$.first_line,this._$.first_column), this._$.first_line,this._$.first_column);}
 		|TK_ENTERO                        									{$$ = new Literal(parseInt($1),Tipo.INTEGER,this._$.first_line,this._$.first_column)}
 		|TK_DECIMAL                       									{$$ = new Literal(parseFloat($1),Tipo.DOUBLE,this._$.first_line,this._$.first_column);}
 		|TK_BEGIN 															{}
@@ -379,7 +381,7 @@ EXPRESIONARIT
 	| EXPRESIONARIT TK_punto EXPRESIONARIT       										{}
 	| EXPRESIONARIT TK_MODULO EXPRESIONARIT       										{$$ = new Aritmetica($1,$3,TipoAritmetica.MODULO,this._$.first_line,this._$.first_column);}
 	| EXPRESIONARIT TK_pregunta EXPRESIONARIT TK_dos_puntos EXPRESIONARIT 				{$$ = new Ternario($1,$3,$5,this._$.first_line,this._$.first_column);}
-	| TK_llave_apertura LISTA_ARREGLO TK_llave_cierre																			{}
+	| TK_llave_apertura LISTA_ARREGLO TK_llave_cierre									{}
 	| VALORES 																			{$$ = $1;}
 ;
 
@@ -397,39 +399,54 @@ MAS_VALORES_IMPRESION: MAS_VALORES_IMPRESION TK_coma EXPRESIONARIT									{var 
 					|TK_coma EXPRESIONARIT															{$$ = $2;}
 ;*/
 
-ASIGNACION: TK_ID TK_igual EXPRESIONARIT FIN_LINEA					 											{$$ = new Asignacion($3,this._$.first_line,this._$.first_column,$1)}
-			|TK_ID TK_ID FIN_LINEA												 								{}
-			|TK_ID TK_ID TK_igual EXPRESIONARIT FIN_LINEA			 			 								{}
-			|TK_ID MAS_ATRIBUTOS TK_igual EXPRESIONARIT FIN_LINEA 				 								{}
-			//|TK_ID MAS_ATRIBUTOS ARREGLO TK_igual EXPRESIONARIT FIN_LINEA 		 								{}
-			|TK_ID SIGNOS_COMPARACION EXPRESIONARIT FIN_LINEA					 								{}
+
+ACCESSOATRIBUTO : ACCESSOATRIBUTO TK_punto TK_ID			 													{new AccesoStruct} //     a[b][a][c]------a.a.b --- A[A,B];
+				| ACCESSOATRIBUTO TK_llave_apertura EXPRESIONARIT TK_llave_cierre 								{new AccessoArray} // 	   a()
+				| ACCESSOATRIBUTO TK_llave_apertura EXPRESIONARIT PARAMETROS_EXTRA TK_llave_cierre 				{new AccessoArray} // 	
+				| TK_ID 
+				| TK_ID TK_ID																					{new Acceso}
+;
+
+
+
+ASIGNACION: ACCESSOATRIBUTO TK_igual EXPRESIONARIT FIN_LINEA					 								{$$ = new Asignacion($3,this._$.first_line,this._$.first_column,$1)}
+			|ACCESSOATRIBUTO FIN_LINEA																			{} // A[A][b] --- a.a.a.a   = arr[exp]  a = a[0];
+			//|TK_ID TK_ID FIN_LINEA											 								{}
+			//|TK_ID TK_ID TK_igual EXPRESIONARIT FIN_LINEA			 			 								{}
+			//|TK_ID MAS_ATRIBUTOS TK_igual EXPRESIONARIT FIN_LINEA 				 							{}
+			//|TK_ID MAS_ATRIBUTOS ARREGLO TK_igual EXPRESIONARIT FIN_LINEA 		 							{}
+			|ACCESSOATRIBUTO SIGNOS_COMPARACION EXPRESIONARIT FIN_LINEA					 						{}
 			//|TK_ID TK_igual ARREGLO FIN_LINEA																	{} // esta sustituye las dos de abajo
 			//|TK_ID TK_igual TK_llave_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_llave_cierre FIN_LINEA	{}
 			//|TK_ID TK_igual TK_llave_apertura EXPRESIONARIT TK_llave_cierre FIN_LINEA							{}
-			|TK_ID TK_par_apertura PARAMETROS_EXTRA TK_par_cierre FIN_LINEA 									{}
-			//|TK_ID TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA										{} //a(s)
+			|ACCESSOATRIBUTO TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA 								{}
+			|ACCESSOATRIBUTO TK_par_apertura EXPRESIONARIT PARAMETROS_EXTRA TK_par_cierre FIN_LINEA 			{}
+			//|TK_ID TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA										{} //a(s,5)
 			//|TK_ID TK_par_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_par_cierre FIN_LINEA				{} //a(s,d,[sddd])
-			|TK_ID TK_par_apertura  TK_par_cierre FIN_LINEA														{} //a()
-			|TK_ID TK_DECREMENTO FIN_LINEA 																		{}
-			|TK_ID TK_INCREMENTO FIN_LINEA																		{}
-			|TK_ID ARREGLO																						{}
-			|TK_ID TK_llave_apertura TK_llave_cierre															{}
-			|TK_ID ARREGLO TK_igual EXPRESIONARIT FIN_LINEA														{$$ = new AsignarValorArray($6,new AccesoArray($3,new Acceso($1,this._$.first_line,this._$.first_column), this._$.first_line,this._$.first_column), this._$.first_line,this._$.first_column);} // AGREGAR UN ARREGLO
-			//|TK_ID TK_llave_apertura EXPRESIONARIT TK_llave_cierre TK_igual TK_ID ARREGLO FIN_LINEA	{}
-			//|TK_ID TK_llave_apertura TK_llave_cierre TK_igual ARREGLO FIN_LINEA					{} 
-			|TK_ID FUNCIONES_ARREGLO															{}
+			|ACCESSOATRIBUTO TK_par_apertura  TK_par_cierre FIN_LINEA											{} //a() -- llamar una funcion 
+			|ACCESSOATRIBUTO TK_DECREMENTO FIN_LINEA 															{} //i++
+			|ACCESSOATRIBUTO TK_INCREMENTO FIN_LINEA															{} //i--
+			//|TK_ID ARREGLO																					{} a[] ; int[] 
+			//|TK_ID TK_llave_apertura TK_llave_cierre															{}
+			//|TK_ID ARREGLO TK_igual EXPRESIONARIT FIN_LINEA													{$$ = new AsignarValorArray($6,new AccesoArray($3,new Acceso($1,this._$.first_line,this._$.first_column), this._$.first_line,this._$.first_column), this._$.first_line,this._$.first_column);} // AGREGAR UN ARREGLO
+			//|TK_ID TK_llave_apertura EXPRESIONARIT TK_llave_cierre TK_igual TK_ID ARREGLO FIN_LINEA			{}
+			//|TK_ID TK_llave_apertura TK_llave_cierre TK_igual ARREGLO FIN_LINEA								{} 
+			//|TK_ID FUNCIONES_ARREGLO																			{}
 ;
 
-PARAMETROS_EXTRA: EXPRESIONARIT																	{console.log("si es correcto")}
-				//| ARREGLO																		{console.log("si es correcto")}
-				| EXPRESIONARIT TK_coma PARAMETROS_EXTRA										{console.log("si es correcto")}
+
+
+PARAMETROS_EXTRA: PARAMETROS_EXTRA	TK_coma EXPRESIONARIT											{console.log("si es correcto")}
+				//| ARREGLO																			{console.log("si es correcto")}
+				  |	TK_coma EXPRESIONARIT															{console.log("si es correcto")}
 				//| ARREGLO TK_coma PARAMETROS_EXTRA												{console.log("si es correcto")}
 ;
 
-
+/*
 MAS_ATRIBUTOS: MAS_ATRIBUTOS TK_punto TK_ID  													{}
 				|TK_punto TK_ID
 ;
+*/
 
 FUNCIONES_ARREGLO: TK_punto TK_PUSH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_pcoma		{}
 				|TK_punto TK_POP TK_par_apertura TK_par_cierre TK_pcoma							{}
@@ -485,10 +502,16 @@ MAS_PARAMETROS_FUNSION: MAS_PARAMETROS_FUNSION TK_coma TIPO_VALOR TK_ID		{$$ = $
 				|TK_coma TK_ID												{$$ = [new Parametro($2,null,null,this._$.first_line,this._$.first_column)];}
 ;
 
-RETURN: TK_RETURN EXPRESIONARIT FIN_LINEA															{}
-		| TK_RETURN TK_ID TK_par_apertura PARAMETRO_FUNSION TK_par_cierre FIN_LINEA					{}
-		| TK_RETURN  FIN_LINEA
+RETURN: TK_RETURN EXPRESIONARIT FIN_LINEA															{}		// return a+b;
+		| TK_RETURN TK_ID TK_par_apertura PARAMETRO_FUNSION TK_par_cierre FIN_LINEA					{}		//return (int a)   return(struc struc)    return (a a,b b)  return     ///duda
+		| TK_RETURN  FIN_LINEA																		{}
 ;
+
+BREAK: TK_BREAK TK_pcoma																			{$$ = new Break(this._$.first_line,this._$.first_column);}
+	| TK_CONTINUE TK_pcoma																			{$$ = new Continue(this._$.first_line,this._$.first_column);}	
+
+;
+
 
 CONDICIONALES: FUNCION_IF																	{$$ = $1}
 			| FUNCION_SWITCH																{$$ = $1}
@@ -535,36 +558,36 @@ FUNCION_ELSE:TK_ELSE TK_corchete_apertura INSTRUCCION2 TK_corchete_cierre	{$3.no
 
 ;
 
-FUNCION_SWITCH: TK_SWITCH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura   TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES TK_BREAK TK_pcoma TK_corchete_cierre													{$9.nombre= "AmbienteSwitch";
-																																																											$$ = new Switch( $3,$7,$9,null,this._$.first_line,this._$.first_column);
+FUNCION_SWITCH: TK_SWITCH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura   TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES  TK_corchete_cierre													{$9.nombre= "AmbienteSwitch";
+																																																											$$ = new Switch($3,$7,$9,null,this._$.first_line,this._$.first_column);
 																																																											}
-				|TK_SWITCH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura   TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES  TK_corchete_cierre																	{$9.nombre= "AmbienteSwitch";
-																																																											$$ = new Switch( $3,$7,$9,null,this._$.first_line,this._$.first_column);
+			  /*|TK_SWITCH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura   TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES  TK_corchete_cierre																	{$9.nombre= "AmbienteSwitch";
+																																																											$$ = new Switch($3,$7,$9,null,this._$.first_line,this._$.first_column);
 																																																											}
-				|TK_SWITCH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura   TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES TK_BREAK TK_pcoma  SENTENCIAS_CASE	TK_corchete_cierre								{$9.nombre= "AmbienteSwitch"; 
-																																																											var sentenciascase = $12;
+			  */|TK_SWITCH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura   TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES   SENTENCIAS_CASE	TK_corchete_cierre												{$9.nombre= "AmbienteSwitch"; 
+																																																											var sentenciascase = $10;
 																																																											while(sentenciascase!= null){
 																																																												sentenciascase.condicionswitch = $3;
 																																																												sentenciascase = sentenciascase.condiciondefault;
 																																																											}
-																																																											$$ = new Switch( $3,$7,$9,$12,this._$.first_line,this._$.first_column);
+																																																											$$ = new Switch( $3,$7,$9,$10,this._$.first_line,this._$.first_column);
 																																																											}
-				|TK_SWITCH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura   TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES  SENTENCIAS_CASE	TK_corchete_cierre													{$9.nombre= "AmbienteSwitch"; 
-																																																											var sentenciascase = $10;
+				/*|TK_SWITCH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura   TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES  SENTENCIAS_CASE	TK_corchete_cierre													{$9.nombre= "AmbienteSwitch"; 
+																																																											var sentenciascase = $9;
 																																																											var expresiones = $3;
 																																																											while(sentenciascase!= null){
 																																																												sentenciascase.condicionswitch = $3;
 																																																												expresiones.push(sentenciascase.instrucciones);
 																																																												sentenciascase = sentenciascase.condiciondefault;
 																																																											}
-																																																											$$ = new Switch( $3,$7,$9,$12,this._$.first_line,this._$.first_column);
+																																																											$$ = new Switch( $3,$7,$9,$10,this._$.first_line,this._$.first_column);
 																																																											}																																																											
-				|TK_SWITCH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura   TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES TK_BREAK TK_pcoma  TK_DEFAULT TK_dos_puntos LISTA_INSTRUCCIONES	TK_corchete_cierre  {$9.nombre= "AmbienteSwitch";
-																																																											$15.condicionswitch = $3;  $$ = new Switch( $3,$7,$9,$15,this._$.first_line,this._$.first_column);
+			*/|TK_SWITCH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura   TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES   TK_DEFAULT TK_dos_puntos LISTA_INSTRUCCIONES	TK_corchete_cierre  {$9.nombre= "AmbienteSwitch";
+																																																											$15.condicionswitch = $3;  $$ = new Switch( $3,$7,$9,$11,this._$.first_line,this._$.first_column);
 																																																											}
 ;
 
-SENTENCIAS_CASE: SENTENCIAS_CASE TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES TK_BREAK  TK_pcoma  							{
+SENTENCIAS_CASE: SENTENCIAS_CASE TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES 					 							{
 																																			console.log("entra en case:");
 																																			$4.nombre= "AmbienteCase";
 																																			var Vcase = new Switch($1.condicionswitch,$3,$5,null,this._$.first_line,this._$.first_column);
@@ -577,7 +600,7 @@ SENTENCIAS_CASE: SENTENCIAS_CASE TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INST
 																																			console.log("sube el valor nulo creo: "+$1.condicionswitch+"  aca tambien vacio creo anterior "+valorcondicion.condicionswitch);
 																																			$$ = $1;
 																																		}
-				| SENTENCIAS_CASE TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES TK_BREAK  TK_pcoma  	TK_DEFAULT TK_dos_puntos LISTA_INSTRUCCIONES				{
+				| SENTENCIAS_CASE TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES 	TK_DEFAULT TK_dos_puntos LISTA_INSTRUCCIONES				{
 																																			//console.log("case: "+$2.valor);
 																																			$4.nombre= "AmbienteCase";
 																																			var Vcase = new Switch($1.condicionswitch,$3,$5,$10,this._$.first_line,this._$.first_column);
@@ -604,7 +627,7 @@ SENTENCIAS_CASE: SENTENCIAS_CASE TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INST
 																																			$$ = $1;
 																																		} */
 																																		//|																			{$3.nombre= "AmbienteCaseDefault";$$ = new Switch(null,null,$3,true,this._$.first_line,this._$.first_column)}			
-				|TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES TK_BREAK TK_pcoma												{console.log("entra al solitario case");$4.nombre= "AmbienteCase";$$ = new Switch(null,$2,$4,null,this._$.first_line,this._$.first_column)}
+				|TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES 																{console.log("entra al solitario case");$4.nombre= "AmbienteCase";$$ = new Switch(null,$2,$4,null,this._$.first_line,this._$.first_column)}
 ;
 
 //FUN_DEFAULT:TK_DEFAULT TK_dos_puntos LISTA_INSTRUCCIONES																				{$3.nombre = "AmbienteDefault";$$ = $3}

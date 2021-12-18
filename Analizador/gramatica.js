@@ -365,7 +365,13 @@ console.log("el 1");console.log($$[$0-2]);console.log("el 3 en Parametros extra"
 																										this.$ =aux;
 break;
 case 141:
-console.log($$[$0]);this.$ = $$[$0];
+console.log([$$[$0]]);this.$ = [$$[$0]];
+break;
+case 154:
+console.log("LLAMADA FUNCION NATIVA "+$$[$0-3]);this.$ = new LlamadaFuncion("toInt",false,$$[$0-1],this._$.first_line,this._$.first_column);
+break;
+case 155:
+console.log("LLAMADA FUNCION NATIVA "+$$[$0-3]);this.$ = new LlamadaFuncion("toDouble",false,$$[$0-1],this._$.first_line,this._$.first_column);
 break;
 case 156: case 163:
 this.$ = [new Parametro($$[$0],$$[$0-1],null,this._$.first_line,this._$.first_column)];

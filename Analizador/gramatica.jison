@@ -338,7 +338,7 @@ VALORES: TK_CADENA															{var a = $1; var al=a.length; var c = a.substri
 		|TK_LENGTH TK_par_apertura  TK_par_cierre 							{}
 		|TK_TYPEOF TK_par_apertura EXPRESIONARIT TK_par_cierre				{}
 		|FUNCIONES_NATIVAS													{}
-		|TK_ID TK_par_apertura EXPRESIONARIT PARAMETROS_EXTRA TK_par_cierre						{console.log("LLAMADA VALORES 1");$$ = new LlamadaFuncion(new Acceso($1,this._$.first_line,this._$.first_column),true,[$3].concat($4),this._$.first_line,this._$.first_column);}
+		|TK_ID TK_par_apertura EXPRESIONARIT PARAMETROS_EXTRA TK_par_cierre		{console.log("LLAMADA VALORES 1");$$ = new LlamadaFuncion(new Acceso($1,this._$.first_line,this._$.first_column),true,[$3].concat($4),this._$.first_line,this._$.first_column);}
 		|TK_ID TK_par_apertura EXPRESIONARIT TK_par_cierre						{console.log("LLAMADA VALORES 2");$$ = new LlamadaFuncion(new Acceso($1,this._$.first_line,this._$.first_column),true,[$3],this._$.first_line,this._$.first_column);}
 ;
 
@@ -506,8 +506,10 @@ PARAMETROS: PARAMETROS TK_coma EXPRESIONARIT
 			|EXPRESIONARIT
 ;
 
-FUNCIONES_NATIVAS: TK_TOINT TK_par_apertura EXPRESIONARIT TK_par_cierre				{}
-				|TK_TODOUBLE TK_par_apertura EXPRESIONARIT TK_par_cierre			{}
+FUNCIONES_NATIVAS: TK_TOINT TK_par_apertura EXPRESIONARIT TK_par_cierre				{console.log("LLAMADA FUNCION NATIVA "+$1);$$ = new LlamadaFuncion("toInt",false,$3,this._$.first_line,this._$.first_column);}
+				//|TK_TOINT TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA		{console.log("LLAMADA FUNCION NATIVA "+$1);$$ = new LlamadaFuncion($1,false,$3,this._$.first_line,this._$.first_column);}
+				|TK_TODOUBLE TK_par_apertura EXPRESIONARIT TK_par_cierre			{console.log("LLAMADA FUNCION NATIVA "+$1);$$ = new LlamadaFuncion("toDouble",false,$3,this._$.first_line,this._$.first_column);}
+				//|TK_TODOUBLE TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA  {console.log("LLAMADA FUNCION NATIVA "+$1);$$ = new LlamadaFuncion($1,false,$3,this._$.first_line,this._$.first_column);}
 
 ;
 

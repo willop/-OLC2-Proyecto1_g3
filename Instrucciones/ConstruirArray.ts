@@ -19,10 +19,10 @@ class ConstruirArray implements Instruccion {
             for (let i = 0; i < this.expresion.length; i++) {
                 var valor = this.expresion[i].interpretar(entorno, recolector);
                 valores[i] = valor;
-                if(tipoAnterior!=null &&valor.tipo != tipoAnterior){
+                /*if(tipoAnterior!=null &&valor.tipo != tipoAnterior){
                     throw new ETipoValorArray(this.linea,this.columna,"ERROR TIPO VARIABLE ARRAY",null);
                 }
-                tipoAnterior = valor.tipo;
+                tipoAnterior = valor.tipo;*/
             }
             return new Return(valores, Tipo.ARRAY,tipoAnterior);
 

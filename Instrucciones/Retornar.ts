@@ -11,18 +11,18 @@ class Retornar implements Instruccion {
     
     interpretar(entorno:any,recolector:any){
         try{
-            if(this.expresion == null){
+            if(this.expresion != null){
                 var exp = this.expresion.interpretar(entorno,recolector);
                 if(exp.tipo == Tipo.STRUCT && !(this.expresion instanceof LlamadaFuncion)){
-                    var value = entorno.ObtenerSimbolo(this.expresion.id);
+                    exp = entorno.ObtenerSimbolo(this.expresion.id);
                 }
                 return {
-                    "value":value,
+                    "valor":exp,
                     "tipo":Tipo.RETURN
                 }
             }else{
                 return {
-                    "value":new Literal(null,Tipo.NULL,this.linea,this.columna),
+                    "valor":new Literal(null,Tipo.NULL,this.linea,this.columna),
                     "tipo":Tipo.RETURN
                 }
             }

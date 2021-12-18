@@ -21,8 +21,12 @@ class DeclararArray implements Instruccion {
             }
             var value = this.expresiones.interpretar(entorno,recolector);
             if(!(this.expresiones instanceof ConstruirArray) && !(this.expresiones instanceof LlamadaFuncion)){
-                throw new TipoIncorrecto(this.linea,this.columna,"ERROR EN DECLARACION - VALOR NO ES UN ARRAY" + Tipo[value.tipo] +" "+ Tipo[this.tipo],entorno);
+                if(value.tipo != Tipo.ARRAY){
+                    throw new TipoIncorrecto(this.linea,this.columna,"ERROR EN DECLARACION - VALOR NO ES UN ARRAY " + Tipo[value.tipo] +" "+ Tipo[this.tipo],entorno);
+                }
+                //throw new TipoIncorrecto(this.linea,this.columna,"ERROR EN DECLARACION - VALOR NO ES UN ARRAY" + Tipo[value.tipo] +" "+ Tipo[this.tipo],entorno);
             }
+
             // IMPLICITAMENTE SABEMOS QUE ESTA CLASE ES TIPO ARRAY POR ESO SOLO SE VALIDA AUX TIPO
             //console.log("el tipo: "+this.tipo +"  y auxtipo: "+value.tipo);
             /*if(this.tipo != value.auxtipo){

@@ -338,6 +338,8 @@ VALORES: TK_CADENA															{var a = $1; var al=a.length; var c = a.substri
 		|TK_LENGTH TK_par_apertura  TK_par_cierre 							{}
 		|TK_TYPEOF TK_par_apertura EXPRESIONARIT TK_par_cierre				{}
 		|FUNCIONES_NATIVAS													{}
+		|TK_ID TK_par_apertura EXPRESIONARIT PARAMETROS_EXTRA TK_par_cierre						{console.log("LLAMADA VALORES 1");$$ = new LlamadaFuncion(new Acceso($1,this._$.first_line,this._$.first_column),true,[$3].concat($4),this._$.first_line,this._$.first_column);}
+		|TK_ID TK_par_apertura EXPRESIONARIT TK_par_cierre						{console.log("LLAMADA VALORES 2");$$ = new LlamadaFuncion(new Acceso($1,this._$.first_line,this._$.first_column),true,[$3],this._$.first_line,this._$.first_column);}
 ;
 
 ARREGLO: TK_llave_apertura LISTA_ARREGLO TK_llave_cierre										{$$=$2;}
@@ -387,7 +389,7 @@ EXPRESIONARIT
 	| EXPRESIONARIT TK_MODULO EXPRESIONARIT       										{$$ = new Aritmetica($1,$3,TipoAritmetica.MODULO,this._$.first_line,this._$.first_column);}
 	| EXPRESIONARIT TK_pregunta EXPRESIONARIT TK_dos_puntos EXPRESIONARIT 				{$$ = new Ternario($1,$3,$5,this._$.first_line,this._$.first_column);}
 	| TK_llave_apertura LISTA_ARREGLO TK_llave_cierre									{var nuevo = new ConstruirArray($2,this._$.first_line,this._$.first_column); $$=nuevo;}
-	| TK_ID TK_par_apertura PARAMETRO_FUNSION TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre					{var listainst =$7; listainst.crearentorno=false; $$ = new Funcion($1,$2,$4,listainst,this._$.first_line,this._$.first_column);}
+	//| TK_ID TK_par_apertura EXPRESIONARIT PARAMETROS_EXTRA TK_par_cierre 	{$$ = new LlamadaFuncion($1,true,$3,this._$.first_line,this._$.first_column);}
 	| VALORES 																			{$$ = $1;}
 ;
 
@@ -411,7 +413,7 @@ ACCESSOATRIBUTO : ACCESSOATRIBUTO TK_punto TK_ID			 													{new AccesoStru
 				| ACCESSOATRIBUTO TK_llave_apertura EXPRESIONARIT PARAMETROS_EXTRA TK_llave_cierre 				{$$ = new AccesoArray([$3].concat($4),$1, this._$.first_line,this._$.first_column);} // 	
 			    //| TK_ID LLAMADA_FUNCION																			{}
 				| TK_ID																							{$$ = new Acceso($1,this._$.first_line,this._$.first_column);}
-				| TK_ID TK_ID																					//{new sdfasdf}
+				//| TK_ID TK_ID																					//{new sdfasdf}
 				//| TK_ID TK_par_apertura PARAMETRO_FUNSION TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre					{var listainst =$7; listainst.crearentorno=false; $$ = new Funcion($1,$2,$4,listainst,this._$.first_line,this._$.first_column);}
 ;
 
@@ -438,12 +440,13 @@ ASIGNACION: ACCESSOATRIBUTO TK_igual EXPRESIONARIT FIN_LINEA					 								{//con
 			//|TK_ID TK_igual TK_llave_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_llave_cierre FIN_LINEA	{}
 			//|TK_ID TK_igual TK_llave_apertura EXPRESIONARIT TK_llave_cierre FIN_LINEA							{}
 			|ACCESSOATRIBUTO TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA 								{$$ = new LlamadaFuncion($1,false,[$3],this._$.first_line,this._$.first_column);}
-			|ACCESSOATRIBUTO TK_par_apertura EXPRESIONARIT PARAMETROS_EXTRA TK_par_cierre FIN_LINEA 			{$$= new LlamadaFuncion($1,false,[$3].concat($4),this._$.first_line,this._$.first_column);} // suma(5,6);
+			|ACCESSOATRIBUTO TK_par_apertura EXPRESIONARIT PARAMETROS_EXTRA TK_par_cierre FIN_LINEA 			{console.log("el 3");console.log($3);console.log("el 4");console.log($4);$$= new LlamadaFuncion($1,false,[$3].concat($4),this._$.first_line,this._$.first_column);} // suma(5,6);
 			//|TK_ID TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA										{} //a(s,5)
 			//|TK_ID TK_par_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_par_cierre FIN_LINEA				{} [s,d,[sddd]]
 			|ACCESSOATRIBUTO TK_par_apertura  TK_par_cierre FIN_LINEA											{} //a() -- llamar una funcion 
 			|ACCESSOATRIBUTO TK_DECREMENTO FIN_LINEA 															{} //i++
 			|ACCESSOATRIBUTO TK_INCREMENTO FIN_LINEA															{} //i--
+			//|ACCESSOATRIBUTO TK_par_apertura EXPRESIONARIT PARAMETROS_EXTRA TK_par_cierre						{$$ = new LlamadaFuncion($1,true,$3,this._$.first_line,this._$.first_column);}
 			//|TK_ID ARREGLO																					{} a[] ; int[] 
 			//|TK_ID TK_llave_apertura TK_llave_cierre															{}
 			//|TK_ID ARREGLO TK_igual EXPRESIONARIT FIN_LINEA													{$$ = new AsignarValorArray($6,new AccesoArray($3,new Acceso($1,this._$.first_line,this._$.first_column), this._$.first_line,this._$.first_column), this._$.first_line,this._$.first_column);} // AGREGAR UN ARREGLO
@@ -454,8 +457,19 @@ ASIGNACION: ACCESSOATRIBUTO TK_igual EXPRESIONARIT FIN_LINEA					 								{//con
 
 
 
-PARAMETROS_EXTRA: PARAMETROS_EXTRA	TK_coma EXPRESIONARIT											{$$ = $1.push($3);}
-				  |	TK_coma EXPRESIONARIT															{$$ = [$2]}
+PARAMETROS_EXTRA: PARAMETROS_EXTRA	TK_coma EXPRESIONARIT											{console.log("el 1");console.log($1);console.log("el 3 en Parametros extra");console.log($3);
+																										if(!($1 instanceof Array)){
+																											console.log("dentro de instance of");
+																											$1 = [$1];				
+																										}
+																										
+																										var aux = $1.push($3);
+																										console.log("aca esta aux");
+																										console.log(aux);
+																										console.log("aca esta $1");
+																										console.log($1);
+																										$$ =aux;}
+				  |	TK_coma EXPRESIONARIT															{console.log([$2]);$$ = [$2];}
 ;
 
 /*
@@ -521,9 +535,9 @@ MAS_PARAMETROS_FUNSION: MAS_PARAMETROS_FUNSION TK_coma TIPO_VALOR TK_ID		{$$ = $
 				|TK_coma TK_ID												{$$ = [new Parametro($2,null,null,this._$.first_line,this._$.first_column)];}
 ;
 
-RETURN: TK_RETURN EXPRESIONARIT FIN_LINEA															{}		// return a+b;
-		| TK_RETURN TK_ID TK_par_apertura PARAMETRO_FUNSION TK_par_cierre FIN_LINEA					{}		//return (int a)   return(struc struc)    return (a a,b b)  return     ///duda
-		| TK_RETURN  FIN_LINEA																		{}
+RETURN: TK_RETURN EXPRESIONARIT FIN_LINEA															{$$ = new Retornar($2,this._$.first_line,this._$.first_column);}		// return a+b;
+		//| TK_RETURN TK_ID TK_par_apertura PARAMETRO_FUNSION TK_par_cierre FIN_LINEA					{}		//return (int a)   return(struc struc)    return (a a,b b)  return     ///duda
+		| TK_RETURN  FIN_LINEA																		{$$ = new Retornar(null,this._$.first_line,this._$.first_column);}
 ;
 
 BREAK: TK_BREAK TK_pcoma																			{$$ = new Break(this._$.first_line,this._$.first_column);}

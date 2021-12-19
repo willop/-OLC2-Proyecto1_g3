@@ -26,6 +26,17 @@ enum TipoAritmetica{
     POW
 }
 
+enum TipoFuncionNativa{
+    INTPARSE,
+    DOUBLEPARSE,
+    BOOLEANPARSE,
+    TRUNCAR,
+    TOINT,
+    TODOUBLE,
+    STRING,
+    TYPEOF
+}
+
 enum TipoLogica{
     AND,
     OR,

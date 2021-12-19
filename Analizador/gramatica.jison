@@ -336,10 +336,14 @@ VALORES: TK_CADENA															{var a = $1; var al=a.length; var c = a.substri
 		|TK_SUBSTRING TK_par_apertura VALORES TK_coma VALORES TK_par_cierre {}
 		|TK_TOUPPERCASE TK_par_apertura  TK_par_cierre						{}
 		|TK_LENGTH TK_par_apertura  TK_par_cierre 							{}
-		|TK_TYPEOF TK_par_apertura EXPRESIONARIT TK_par_cierre				{}
+		|TK_TYPEOF TK_par_apertura EXPRESIONARIT TK_par_cierre				{$$ = new FuncionesNativas($3,TipoFuncionNativa.TYPEOF,this._$.first_line,this._$.first_column)}
+		|TK_INT TK_punto TK_PARSE EXPRESIONARIT 							{$$ = new FuncionesNativas($4,TipoFuncionNativa.INTPARSE,this._$.first_line,this._$.first_column)}
+		|TK_DOUBLE TK_punto TK_PARSE EXPRESIONARIT 							{$$ = new FuncionesNativas($4,TipoFuncionNativa.DOUBLEPARSE,this._$.first_line,this._$.first_column)}
+		|TK_BOOLEAN TK_punto TK_PARSE EXPRESIONARIT 						{$$ = new FuncionesNativas($4,TipoFuncionNativa.BOOLEANPARSE,this._$.first_line,this._$.first_column)}
 		|FUNCIONES_NATIVAS													{}
-		|TK_ID TK_par_apertura EXPRESIONARIT PARAMETROS_EXTRA TK_par_cierre		{console.log("LLAMADA VALORES 1");$$ = new LlamadaFuncion(new Acceso($1,this._$.first_line,this._$.first_column),true,[$3].concat($4),this._$.first_line,this._$.first_column);}
-		|TK_ID TK_par_apertura EXPRESIONARIT TK_par_cierre						{console.log("LLAMADA VALORES 2");$$ = new LlamadaFuncion(new Acceso($1,this._$.first_line,this._$.first_column),true,[$3],this._$.first_line,this._$.first_column);}
+		|TK_STRING TK_par_apertura EXPRESIONARIT TK_par_cierre				{$$ = new FuncionesNativas($3,TipoFuncionNativa.STRING,this._$.first_line,this._$.first_column)}
+		|TK_ID TK_par_apertura EXPRESIONARIT PARAMETROS_EXTRA TK_par_cierre		{$$ = new LlamadaFuncion(new Acceso($1,this._$.first_line,this._$.first_column),true,[$3].concat($4),this._$.first_line,this._$.first_column);}
+		|TK_ID TK_par_apertura EXPRESIONARIT TK_par_cierre						{$$ = new LlamadaFuncion(new Acceso($1,this._$.first_line,this._$.first_column),true,[$3],this._$.first_line,this._$.first_column);}
 ;
 
 ARREGLO: TK_llave_apertura LISTA_ARREGLO TK_llave_cierre										{$$=$2;}
@@ -377,12 +381,17 @@ EXPRESIONARIT
 	| TK_par_apertura EXPRESIONARIT TK_par_cierre       								{$$ = $2}
 	| TK_not EXPRESIONARIT																{$$ = new Logica($2,$2,TipoLogica.NOT,this._$.first_line,this._$.first_column);}
 	| TK_SIN TK_par_apertura EXPRESIONARIT TK_par_cierre								{$$ = new Aritmetica($3,$3,TipoAritmetica.SENO,this._$.first_line,this._$.first_column)}
+	| TK_SIN TK_numeral TK_par_apertura EXPRESIONARIT TK_par_cierre						{$$ = new Aritmetica($4,$4,TipoAritmetica.SENO,this._$.first_line,this._$.first_column)}
 	| TK_COS TK_par_apertura EXPRESIONARIT TK_par_cierre								{$$ = new Aritmetica($3,$3,TipoAritmetica.COSENO,this._$.first_line,this._$.first_column)}
+	| TK_COS TK_numeral TK_par_apertura EXPRESIONARIT TK_par_cierre					    {$$ = new Aritmetica($4,$4,TipoAritmetica.COSENO,this._$.first_line,this._$.first_column)}
 	| TK_LOG TK_par_apertura EXPRESIONARIT TK_par_cierre								{$$ = new Aritmetica($3,$3,TipoAritmetica.LOGARITMO,this._$.first_line,this._$.first_column)}
+	| TK_LOG TK_numeral TK_par_apertura EXPRESIONARIT TK_par_cierre						{$$ = new Aritmetica($4,$4,TipoAritmetica.LOGARITMO,this._$.first_line,this._$.first_column)}
 	| TK_TAN TK_par_apertura EXPRESIONARIT TK_par_cierre								{$$ = new Aritmetica($3,$3,TipoAritmetica.TANGENTE,this._$.first_line,this._$.first_column)}
+	| TK_TAN TK_numeral TK_par_apertura EXPRESIONARIT TK_par_cierre						{$$ = new Aritmetica($4,$4,TipoAritmetica.TANGENTE,this._$.first_line,this._$.first_column)}
 	| TK_SQRT TK_par_apertura EXPRESIONARIT TK_par_cierre								{$$ = new Aritmetica($3,$3,TipoAritmetica.RAIZ,this._$.first_line,this._$.first_column)}
+	| TK_SQRT TK_numeral TK_par_apertura EXPRESIONARIT TK_par_cierre				    {$$ = new Aritmetica($4,$4,TipoAritmetica.RAIZ,this._$.first_line,this._$.first_column)}
 	| TK_POW TK_par_apertura EXPRESIONARIT TK_coma EXPRESIONARIT TK_par_cierre			{$$ = new Aritmetica($3,$5,TipoAritmetica.POW,this._$.first_line,this._$.first_column)}
-	| TK_PARSE TK_par_apertura EXPRESIONARIT TK_par_cierre								{}
+	| TK_POW TK_numeral TK_par_apertura EXPRESIONARIT TK_coma EXPRESIONARIT TK_par_cierre	{$$ = new Aritmetica($4,$6,TipoAritmetica.POW,this._$.first_line,this._$.first_column)}
 	| TK_numeral EXPRESIONARIT															{}
 	| EXPRESIONARIT TK_concat EXPRESIONARIT       										{ var a = $1; var al=a.length; var b = $3; var bl = b.length; var c = a.substring(1,al-1); var d = b.substring(1,bl-1); var total = c+d;  $$ = total;}
 	| EXPRESIONARIT TK_potencia EXPRESIONARIT		       								{ $$ = new Potencia($1,$3,this._$.first_line,this._$.first_column);}
@@ -457,19 +466,16 @@ ASIGNACION: ACCESSOATRIBUTO TK_igual EXPRESIONARIT FIN_LINEA					 								{//con
 
 
 
-PARAMETROS_EXTRA: PARAMETROS_EXTRA	TK_coma EXPRESIONARIT											{console.log("el 1");console.log($1);console.log("el 3 en Parametros extra");console.log($3);
-																										if(!($1 instanceof Array)){
-																											console.log("dentro de instance of");
-																											$1 = [$1];				
-																										}
+PARAMETROS_EXTRA: PARAMETROS_EXTRA	TK_coma EXPRESIONARIT											{
+																										//if(!($1 instanceof Array)){
+																											//console.log("dentro de instance of");
+																											//$1 = [$1];				
+																										//}
 																										
-																										var aux = $1.push($3);
-																										console.log("aca esta aux");
-																										console.log(aux);
-																										console.log("aca esta $1");
-																										console.log($1);
-																										$$ =aux;}
-				  |	TK_coma EXPRESIONARIT															{console.log([$2]);$$ = [$2];}
+																										var aux = $1.concat($3);
+																										$$ =aux;
+																										}
+				  |	TK_coma EXPRESIONARIT															{$$ = [$2];}
 ;
 
 /*
@@ -506,9 +512,9 @@ PARAMETROS: PARAMETROS TK_coma EXPRESIONARIT
 			|EXPRESIONARIT
 ;
 
-FUNCIONES_NATIVAS: TK_TOINT TK_par_apertura EXPRESIONARIT TK_par_cierre				{console.log("LLAMADA FUNCION NATIVA "+$1);$$ = new LlamadaFuncion("toInt",false,$3,this._$.first_line,this._$.first_column);}
+FUNCIONES_NATIVAS: TK_TOINT TK_par_apertura EXPRESIONARIT TK_par_cierre				{$$ = new FuncionesNativas($3,TipoFuncionNativa.TOINT,this._$.first_line,this._$.first_column)}
 				//|TK_TOINT TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA		{console.log("LLAMADA FUNCION NATIVA "+$1);$$ = new LlamadaFuncion($1,false,$3,this._$.first_line,this._$.first_column);}
-				|TK_TODOUBLE TK_par_apertura EXPRESIONARIT TK_par_cierre			{console.log("LLAMADA FUNCION NATIVA "+$1);$$ = new LlamadaFuncion("toDouble",false,$3,this._$.first_line,this._$.first_column);}
+				  |TK_TODOUBLE TK_par_apertura EXPRESIONARIT TK_par_cierre			{$$ = new FuncionesNativas($3,TipoFuncionNativa.TODOUBLE,this._$.first_line,this._$.first_column)}
 				//|TK_TODOUBLE TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA  {console.log("LLAMADA FUNCION NATIVA "+$1);$$ = new LlamadaFuncion($1,false,$3,this._$.first_line,this._$.first_column);}
 
 ;
@@ -529,9 +535,9 @@ PARAMETRO_FUNSION: TIPO_VALOR TK_ID							{$$ = [new Parametro($2,$1,null,this._
 				| TK_ID TK_ID MAS_PARAMETROS_FUNSION		{$$ = [new Parametro($2,Tipo.STRUCT,$1,this._$.first_line,this._$.first_column)].concat($3);}
 ;
 
-MAS_PARAMETROS_FUNSION: MAS_PARAMETROS_FUNSION TK_coma TIPO_VALOR TK_ID		{$$ = $1.push(new Parametro($4,$3,null,this._$.first_line,this._$.first_column));}
-				|MAS_PARAMETROS_FUNSION TK_coma TK_ID TK_ID					{$$ = $1.push(new Parametro($4,Tipo.STRUCT,$3,this._$.first_line,this._$.first_column));}
-				|MAS_PARAMETROS_FUNSION TK_coma TK_ID 						{$$ = $1.push(new Parametro($3,null,null,this._$.first_line,this._$.first_column));}
+MAS_PARAMETROS_FUNSION: MAS_PARAMETROS_FUNSION TK_coma TIPO_VALOR TK_ID		{$$ = $1.concat(new Parametro($4,$3,null,this._$.first_line,this._$.first_column));}
+				|MAS_PARAMETROS_FUNSION TK_coma TK_ID TK_ID					{$$ = $1.concat(new Parametro($4,Tipo.STRUCT,$3,this._$.first_line,this._$.first_column));}
+				|MAS_PARAMETROS_FUNSION TK_coma TK_ID 						{$$ = $1.concat(new Parametro($3,null,null,this._$.first_line,this._$.first_column));}
 				|TK_coma TIPO_VALOR TK_ID									{$$ = [new Parametro($3,$2,null,this._$.first_line,this._$.first_column)];}
 				|TK_coma TK_ID TK_ID										{$$ = [new Parametro($3,Tipo.STRUCT,$2,this._$.first_line,this._$.first_column)];}
 				|TK_coma TK_ID												{$$ = [new Parametro($2,null,null,this._$.first_line,this._$.first_column)];}
@@ -587,7 +593,7 @@ FUNCION_ELSEIF: FUNCION_ELSEIF TK_ELSEIF TK_par_apertura EXPRESIONARIT TK_par_ci
 			//|TK_ELSEIF TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre 				 		{}
 ;	
 
-FUNCION_ELSE:TK_ELSE TK_corchete_apertura INSTRUCCION2 TK_corchete_cierre	{$3.nombre = "AmbienteElse";$$ = $3}	
+FUNCION_ELSE:TK_ELSE TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre	{$3.nombre = "AmbienteElse";$$ = $3}	
 			|TK_ELSE INSTRUCCION2 											{$2.nombre = "AmbienteElse";$$ = $2}
 			//| MAS_SALTOS_LINEA TK_ELSE TK_corchete_apertura INSTRUCCIONES TK_corchete_cierre
 

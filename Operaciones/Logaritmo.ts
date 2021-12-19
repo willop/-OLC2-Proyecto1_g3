@@ -1,7 +1,9 @@
 class Logaritmo {
     tipo = TipoAritmetica.LOGARITMO;
     logaritmo(izquierda: any, derecha: any): any {
-        if (derecha.tipo == Tipo.INTEGER) {                
+        if(derecha.tipo == Tipo.ARRAY){
+            return this.LogaritmoEjecutarArreglo(izquierda, derecha);
+        }else if (derecha.tipo == Tipo.INTEGER) {                
                 return this.LogaritmoEjecutar(izquierda, derecha);
         }else if(derecha.tipo == Tipo.DOUBLE){
             return this.LogaritmoEjecutar(izquierda, derecha);
@@ -21,6 +23,14 @@ class Logaritmo {
             return new Return(Math.log10(derecha.valor), Tipo.DOUBLE);
         }
         
+    }
+
+    LogaritmoEjecutarArreglo(izquierda: any, derecha: any) {
+        var nuevoArreglo=[];
+        for(var i = 0; i<derecha.valor.length; i++){
+            nuevoArreglo[i] = Math.log10(derecha.valor[i].valor);
+        }
+        return new Return(nuevoArreglo, Tipo.INTEGER);
     }
 
 }

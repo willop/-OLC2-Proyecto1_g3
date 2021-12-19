@@ -2,7 +2,9 @@ class Tangente {
     tipo = TipoAritmetica.TANGENTE;
     tangente(izquierda: any, derecha: any): any {
         //IZQUIERDA CON INT Y SUS DERIVACIONES
-        if (derecha.tipo == Tipo.INTEGER) {                
+        if(derecha.tipo == Tipo.ARRAY){
+            return this.TangenteEjecutarArreglo(izquierda, derecha);
+        }else if (derecha.tipo == Tipo.INTEGER) {                
                 return this.TangenteEjecutar(izquierda, derecha);
         }else if(derecha.tipo == Tipo.DOUBLE){
             return this.TangenteEjecutar(izquierda, derecha);
@@ -22,6 +24,14 @@ class Tangente {
             return new Return(Math.tan(derecha.valor), Tipo.DOUBLE);
         }
         
+    }
+
+    TangenteEjecutarArreglo(izquierda: any, derecha: any) {
+        var nuevoArreglo=[];
+        for(var i = 0; i<derecha.valor.length; i++){
+            nuevoArreglo[i] = Math.tan(derecha.valor[i].valor);
+        }
+        return new Return(nuevoArreglo, Tipo.INTEGER);
     }
 
 }

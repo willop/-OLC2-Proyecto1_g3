@@ -1,7 +1,9 @@
 class Raiz {
     tipo = TipoAritmetica.RAIZ;
     raiz(izquierda: any, derecha: any): any {
-        if (derecha.tipo == Tipo.INTEGER) {                
+        if(derecha.tipo == Tipo.ARRAY){
+            return this.RaizEjecutarArreglo(izquierda, derecha);
+        }else if (derecha.tipo == Tipo.INTEGER) {                
                 return this.RaizEjecutar(izquierda, derecha);
         }else if(derecha.tipo == Tipo.DOUBLE){
             return this.RaizEjecutar(izquierda, derecha);
@@ -21,6 +23,14 @@ class Raiz {
             return new Return(Math.sqrt(derecha.valor), Tipo.DOUBLE);
         }
         
+    }
+
+    RaizEjecutarArreglo(izquierda: any, derecha: any) {
+        var nuevoArreglo=[];
+        for(var i = 0; i<derecha.valor.length; i++){
+            nuevoArreglo[i] = Math.sqrt(derecha.valor[i].valor);
+        }
+        return new Return(nuevoArreglo, Tipo.INTEGER);
     }
 
 }

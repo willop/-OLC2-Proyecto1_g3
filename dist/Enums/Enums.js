@@ -27,6 +27,17 @@ var TipoAritmetica;
     TipoAritmetica[TipoAritmetica["LOGARITMO"] = 9] = "LOGARITMO";
     TipoAritmetica[TipoAritmetica["POW"] = 10] = "POW";
 })(TipoAritmetica || (TipoAritmetica = {}));
+var TipoFuncionNativa;
+(function (TipoFuncionNativa) {
+    TipoFuncionNativa[TipoFuncionNativa["INTPARSE"] = 0] = "INTPARSE";
+    TipoFuncionNativa[TipoFuncionNativa["DOUBLEPARSE"] = 1] = "DOUBLEPARSE";
+    TipoFuncionNativa[TipoFuncionNativa["BOOLEANPARSE"] = 2] = "BOOLEANPARSE";
+    TipoFuncionNativa[TipoFuncionNativa["TRUNCAR"] = 3] = "TRUNCAR";
+    TipoFuncionNativa[TipoFuncionNativa["TOINT"] = 4] = "TOINT";
+    TipoFuncionNativa[TipoFuncionNativa["TODOUBLE"] = 5] = "TODOUBLE";
+    TipoFuncionNativa[TipoFuncionNativa["STRING"] = 6] = "STRING";
+    TipoFuncionNativa[TipoFuncionNativa["TYPEOF"] = 7] = "TYPEOF";
+})(TipoFuncionNativa || (TipoFuncionNativa = {}));
 var TipoLogica;
 (function (TipoLogica) {
     TipoLogica[TipoLogica["AND"] = 0] = "AND";

@@ -3,7 +3,10 @@ class Pow {
     pow(izquierda: any, derecha: any): any {
         console.log("EL TIPO DE DERECHA afuera ES: "+Tipo[derecha.tipo]);
 
-        if(izquierda.tipo == Tipo.BOOLEAN || izquierda.tipo == Tipo.STRING){
+        if(izquierda.tipo == Tipo.ARRAY){
+            return this.PowEjecutarArreglo(izquierda,derecha);
+
+        }else if(izquierda.tipo == Tipo.BOOLEAN || izquierda.tipo == Tipo.STRING){
             throw new ErrorOperacion(0,0,"NO SE PUEDE ELEVAR "+Tipo[izquierda.tipo],null);
 
         }else{
@@ -37,6 +40,16 @@ class Pow {
         }
         
         
+    }
+
+    PowEjecutarArreglo(izquierda:any,derecha:any){
+
+        var nuevoArreglo=[];
+        for(var i = 0; i<izquierda.valor.length; i++){
+            nuevoArreglo[i] = Math.pow(izquierda.valor[i].valor,derecha.valor);
+        }
+        return new Return(nuevoArreglo, Tipo.INTEGER);
+
     }
 
 }

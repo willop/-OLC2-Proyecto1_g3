@@ -17,31 +17,7 @@ class LlamadaFuncion implements Expresion {
         try{
             //validar que sea acceso para
 
-            if(!(this.id instanceof Acceso)){
-                //validar si es una funcion nativa que empiece sin id
-                console.log(this.id)
-                if(this.id == "toInt"){
-                    console.log("Entro a toint y el parametro es: " + this.parametros.valor);
-                    //no se como retornar este valor asi que lo imprimire en consola 
-                    var result = parseInt(this.parametros.valor)
-                    if(!isNaN(result)){
-                        console.log(result);
-                        return;
-                    }
-                    else{
-                        throw new ErrorGeneral(this.linea, this.columna, "TIPOS PARAMETROS EN FUNCIONES NATIVAS INCORRECTOS", entorno);
-                    }
-                }else if(this.id == "toDouble"){
-                    //aca igual
-                    var result =parseFloat(this.parametros.valor)
-                    if(!isNaN(result)){
-                        console.log(result);
-                        return;
-                    }
-                    else{
-                        throw new ErrorGeneral(this.linea, this.columna, "TIPOS PARAMETROS EN FUNCIONES NATIVAS INCORRECTOS", entorno);
-                    }
-                }
+            if(!(this.id instanceof Acceso)){               
 
                 throw new ErrorGeneral(this.linea, this.columna, "ERROR NO ES UN ACCESO", entorno);
             }
@@ -52,6 +28,11 @@ class LlamadaFuncion implements Expresion {
             var funcion = entorno.obtenerfuncion(nuevoid);
 
             if(funcion != null){
+
+                console.log("this parametros length");
+                console.log(this.parametros.length);
+                console.log("funcionparametros length");
+                console.log(funcion.parametros.length);
             
                 if(this.parametros.length != funcion.parametros.length){
                     throw new ErrorGeneral(this.linea, this.columna, "ERROR TAMAñO DE PARAMETROS", entorno); 

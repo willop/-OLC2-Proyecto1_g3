@@ -5,7 +5,10 @@ class Coseno {
     }
     coseno(izquierda, derecha) {
         //IZQUIERDA CON INT Y SUS DERIVACIONES
-        if (derecha.tipo == Tipo.INTEGER) {
+        if (derecha.tipo == Tipo.ARRAY) {
+            return this.cosenoEjecutarArreglo(izquierda, derecha);
+        }
+        else if (derecha.tipo == Tipo.INTEGER) {
             return this.cosenoEjecutar(izquierda, derecha);
         }
         else if (derecha.tipo == Tipo.DOUBLE) {
@@ -26,5 +29,12 @@ class Coseno {
         else {
             return new Return(Math.cos(derecha.valor), Tipo.DOUBLE);
         }
+    }
+    cosenoEjecutarArreglo(izquierda, derecha) {
+        var nuevoArreglo = [];
+        for (var i = 0; i < derecha.valor.length; i++) {
+            nuevoArreglo[i] = Math.cos(derecha.valor[i].valor);
+        }
+        return new Return(nuevoArreglo, Tipo.INTEGER);
     }
 }

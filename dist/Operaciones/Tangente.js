@@ -5,7 +5,10 @@ class Tangente {
     }
     tangente(izquierda, derecha) {
         //IZQUIERDA CON INT Y SUS DERIVACIONES
-        if (derecha.tipo == Tipo.INTEGER) {
+        if (derecha.tipo == Tipo.ARRAY) {
+            return this.TangenteEjecutarArreglo(izquierda, derecha);
+        }
+        else if (derecha.tipo == Tipo.INTEGER) {
             return this.TangenteEjecutar(izquierda, derecha);
         }
         else if (derecha.tipo == Tipo.DOUBLE) {
@@ -26,5 +29,12 @@ class Tangente {
         else {
             return new Return(Math.tan(derecha.valor), Tipo.DOUBLE);
         }
+    }
+    TangenteEjecutarArreglo(izquierda, derecha) {
+        var nuevoArreglo = [];
+        for (var i = 0; i < derecha.valor.length; i++) {
+            nuevoArreglo[i] = Math.tan(derecha.valor[i].valor);
+        }
+        return new Return(nuevoArreglo, Tipo.INTEGER);
     }
 }

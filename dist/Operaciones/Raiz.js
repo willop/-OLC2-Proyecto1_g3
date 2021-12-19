@@ -4,7 +4,10 @@ class Raiz {
         this.tipo = TipoAritmetica.RAIZ;
     }
     raiz(izquierda, derecha) {
-        if (derecha.tipo == Tipo.INTEGER) {
+        if (derecha.tipo == Tipo.ARRAY) {
+            return this.RaizEjecutarArreglo(izquierda, derecha);
+        }
+        else if (derecha.tipo == Tipo.INTEGER) {
             return this.RaizEjecutar(izquierda, derecha);
         }
         else if (derecha.tipo == Tipo.DOUBLE) {
@@ -25,5 +28,12 @@ class Raiz {
         else {
             return new Return(Math.sqrt(derecha.valor), Tipo.DOUBLE);
         }
+    }
+    RaizEjecutarArreglo(izquierda, derecha) {
+        var nuevoArreglo = [];
+        for (var i = 0; i < derecha.valor.length; i++) {
+            nuevoArreglo[i] = Math.sqrt(derecha.valor[i].valor);
+        }
+        return new Return(nuevoArreglo, Tipo.INTEGER);
     }
 }

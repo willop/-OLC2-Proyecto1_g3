@@ -11,6 +11,14 @@ class ExpComa implements Instruccion {
     }
     
     interpretar(entorno:any,recolector:any){
+
+
+            this.expresionder = this.expresionder.interpretar(entorno,recolector);
+            console.log(this.expresionder)
+            this.expresioniz = this.expresioniz.interpretar(entorno,recolector);
+            console.log(this.expresioniz)
+            
+
             //validacion de tipo
             //string o variable
                 //si derecha es string                 /// string string --  string id            id -- string       id -- id
@@ -25,7 +33,7 @@ class ExpComa implements Instruccion {
                     //console.log("id -- string");
                     //console.log("id -- string: "+this.expresioniz.valor+" -- "+this.expresionder.valor)
                     var variable = entorno.ObtenerSimbolo(this.expresioniz.id);
-                    return new Return(variable.valor.concat(this.expresionder.valor),Tipo.STRING)
+                    return new Return(variable.valor.concat(this.expresionder.valor),Tipo.STRING);
                 }
             }//
             else if(this.expresionder.id != null){
@@ -33,12 +41,12 @@ class ExpComa implements Instruccion {
                 //console.log("string -- id");
                 if(this.expresioniz.tipo == Tipo.STRING || this.expresioniz.tipo == Tipo.INTEGER || this.expresioniz.tipo == Tipo.DOUBLE || this.expresioniz.tipo == Tipo.CHAR){
                     //console.log("string -- id: "+this.expresioniz.valor+" -- "+this.expresionder.valor)
-                    return new Return(this.expresioniz.valor.toString().concat(variableder.valor.toString()),Tipo.STRING)
+                    return new Return(this.expresioniz.valor.toString().concat(variableder.valor.toString()),Tipo.STRING);
                 }else{
                     //console.log("id -- id");
                     //console.log("id -- id: "+this.expresioniz.valor+" -- "+this.expresionder.valor)
                     var variableiz = entorno.ObtenerSimbolo(this.expresioniz.id);
-                    return new Return(variableiz.valor.toString().concat(variableder.valor.toString()),Tipo.STRING)
+                    return new Return(variableiz.valor.toString().concat(variableder.valor.toString()),Tipo.STRING);
                 }
             }
             else{

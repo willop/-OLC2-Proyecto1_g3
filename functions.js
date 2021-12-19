@@ -18,7 +18,7 @@ editor.on('change',function(asd) {
     TextoDeEdicion = asd.getValue();
     //console.log(TextoDeEdicion);
 })
-editor.setValue("void main(){\nPrint();\n}");
+editor.setValue("void main(){\nPrint(\"\");\n}");
 
 //obtener textarea consolas
 var consola = CodeMirror.fromTextArea
@@ -82,11 +82,24 @@ function accionBoton(e){
     //console.log(recccc);
     var variable = gramatica.parse(TextoDeEdicion);
     console.log(variable);
+
     try{
-        for(var inst in variable){
+        for(var inst = 0; inst < variable.length; inst++){
             console.log("Ejecutando instruccion ...")
             console.log(inst);
-            variable[inst].interpretar(entorno,recolector);
+            //-----
+            if(variable[inst] instanceof Array){
+                console.log("Entra a if  array")
+                for(var inst2 = 0; inst2 < variable[inst].length; inst++){
+                    variable[inst][inst2].interpretar(entorno,recolector);
+                }
+                //variable[inst].interpretar(entorno,recolector);
+            }else{
+                    variable[inst].interpretar(entorno,recolector);   
+            }     
+
+            //sss
+            
         }
 
     }catch(e){

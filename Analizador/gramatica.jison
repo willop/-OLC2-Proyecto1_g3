@@ -173,10 +173,10 @@ ini
 	: INSTRUCCIONES EOF																									{console.log($1); return $1;}
 ;
 
-INSTRUCCIONES :VOID_MAIN																											{$$ =  [$1]}
+INSTRUCCIONES :VOID_MAIN																								{$$ =  [$1]}
 	| INSTRUCCIONES_GLOBALES VOID_MAIN 																					{$$ = $1.concat($2);}
 	| VOID_MAIN INSTRUCCIONES_GLOBALES																					{$$ = $2.concat($1);}
-	|INSTRUCCIONES_GLOBALES VOID_MAIN INSTRUCCIONES_GLOBALES													{$1.concat($2); $1.concat($3); $$ = $1}
+	|INSTRUCCIONES_GLOBALES VOID_MAIN INSTRUCCIONES_GLOBALES															{$1.concat($2); $1.concat($3); $$ = $1}
 	//| error{$$=FErrores('Lexico',yytext,this._$.first_line,this._$.first_column,'Necesita metodo main');}											
 	//| error { console.error('Este es un error sintáctico: ' + yytext + ', en la linea: ' + this._$.first_line + ', en la columna: ' + this._$.first_column); }
 ;
@@ -209,18 +209,18 @@ LISTA_INSTRUCCIONES: INSTRUCCION {$$ = new Instrucciones($1,this._$.first_line,t
 ;
 
 INSTRUCCIONES_GLOBALES: INSTRUCCIONES_GLOBALES ASIGNACION			{$1.push($2); $$ = $1}
+					| INSTRUCCIONES_GLOBALES STRUCT					{$1.push($2); $$ = $1}
 					| INSTRUCCIONES_GLOBALES DECLARACION			{$1.push($2); $$ = $1}
 					//| INSTRUCCIONES_GLOBALES FUNCIONES			{$1.push($2); $$ = $1}
+					| STRUCT										{$$ = [$1]}
 					| ASIGNACION									{$$ = [$1]}
 					| DECLARACION									{$$ = [$1]}
-					| LLAMADA_FUNCION										{$$ = [$1]}
 ;
 
 INSTRUCCION2: DECLARACION 			{$$ = new Instrucciones([$1],this._$.first_line,this._$.first_column,null)}
 	| IMPRESION						{$$ = new Instrucciones([$1],this._$.first_line,this._$.first_column,null)}
 	| ASIGNACION					{$$ = new Instrucciones([$1],this._$.first_line,this._$.first_column,null)}	
 	| FUNCIONES_NATIVAS				{$$ = new Instrucciones([$1],this._$.first_line,this._$.first_column,null)}
-	| LLAMADA_FUNCION				{$$ = new Instrucciones([$1],this._$.first_line,this._$.first_column,null)}
 	| RETURN						{$$ = new Instrucciones([$1],this._$.first_line,this._$.first_column,null)}
 	| BUCLES						{$$ = new Instrucciones([$1],this._$.first_line,this._$.first_column,null)}	
 ;
@@ -260,30 +260,38 @@ DECLARACION: TIPO_VALOR TIPO_DECLARACION																													{	var asign
 			|  TIPO_VALOR TK_ID TK_par_apertura TK_ID MAS_PARAMETROS_FUNSION TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre	{var listainst =$8; listainst.crearentorno=false; var nuevo = new Parametro($4,null,null,this._$.first_line,this._$.first_column);
 																																			 			$$ = new Funcion($1,$2,[nuevo].concat($5),listainst,this._$.first_line,this._$.first_column);}
 			|  TIPO_VALOR TK_ID TK_par_apertura  TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre								{var listainst =$6; listainst.crearentorno=false;$$ = new Funcion($1,$2,[],listainst,this._$.first_line,this._$.first_column);}
-			| STRUCT																	{}
+			//| STRUCT																	{}
 ;
 
 STRUCT : TK_STRUCT TK_ID TK_corchete_apertura  TK_corchete_cierre FIN_LINEA
 //se puede repetir codigo
-		|TK_STRUCT TK_ID TK_corchete_apertura CUERPO_STRUCT TK_corchete_cierre FIN_LINEA
+		|TK_STRUCT TK_ID TK_corchete_apertura CONTENIDO_STRUCT TK_corchete_cierre FIN_LINEA
 ;
-
+/*
 CUERPO_STRUCT:CUERPO_STRUCT CONTENIDO_STRUCT 
 			| CONTENIDO_STRUCT
 ;
-
-CONTENIDO_STRUCT: TIPO_VALOR TK_ID TK_igual EXPRESIONARIT FIN_LINEA_STRUCT
+*/
+CONTENIDO_STRUCT: CONTENIDO_STRUCT ASIGNACION
+				| CONTENIDO_STRUCT DECLARACION
+				| CONTENIDO_STRUCT IMPRECION
+				| ASIGNACION
+				| DECLARACION
+				| IMPRECION
+;
+/*TIPO_VALOR TK_ID TK_igual EXPRESIONARIT FIN_LINEA_STRUCT
 				| TIPO_VALOR TK_ID FIN_LINEA_STRUCT
 				| TK_ID TK_ID TK_igual EXPRESIONARIT FIN_LINEA_STRUCT
 				| TK_ID TK_ID FIN_LINEA_STRUCT
+*/
 
-;
 				
 FIN_LINEA_STRUCT: TK_coma
 				| TK_pcoma
 ;
 
 TIPO_DECLARACION : TK_ID TK_igual EXPRESIONARIT FIN_LINEA																			{$$ = new Declaracion($3,this._$.first_line,this._$.first_column,null,$1)} //Declaracion = 58}	 // asig = [exp=58,tipo=null,id=null] asig.id=TK_ID  lo que subo es [exp=58,tipo=null,id=TK_ID]    //necesito verificar si es un vector																																
+				| TK_ID_ TK_igual EXPRESIONARIT MAS_VALORES_IMPRESION FIN_LINEA					 									{$$ = new Declaracion( new ExpComa($3,$4,this._$.first_line,this._$.first_column),this._$.first_line,this._$.first_column,null,$1);}	
 				| TK_ID  MAS_VARIABLES FIN_LINEA																					{var vec = $2; vec.push(new Declaracion(null,this._$.first_line,this._$.first_column,null,$1)); $$ = vec;}
 				| COND_ARREGLO TK_ID TK_igual EXPRESIONARIT FIN_LINEA																{$$ = new DeclararArray($2, $4,null,this._$.first_line,this._$.first_column);}
 				//  int[] a = 6      int [] a =[3,3]
@@ -292,7 +300,7 @@ TIPO_DECLARACION : TK_ID TK_igual EXPRESIONARIT FIN_LINEA																			{$$ 
 				| TK_ID FIN_LINEA																									{$$ = new Declaracion(null,this._$.first_line,this._$.first_column,null,$1);}
 ;//int[] a;
 
-MAS_VARIABLES: MAS_VARIABLES TK_coma TK_ID																							{var vec = $1; vec.push(new Declaracion(null,this._$.first_line,this._$.first_column,null,$3)); $$ = vec;}
+MAS_VARIABLES: MAS_VARIABLES TK_coma TK_ID																							{var vec = $1; vec.concat(new Declaracion(null,this._$.first_line,this._$.first_column,null,$3)); $$ = vec;}
 			|TK_coma TK_ID																											{var vec = [new Declaracion(null,this._$.first_line,this._$.first_column,null,$2)]; $$ = vec;}
 ;
 
@@ -405,16 +413,16 @@ EXPRESIONARIT
 
 IMPRESION: TK_PRINT TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA							{$$ = new Print($3,this._$.first_line,this._$.first_column,false);}  
 		|TK_PRINTLN TK_par_apertura EXPRESIONARIT TK_par_cierre	FIN_LINEA							{$$ = new Print($3,this._$.first_line,this._$.first_column,true);}
-		|TK_PRINT TK_par_apertura EXPRESIONARIT TK_coma EXPRESIONARIT TK_par_cierre FIN_LINEA  		{$$ = new Print( new ExpComa($3,$5,this._$.first_line,this._$.first_column),this._$.first_line,this._$.first_column,false);}
-		|TK_PRINTLN TK_par_apertura EXPRESIONARIT TK_coma EXPRESIONARIT TK_par_cierre FIN_LINEA     {$$ = new Print( new ExpComa($3,$5,this._$.first_line,this._$.first_column),this._$.first_line,this._$.first_column,true);}
+		|TK_PRINT TK_par_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_par_cierre FIN_LINEA  		{console.log($4);$$ = new Print( new ExpComa($3,$4,this._$.first_line,this._$.first_column),this._$.first_line,this._$.first_column,false);}
+		|TK_PRINTLN TK_par_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_par_cierre FIN_LINEA     {$$ = new Print( new ExpComa($3,$4,this._$.first_line,this._$.first_column),this._$.first_line,this._$.first_column,true);}
 ;
 
-/*
-MAS_VALORES_IMPRESION: MAS_VALORES_IMPRESION TK_coma EXPRESIONARIT									{var a = $1.valor; var b = $3.valor; $1.valor= " "+a+" "+b; $$ = $1;}
-					|MAS_VALORES_IMPRESION TK_coma ARREGLO											{}
-					|TK_coma ARREGLO																{}
-					|TK_coma EXPRESIONARIT															{$$ = $2;}
-;*/
+
+MAS_VALORES_IMPRESION: MAS_VALORES_IMPRESION TK_coma EXPRESIONARIT									{ var concat = new ExpComa($1,$3,this._$.first_line,this._$.first_column);console.log("****sube *****"); console.log(concat); $$ = concat}
+					//|MAS_VALORES_IMPRESION TK_coma ARREGLO											{}
+					//|TK_coma ARREGLO																{}
+					|TK_coma EXPRESIONARIT															{$$ = $2 ;}
+;
 
 
 ACCESSOATRIBUTO : ACCESSOATRIBUTO TK_punto TK_ID			 													{new AccesoStruct} //     a[b][a][c]------a.a.b --- A[A,B]; [a,[v]]

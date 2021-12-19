@@ -7,6 +7,10 @@ class ExpComa {
         this.expresionder = expresionder;
     }
     interpretar(entorno, recolector) {
+        this.expresionder = this.expresionder.interpretar(entorno, recolector);
+        console.log(this.expresionder);
+        this.expresioniz = this.expresioniz.interpretar(entorno, recolector);
+        console.log(this.expresioniz);
         //validacion de tipo
         //string o variable
         //si derecha es string                 /// string string --  string id            id -- string       id -- id

@@ -8,10 +8,20 @@ class Print {
     }
     interpretar(entorno, recolector) {
         try {
-            console.log("entra aca pa?");
+            console.log("Print --- entorno");
             console.log(entorno);
+            console.log("Print --- resultado");
             var resultado = this.expresion.interpretar(entorno, recolector);
-            var salida = resultado.valor;
+            //si el resultado es nulo
+            var salida;
+            if (resultado.valor == null) {
+                console.log("SI ES NULL");
+                salida = "null";
+            } //si no lo es 
+            else {
+                salida = resultado.valor;
+                console.log(resultado);
+            }
             //inicio algoritmo para las cadenas
             if (resultado.tipo == Tipo.STRING) {
                 var tam = salida.length;

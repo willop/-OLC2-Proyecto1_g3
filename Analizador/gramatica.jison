@@ -292,7 +292,7 @@ FIN_LINEA_STRUCT: TK_coma
 
 TIPO_DECLARACION : TK_ID TK_igual EXPRESIONARIT FIN_LINEA																			{$$ = new Declaracion($3,this._$.first_line,this._$.first_column,null,$1)} //Declaracion = 58}	 // asig = [exp=58,tipo=null,id=null] asig.id=TK_ID  lo que subo es [exp=58,tipo=null,id=TK_ID]    //necesito verificar si es un vector																																
 				| TK_ID_ TK_igual EXPRESIONARIT MAS_VALORES_IMPRESION FIN_LINEA					 									{$$ = new Declaracion( new ExpComa($3,$4,this._$.first_line,this._$.first_column),this._$.first_line,this._$.first_column,null,$1);}	
-				| TK_ID  MAS_VARIABLES FIN_LINEA																					{var vec = $2; vec.push(new Declaracion(null,this._$.first_line,this._$.first_column,null,$1)); $$ = vec;}
+				| TK_ID  MAS_VARIABLES FIN_LINEA																					{var vec = $2; vec.push(new Declaracion(null,this._$.first_line,this._$.first_column,null,$1)); $$ = vec;} // agregar switch de tipos
 				| COND_ARREGLO TK_ID TK_igual EXPRESIONARIT FIN_LINEA																{$$ = new DeclararArray($2, $4,null,this._$.first_line,this._$.first_column);}
 				//  int[] a = 6      int [] a =[3,3]
 				//| COND_ARREGLO TK_ID TK_igual ARREGLO FIN_LINEA																	{$$ = new DeclararArray($2, new ConstruirArray($4,this._$.first_line,this._$.first_column),null,this._$.first_line,this._$.first_column);}
@@ -313,6 +313,7 @@ TIPO_VALOR: TK_STRING 																												{$$= Tipo.STRING}
 		|TK_BOOLEAN																													{$$= Tipo.BOOLEAN}
 		|TK_DOUBLE																													{$$= Tipo.DOUBLE}
 		|TK_CHAR																													{$$= Tipo.CHAR}
+		|TK_VOID																													{$$= Tipo.VOID}	
 ;
 
 COND_ARREGLO: TK_llave_apertura TK_llave_cierre																						{}
@@ -339,11 +340,6 @@ VALORES: TK_CADENA															{var a = $1; var al=a.length; var c = a.substri
 		|TK_DECIMAL                       									{$$ = new Literal(parseFloat($1),Tipo.DOUBLE,this._$.first_line,this._$.first_column);}
 		|TK_BEGIN 															{}
 		|TK_END 															{}
-		|TK_CARETER_OF_POSITION TK_par_apertura VALORES TK_par_cierre		{}
-		|TK_TOLOWERCASE	TK_par_apertura TK_par_cierre						{}
-		|TK_SUBSTRING TK_par_apertura VALORES TK_coma VALORES TK_par_cierre {}
-		|TK_TOUPPERCASE TK_par_apertura  TK_par_cierre						{}
-		|TK_LENGTH TK_par_apertura  TK_par_cierre 							{}
 		|TK_TYPEOF TK_par_apertura EXPRESIONARIT TK_par_cierre				{$$ = new FuncionesNativas($3,TipoFuncionNativa.TYPEOF,this._$.first_line,this._$.first_column)}
 		|TK_INT TK_punto TK_PARSE EXPRESIONARIT 							{$$ = new FuncionesNativas($4,TipoFuncionNativa.INTPARSE,this._$.first_line,this._$.first_column)}
 		|TK_DOUBLE TK_punto TK_PARSE EXPRESIONARIT 							{$$ = new FuncionesNativas($4,TipoFuncionNativa.DOUBLEPARSE,this._$.first_line,this._$.first_column)}
@@ -401,7 +397,7 @@ EXPRESIONARIT
 	| TK_POW TK_par_apertura EXPRESIONARIT TK_coma EXPRESIONARIT TK_par_cierre			{$$ = new Aritmetica($3,$5,TipoAritmetica.POW,this._$.first_line,this._$.first_column)}
 	| TK_POW TK_numeral TK_par_apertura EXPRESIONARIT TK_coma EXPRESIONARIT TK_par_cierre	{$$ = new Aritmetica($4,$6,TipoAritmetica.POW,this._$.first_line,this._$.first_column)}
 	| TK_numeral EXPRESIONARIT															{}
-	| EXPRESIONARIT TK_concat EXPRESIONARIT       										{ var a = $1; var al=a.length; var b = $3; var bl = b.length; var c = a.substring(1,al-1); var d = b.substring(1,bl-1); var total = c+d;  $$ = total;}
+	| EXPRESIONARIT TK_concat EXPRESIONARIT       										{$$ = new Concatenacion($1,$3,this._$.first_line,this._$.first_column);}
 	| EXPRESIONARIT TK_potencia EXPRESIONARIT		       								{ $$ = new Potencia($1,$3,this._$.first_line,this._$.first_column);}
 	| EXPRESIONARIT TK_MODULO EXPRESIONARIT       										{$$ = new Aritmetica($1,$3,TipoAritmetica.MODULO,this._$.first_line,this._$.first_column);}
 	| EXPRESIONARIT TK_pregunta EXPRESIONARIT TK_dos_puntos EXPRESIONARIT 				{$$ = new Ternario($1,$3,$5,this._$.first_line,this._$.first_column);}
@@ -418,14 +414,19 @@ IMPRESION: TK_PRINT TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA							
 ;
 
 
-MAS_VALORES_IMPRESION: MAS_VALORES_IMPRESION TK_coma EXPRESIONARIT									{ var concat = new ExpComa($1,$3,this._$.first_line,this._$.first_column);console.log("****sube *****"); console.log(concat); $$ = concat}
+MAS_VALORES_IMPRESION: MAS_VALORES_IMPRESION TK_coma EXPRESIONARIT									{ var concat = new ExpComa($1,$3,this._$.first_line,this._$.first_column); $$ = concat}
 					//|MAS_VALORES_IMPRESION TK_coma ARREGLO											{}
 					//|TK_coma ARREGLO																{}
-					|TK_coma EXPRESIONARIT															{$$ = $2 ;}
+					|TK_coma EXPRESIONARIT															{$$ = $2;}
 ;
 
 
 ACCESSOATRIBUTO : ACCESSOATRIBUTO TK_punto TK_ID			 													{new AccesoStruct} //     a[b][a][c]------a.a.b --- A[A,B]; [a,[v]]
+				| ACCESSOATRIBUTO TK_punto TK_CARETER_OF_POSITION TK_par_apertura VALORES TK_par_cierre			{$$ = new FuncionesCadena($1,$5,$5,TipoFuncionesCadena.CARACTEROFPOSITION,this._$.first_line,this._$.first_column);}
+				| ACCESSOATRIBUTO TK_punto TK_SUBSTRING TK_par_apertura VALORES TK_coma VALORES TK_par_cierre 	{$$ = new FuncionesCadena($1,$5,$7,TipoFuncionesCadena.SUBSTRING,this._$.first_line,this._$.first_column);}
+				| ACCESSOATRIBUTO TK_punto TK_LENGTH TK_par_apertura  TK_par_cierre 							{$$ = new FuncionesCadena($1,$1,$1,TipoFuncionesCadena.LENGTH,this._$.first_line,this._$.first_column);}
+				| ACCESSOATRIBUTO TK_punto TK_TOUPPERCASE TK_par_apertura  TK_par_cierre						{$$ = new FuncionesCadena($1,$1,$1,TipoFuncionesCadena.TOUPPERCASE,this._$.first_line,this._$.first_column);}
+				| ACCESSOATRIBUTO TK_punto TK_TOLOWERCASE TK_par_apertura TK_par_cierre							{$$ = new FuncionesCadena($1,$5,$5,TipoFuncionesCadena.TOLOWERCASE,this._$.first_line,this._$.first_column);}
 				| ACCESSOATRIBUTO TK_llave_apertura EXPRESIONARIT TK_llave_cierre 								{$$ = new AccesoArray($3,$1, this._$.first_line,this._$.first_column);} // 	   a()
 				| ACCESSOATRIBUTO TK_llave_apertura EXPRESIONARIT PARAMETROS_EXTRA TK_llave_cierre 				{$$ = new AccesoArray([$3].concat($4),$1, this._$.first_line,this._$.first_column);} // 	
 			    //| TK_ID LLAMADA_FUNCION																			{}

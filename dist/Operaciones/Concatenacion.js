@@ -1,5 +1,5 @@
 "use strict";
-class ExpComa {
+class Concatenacion {
     constructor(expresioniz, expresionder, linea, columna) {
         this.linea = linea;
         this.expresioniz = expresioniz;
@@ -14,38 +14,37 @@ class ExpComa {
         //validacion de tipo
         //string o variable
         //si derecha es string                 /// string string --  string id            id -- string       id -- id
-        if (this.expresionder.tipo == Tipo.STRING || this.expresionder.tipo == Tipo.INTEGER || this.expresionder.tipo == Tipo.DOUBLE || this.expresionder.tipo == Tipo.CHAR || this.expresionder.tipo == Tipo.BOOLEAN) {
+        if (this.expresionder.tipo == Tipo.STRING || this.expresionder.tipo == Tipo.INTEGER || this.expresionder.tipo == Tipo.DOUBLE || this.expresionder.tipo == Tipo.CHAR) {
             //izquierda string
-            if (this.expresioniz.tipo == Tipo.STRING || this.expresioniz.tipo == Tipo.INTEGER || this.expresioniz.tipo == Tipo.DOUBLE || this.expresioniz.tipo == Tipo.CHAR || this.expresioniz.tipo == Tipo.BOOLEAN) {
-                console.log("entra con izquierda boleana " + this.expresioniz.tipo + " y con valor: " + this.expresioniz.valor);
+            if (this.expresioniz.tipo == Tipo.STRING || this.expresioniz.tipo == Tipo.INTEGER || this.expresioniz.tipo == Tipo.DOUBLE || this.expresioniz.tipo == Tipo.CHAR) {
                 //console.log("string -- string");`
                 //console.log("string -- string: "+this.expresioniz.valor+" -- "+this.expresionder.valor)
-                return new Return(String(this.expresioniz.valor).concat(String(this.expresionder.valor)), Tipo.STRING);
+                return new Return(this.expresioniz.valor.toString().concat(this.expresionder.valor.toString()), Tipo.STRING);
                 //izquierda variable
             }
             else if (this.expresioniz.id != null) {
                 //console.log("id -- string");
                 //console.log("id -- string: "+this.expresioniz.valor+" -- "+this.expresionder.valor)
                 var variable = entorno.ObtenerSimbolo(this.expresioniz.id);
-                return new Return(String(variable.valor).concat(String(this.expresionder.valor)), Tipo.STRING);
+                return new Return(variable.valor.concat(this.expresionder.valor), Tipo.STRING);
             }
         } //
         else if (this.expresionder.id != null) {
             var variableder = entorno.ObtenerSimbolo(this.expresionder.id);
             //console.log("string -- id");
-            if (this.expresioniz.tipo == Tipo.STRING || this.expresioniz.tipo == Tipo.INTEGER || this.expresioniz.tipo == Tipo.DOUBLE || this.expresioniz.tipo == Tipo.CHAR || this.expresioniz.tipo == Tipo.BOOLEAN) {
+            if (this.expresioniz.tipo == Tipo.STRING || this.expresioniz.tipo == Tipo.INTEGER || this.expresioniz.tipo == Tipo.DOUBLE || this.expresioniz.tipo == Tipo.CHAR) {
                 //console.log("string -- id: "+this.expresioniz.valor+" -- "+this.expresionder.valor)
-                return new Return(String(this.expresioniz.valor).concat(String(variableder.valor)), Tipo.STRING);
+                return new Return(this.expresioniz.valor.toString().concat(variableder.valor.toString()), Tipo.STRING);
             }
             else {
                 //console.log("id -- id");
                 //console.log("id -- id: "+this.expresioniz.valor+" -- "+this.expresionder.valor)
                 var variableiz = entorno.ObtenerSimbolo(this.expresioniz.id);
-                return new Return(String(variableiz.valor).concat(String(variableder.valor)), Tipo.STRING);
+                return new Return(variableiz.valor.toString().concat(variableder.valor.toString()), Tipo.STRING);
             }
         }
         else {
-            recolector.listaerrores.push(new ErrorOperacion(this.linea, this.columna, "TIPOS INCORRECTOS " + this.expresioniz.tipo + " - " + this.expresionder.tipo, entorno));
+            recolector.listaerrores.push(new ErrorOperacion(this.linea, this.columna, "TIPOS INCORRECTOS", entorno));
             return new Return("", Tipo.STRING);
         }
     }

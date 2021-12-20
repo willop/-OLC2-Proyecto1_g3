@@ -38,6 +38,14 @@ var TipoFuncionNativa;
     TipoFuncionNativa[TipoFuncionNativa["STRING"] = 6] = "STRING";
     TipoFuncionNativa[TipoFuncionNativa["TYPEOF"] = 7] = "TYPEOF";
 })(TipoFuncionNativa || (TipoFuncionNativa = {}));
+var TipoFuncionesCadena;
+(function (TipoFuncionesCadena) {
+    TipoFuncionesCadena[TipoFuncionesCadena["CARACTEROFPOSITION"] = 0] = "CARACTEROFPOSITION";
+    TipoFuncionesCadena[TipoFuncionesCadena["SUBSTRING"] = 1] = "SUBSTRING";
+    TipoFuncionesCadena[TipoFuncionesCadena["LENGTH"] = 2] = "LENGTH";
+    TipoFuncionesCadena[TipoFuncionesCadena["TOUPPERCASE"] = 3] = "TOUPPERCASE";
+    TipoFuncionesCadena[TipoFuncionesCadena["TOLOWERCASE"] = 4] = "TOLOWERCASE";
+})(TipoFuncionesCadena || (TipoFuncionesCadena = {}));
 var TipoLogica;
 (function (TipoLogica) {
     TipoLogica[TipoLogica["AND"] = 0] = "AND";

@@ -37,6 +37,15 @@ enum TipoFuncionNativa{
     TYPEOF
 }
 
+enum TipoFuncionesCadena{
+    CARACTEROFPOSITION,
+    SUBSTRING,
+    LENGTH,
+    TOUPPERCASE,
+    TOLOWERCASE
+
+}
+
 enum TipoLogica{
     AND,
     OR,

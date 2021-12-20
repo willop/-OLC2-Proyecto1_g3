@@ -175,8 +175,18 @@ ini
 
 INSTRUCCIONES :VOID_MAIN																								{$$ =  [$1]}
 	| INSTRUCCIONES_GLOBALES VOID_MAIN 																					{$$ = $1.concat($2);}
-	| VOID_MAIN INSTRUCCIONES_GLOBALES																					{$$ = $2.concat($1);}
-	|INSTRUCCIONES_GLOBALES VOID_MAIN INSTRUCCIONES_GLOBALES															{$1.concat($2); $1.concat($3); $$ = $1}
+	| VOID_MAIN INSTRUCCIONES_GLOBALES																					{$$ = $2.concat($1);} // $1->$2
+	|INSTRUCCIONES_GLOBALES VOID_MAIN INSTRUCCIONES_GLOBALES															{var inglo1 = []; 
+																														for(var b = 0; b < $1.length; b++){
+																															 inglo1.push($1[b]);
+																														 }
+																														 //inglo1.push($2);
+																														 for(var a = 0; a < $3.length; a++){
+																															 inglo1.push($3[a]);
+																														 }
+																														 inglo1.push($2);
+																														 $$ = inglo1;	
+																														}
 	//| error{$$=FErrores('Lexico',yytext,this._$.first_line,this._$.first_column,'Necesita metodo main');}											
 	//| error { console.error('Este es un error sintáctico: ' + yytext + ', en la linea: ' + this._$.first_line + ', en la columna: ' + this._$.first_column); }
 ;
@@ -184,11 +194,12 @@ INSTRUCCIONES :VOID_MAIN																								{$$ =  [$1]}
 VOID_MAIN: TK_VOID TK_MAIN TK_par_apertura TK_par_cierre TK_corchete_apertura INSTRUCCION TK_corchete_cierre			{$$ = new Instrucciones($6,this._$.first_line,this._$.first_column,"MAIN")}	
 ;
 
+
 INSTRUCCION: INSTRUCCION DECLARACION 			{$1.push($2); $$ = $1}
 	| INSTRUCCION IMPRESION					    {$1.push($2); $$ = $1}
 	| INSTRUCCION ASIGNACION					{$1.push($2); $$ = $1}
 	| INSTRUCCION FUNCIONES_NATIVAS				{$1.push($2); $$ = $1}
-	| INSTRUCCION LLAMADA_FUNCION				{$1.push($2); $$ = $1}
+	//| INSTRUCCION LLAMADA_FUNCION				{$1.push($2); $$ = $1}
 	| INSTRUCCION BREAK							{$1.push($2); $$ = $1}
 	| INSTRUCCION RETURN						{$1.push($2); $$ = $1}
 	| INSTRUCCION CONDICIONALES					{$1.push($2); $$ = $1}
@@ -197,7 +208,7 @@ INSTRUCCION: INSTRUCCION DECLARACION 			{$1.push($2); $$ = $1}
 	| IMPRESION									{$$ = [$1]}
 	| ASIGNACION								{$$ = [$1]}
 	| FUNCIONES_NATIVAS							{$$ = [$1]}
-	| LLAMADA_FUNCION							{$$ = [$1]}	
+	//| LLAMADA_FUNCION							{$$ = [$1]}	
 	| RETURN									{$$ = [$1]}
 	| BREAK										{$$ = [$1]}
 	| CONDICIONALES								{$$ = [$1]}
@@ -208,7 +219,7 @@ INSTRUCCION: INSTRUCCION DECLARACION 			{$1.push($2); $$ = $1}
 LISTA_INSTRUCCIONES: INSTRUCCION {$$ = new Instrucciones($1,this._$.first_line,this._$.first_column,null)}
 ;
 
-INSTRUCCIONES_GLOBALES: INSTRUCCIONES_GLOBALES ASIGNACION			{$1.push($2); $$ = $1}
+INSTRUCCIONES_GLOBALES: INSTRUCCIONES_GLOBALES ASIGNACION			{$1.push($2); $$ = $1}  // vector de instruc glo
 					| INSTRUCCIONES_GLOBALES STRUCT					{$1.push($2); $$ = $1}
 					| INSTRUCCIONES_GLOBALES DECLARACION			{$1.push($2); $$ = $1}
 					//| INSTRUCCIONES_GLOBALES FUNCIONES			{$1.push($2); $$ = $1}
@@ -216,6 +227,7 @@ INSTRUCCIONES_GLOBALES: INSTRUCCIONES_GLOBALES ASIGNACION			{$1.push($2); $$ = $
 					| ASIGNACION									{$$ = [$1]}
 					| DECLARACION									{$$ = [$1]}
 ;
+
 
 INSTRUCCION2: DECLARACION 			{$$ = new Instrucciones([$1],this._$.first_line,this._$.first_column,null)}
 	| IMPRESION						{$$ = new Instrucciones([$1],this._$.first_line,this._$.first_column,null)}
@@ -236,17 +248,14 @@ DECLARACION: TIPO_VALOR TIPO_DECLARACION																													{	var asign
 																																							else{
 																																								var tam = asignacion.length; console.log("el tamaño del vector es:" +tam);
 																																								//var inst = new Instrucciones([asignacion[0]],this._$.first_line,this._$.first_column,null);
+																																								var decmul = new DeclaracionMultiple(this._$.first_line,this._$.first_column,$1,[]);
 																																								for(var i=0;i<tam;i++){
-																																								console.log("DENTRO DEL FOR");
-																																								asignacion[i].tipo = $1;
-																																								//var rec = asignacion[i];
-																																								//console.log(asignacion[i].tipo+" "+asignacion[i].id);
-																																								//$$ = asignacion[i];
-																																								//console.log("el valor en inst es null = ")
-																																								//inst.instrucciones.push(asignacion[i]);
-																																								//$$ = inst;
+																																									decmul.arregloid.push(asignacion[i]);
 																																								}
-																																								$$ = asignacion; 
+																																								//console.log("Fuera del for gramatica")
+																																								//console.log(asignacion);
+																																								$$ = decmul;
+																																								//$$ = asignacion; 
 																																								//$$ = asignacion;
 																																								//$$ = new Instrucciones([asignacion],this._$.first_line,this._$.first_column,null);
 																																							}
@@ -292,7 +301,11 @@ FIN_LINEA_STRUCT: TK_coma
 
 TIPO_DECLARACION : TK_ID TK_igual EXPRESIONARIT FIN_LINEA																			{$$ = new Declaracion($3,this._$.first_line,this._$.first_column,null,$1)} //Declaracion = 58}	 // asig = [exp=58,tipo=null,id=null] asig.id=TK_ID  lo que subo es [exp=58,tipo=null,id=TK_ID]    //necesito verificar si es un vector																																
 				| TK_ID_ TK_igual EXPRESIONARIT MAS_VALORES_IMPRESION FIN_LINEA					 									{$$ = new Declaracion( new ExpComa($3,$4,this._$.first_line,this._$.first_column),this._$.first_line,this._$.first_column,null,$1);}	
-				| TK_ID  MAS_VARIABLES FIN_LINEA																					{var vec = $2; vec.push(new Declaracion(null,this._$.first_line,this._$.first_column,null,$1)); $$ = vec;} // agregar switch de tipos
+				| TK_ID  MAS_VARIABLES FIN_LINEA																					{ var arr=[$1];
+																																		  for(var a=0; a<$2.length;a++){
+																																			  arr.push($2[a]);
+																																		  }
+																																		  console.log(arr); $$ = arr;}
 				| COND_ARREGLO TK_ID TK_igual EXPRESIONARIT FIN_LINEA																{$$ = new DeclararArray($2, $4,null,this._$.first_line,this._$.first_column);}
 				//  int[] a = 6      int [] a =[3,3]
 				//| COND_ARREGLO TK_ID TK_igual ARREGLO FIN_LINEA																	{$$ = new DeclararArray($2, new ConstruirArray($4,this._$.first_line,this._$.first_column),null,this._$.first_line,this._$.first_column);}
@@ -300,8 +313,8 @@ TIPO_DECLARACION : TK_ID TK_igual EXPRESIONARIT FIN_LINEA																			{$$ 
 				| TK_ID FIN_LINEA																									{$$ = new Declaracion(null,this._$.first_line,this._$.first_column,null,$1);}
 ;//int[] a;
 
-MAS_VARIABLES: MAS_VARIABLES TK_coma TK_ID																							{var vec = $1; vec.concat(new Declaracion(null,this._$.first_line,this._$.first_column,null,$3)); $$ = vec;}
-			|TK_coma TK_ID																											{var vec = [new Declaracion(null,this._$.first_line,this._$.first_column,null,$2)]; $$ = vec;}
+MAS_VARIABLES: MAS_VARIABLES TK_coma TK_ID																							{$$ = $1.push($3);  $$ = $1;}
+			|TK_coma TK_ID																											{$$ = [$2]}
 ;
 
 FIN_LINEA: TK_pcoma																													{}

@@ -25,11 +25,7 @@ class Print implements Instruccion {
             else{
                 salida = resultado.valor;
                 console.log(resultado)
-            }
-
-            
-            
-            
+            }  
             //inicio algoritmo para las cadenas
             if(resultado.tipo == Tipo.STRING){
             var tam = salida.length;

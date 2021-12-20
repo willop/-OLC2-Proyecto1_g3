@@ -16,6 +16,8 @@ class LlamadaFuncion {
             var nuevoid = this.id.id;
             //intentar obtener la funcion
             var funcion = entorno.obtenerfuncion(nuevoid);
+            console.log("*********** LLAMADA FUNCION************");
+            console.log(funcion);
             if (funcion != null) {
                 console.log("this parametros length");
                 console.log(this.parametros.length);

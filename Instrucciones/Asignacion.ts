@@ -11,13 +11,16 @@ class Asignacion implements Instruccion {
     }
     
     interpretar(entorno:any,recolector:any){
-        console.log("Hola desde asignacion viene con valores: id: "+this.id.id+" con expresion: "+this.expresion.valor);
+        console.log("Hola desde asignacion viene con valores: id: "+this.id.id+" con expresion: ");
+        console.log(this.expresion)
         try{
             
-            var valor = this.expresion.interpretar(entorno,recolector);
+           
             var variable = entorno.ObtenerSimbolo(this.id.id);
+            var valor = this.expresion.interpretar(entorno,recolector);
             console.log("--------Variable-------");
             console.log(variable);
+            console.log("--------valor-------");
             console.log(valor);
 
             if(variable.tipo != valor.tipo){

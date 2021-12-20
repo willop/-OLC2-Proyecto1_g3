@@ -69,7 +69,7 @@ class Sumar {
     }
     sumarintdouble(izquierda, derecha) {
         //console.log("dentro de sumarintint");
-        return new Return(izquierda.valor + derecha.valor, Tipo.DOUBLE);
+        return new Return(izquierda.valor + parseFloat(derecha.valor), Tipo.DOUBLE);
     }
     sumarintchar(izquierda, derecha) {
         //console.log("dentro de sumarintint");
@@ -79,16 +79,16 @@ class Sumar {
     //-----------double + otros
     sumardoubleint(izquierda, derecha) {
         //console.log("dentro de sumarintint");       
-        return new Return(izquierda.valor + derecha.valor, Tipo.DOUBLE);
+        return new Return(parseFloat(izquierda.valor) + derecha.valor, Tipo.DOUBLE);
     }
     sumardoubledouble(izquierda, derecha) {
         //console.log("dentro de sumarintint");
-        return new Return(izquierda.valor + derecha.valor, Tipo.DOUBLE);
+        return new Return(parseFloat(izquierda.valor) + parseFloat(derecha.valor), Tipo.DOUBLE);
     }
     sumardoublechar(izquierda, derecha) {
         //console.log("dentro de sumarintint");
         derecha.valor = derecha.valor.charCodeAt(0);
-        return new Return(izquierda.valor + derecha.valor, Tipo.DOUBLE);
+        return new Return(parseFloat(izquierda.valor) + derecha.valor, Tipo.DOUBLE);
     }
     ///------------- char + otros
     sumarcharint(izquierda, derecha) {
@@ -99,7 +99,7 @@ class Sumar {
     sumarchardouble(izquierda, derecha) {
         //console.log("dentro de sumarintint");
         izquierda.valor = izquierda.valor.charCodeAt(0);
-        return new Return(izquierda.valor + derecha.valor, Tipo.DOUBLE);
+        return new Return(izquierda.valor + parseFloat(derecha.valor), Tipo.DOUBLE);
     }
     sumarcharchar(izquierda, derecha) {
         //console.log("dentro de sumarintint");

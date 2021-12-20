@@ -4,6 +4,7 @@ class Pow {
         this.tipo = TipoAritmetica.POW;
     }
     pow(izquierda, derecha) {
+        console.log("EL TIPO DE izquierda afuera ES: " + Tipo[izquierda.tipo]);
         console.log("EL TIPO DE DERECHA afuera ES: " + Tipo[derecha.tipo]);
         if (izquierda.tipo == Tipo.ARRAY) {
             return this.PowEjecutarArreglo(izquierda, derecha);
@@ -26,19 +27,19 @@ class Pow {
             izquierda.valor = izquierda.valor.charCodeAt(0);
             if (derecha.tipo == Tipo.CHAR) {
                 derecha.valor = derecha.valor.charCodeAt(0);
-                return new Return(Math.pow(izquierda.valor, derecha.valor), Tipo.DOUBLE);
+                return new Return(Math.pow(izquierda.valor, derecha.valor), Tipo.INTEGER);
             }
             else {
-                return new Return(Math.pow(izquierda.valor, derecha.valor), Tipo.DOUBLE);
+                return new Return(Math.pow(izquierda.valor, derecha.valor), Tipo.INTEGER);
             }
         }
         else {
             if (derecha.tipo == Tipo.CHAR) {
                 derecha.valor = derecha.valor.charCodeAt(0);
-                return new Return(Math.pow(izquierda.valor, derecha.valor), Tipo.DOUBLE);
+                return new Return(Math.pow(izquierda.valor, derecha.valor), Tipo.INTEGER);
             }
             else {
-                return new Return(Math.pow(izquierda.valor, derecha.valor), Tipo.DOUBLE);
+                return new Return(Math.pow(izquierda.valor, derecha.valor), Tipo.INTEGER);
             }
         }
     }

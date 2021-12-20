@@ -26,7 +26,8 @@ class LlamadaFuncion implements Expresion {
 
             //intentar obtener la funcion
             var funcion = entorno.obtenerfuncion(nuevoid);
-
+            console.log("*********** LLAMADA FUNCION************")
+            console.log(funcion);
             if(funcion != null){
 
                 console.log("this parametros length");

@@ -13,7 +13,23 @@ class Declaracion {
             //si viene expresion nula
             if (this.expresion == null) {
                 //console.log("entonces aca tambien entras?");
-                entorno.GuardarSimbolo(null, this.id, this.tipo);
+                switch (this.tipo) {
+                    case Tipo.INTEGER:
+                        entorno.GuardarSimbolo(0, this.id, this.tipo);
+                        break;
+                    case Tipo.DOUBLE:
+                        console.log("si es multiple double");
+                        entorno.GuardarSimbolo(Number(0).toFixed(1), this.id, this.tipo);
+                        break;
+                    case Tipo.STRING:
+                        entorno.GuardarSimbolo("", this.id, this.tipo);
+                        break;
+                    case Tipo.CHAR:
+                        entorno.GuardarSimbolo('', this.id, this.tipo);
+                        break;
+                    default:
+                        entorno.GuardarSimbolo(null, this.id, this.tipo);
+                }
             } //si la expresion tiene un valor
             else {
                 var valor = this.expresion.interpretar(entorno, recolector);

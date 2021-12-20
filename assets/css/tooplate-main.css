@@ -534,13 +534,13 @@ nav a::before {
   transition: all 0.5s;
   text-align: left;
 }
-.featured-item img {
+.featured-item p {
   width: 100%;
 }
 .featured-item .down-content {
   background-color: #fff;
   border: 5px solid #faf5b2;
-  padding: 15px;
+  padding: 30px;
 }
 .featured-item h4 {
   margin-top: 0px;
@@ -595,6 +595,10 @@ nav a::before {
   border-bottom: 1px solid;
 }
 
+
+#lienzo-ast{
+  background-color: #f4f4f4;
+}
 
 /* Slide 4 Style */
 .fourth-content {
@@ -790,7 +794,7 @@ nav a::before {
     line-height: 60px;
   }
   .featured-item {
-    padding: 30px 15px;
+    padding: 80px 30px;
   }
   .owl-dots {
     margin-top: 10px;

@@ -55,11 +55,6 @@ function mostrarcontenido(_contenido) {
     elemento.value = _contenido;
 }
 
-//funcion para actualizar el contenido de la edicion 
-function updateContent(e){
-    TextoDeEdicion = editor.getvalue();
-    alert(TextoDeEdicion);
-}
 document.getElementById('btnLimpiar').addEventListener('click',accionLimpiar);
 
 function accionLimpiar(e){
@@ -119,10 +114,12 @@ function accionBoton(e){
         console.log(recolector.listaerrores[rec]);
         console.log(recolector.listaerrores[rec].linea);
         console.log(recolector.listaerrores[rec].descripcion);
+        console.log(recolector.listaerrores[rec].columna);
         console.log(TipoError[recolector.listaerrores[rec].tipo]);
+
         salidaConsola += (recolector.listaerrores[rec].toString()) +"\n";
         console.log("FIN impresion errores");
-
+        document.getElementById("Tabla_errores").insertRow(-1).innerHTML = '<td>'+rec+'</td><td>'+TipoError[recolector.listaerrores[rec].tipo]+'</td><td>'+recolector.listaerrores[rec].descripcion+'</td><td>'+recolector.listaerrores[rec].linea+'</td><td>'+recolector.listaerrores[rec].columna+'</td>';
     }
     consola.setValue(salidaConsola);
     console.log(entorno.variables);

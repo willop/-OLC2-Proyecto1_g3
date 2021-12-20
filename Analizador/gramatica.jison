@@ -422,7 +422,7 @@ EXPRESIONARIT
 
 IMPRESION: TK_PRINT TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA							{$$ = new Print($3,this._$.first_line,this._$.first_column,false);}  
 		|TK_PRINTLN TK_par_apertura EXPRESIONARIT TK_par_cierre	FIN_LINEA							{$$ = new Print($3,this._$.first_line,this._$.first_column,true);}
-		|TK_PRINT TK_par_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_par_cierre FIN_LINEA  		{console.log($4);$$ = new Print( new ExpComa($3,$4,this._$.first_line,this._$.first_column),this._$.first_line,this._$.first_column,false);}
+		|TK_PRINT TK_par_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_par_cierre FIN_LINEA  		{$$ = new Print( new ExpComa($3,$4,this._$.first_line,this._$.first_column),this._$.first_line,this._$.first_column,false);}
 		|TK_PRINTLN TK_par_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_par_cierre FIN_LINEA     {$$ = new Print( new ExpComa($3,$4,this._$.first_line,this._$.first_column),this._$.first_line,this._$.first_column,true);}
 ;
 

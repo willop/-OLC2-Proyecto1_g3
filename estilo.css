@@ -52,3 +52,13 @@ body{
     left:25%;
 
 }
+
+#div_edicionTexto2{
+    position:absolute;
+    top:20%;
+    left:17%;
+    width: 30%;
+    height:75%;
+    background-color: #00d4ff;
+
+}

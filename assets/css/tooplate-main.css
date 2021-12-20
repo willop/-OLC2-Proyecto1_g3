@@ -432,6 +432,7 @@ nav a::before {
 }
 
 
+
 /* Slide 2 Style */
 .second-content {
   align-items: center;
@@ -576,6 +577,23 @@ nav a::before {
   cursor: pointer;
 }
 
+#Tabla_simbolos{
+  font-size: 42px;
+}
+
+#Tabla_simbolos{
+  border-color: rgb(0, 5, 10);
+  font-size: 25px;
+  background-color: rgb(241, 197, 138);
+  width: 80%;
+  
+}
+
+#trid{
+  color:rgb(255, 255, 255);
+  background-color: rgba(0, 153, 255, 0.479);
+  border-bottom: 1px solid;
+}
 
 
 /* Slide 4 Style */
@@ -645,6 +663,22 @@ nav a::before {
 }
 
 
+.contenedor-tabla{
+  align-items: center;
+  position: absolute;
+	top: 150%!important;
+  left:30%!important;
+	transform: translateY(-180%);
+  text-align: left;
+}
+
+#id_titulotabla{
+  background-color: #000;
+}
+
+#id_tabla{
+  background-color: #faf5b2;
+}
 
 
 /* Responsive Style */
@@ -788,3 +822,4 @@ nav a::before {
   }
 
 }
+

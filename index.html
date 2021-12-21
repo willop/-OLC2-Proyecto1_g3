@@ -22,6 +22,11 @@
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
 
+  <!-- d3 graphviz -->
+  <script src="//d3js.org/d3.v5.min.js"></script>
+  <script src="https://unpkg.com/@hpcc-js/wasm@0.3.11/dist/index.min.js"></script>
+  <script src="https://unpkg.com/d3-graphviz@3.0.5/build/d3-graphviz.js"></script>
+
   <!-- Additional CSS Files -->
   <link rel="stylesheet" href="assets/css/fontawesome.css">
   <link rel="stylesheet" href="assets/css/tooplate-main.css">
@@ -81,9 +86,6 @@ https://www.tooplate.com/view/2113-earth
                     <h1>Editor</h1>
                     <button type="button" id="btnLimpiar">Limpiar</button>
                     <textarea id="TextoEdicion"></textarea>
-
-                  </div>
-                  <!--button id="boton_Compilars"><a href="#textarea2">Compilar</a> </button-->
                   <div id="cuerpo_resultado">
                     <br />
                     <h1>Traduccion</h1>
@@ -123,7 +125,6 @@ https://www.tooplate.com/view/2113-earth
           <div id="div_edicionTexto2">
             <h2>TABLA DE Simbolos</h2>
           </div>
-          <!--button id="boton_Compilars"><a href="#textarea2">Compilar</a> </button-->
           <div id="cuerpo_resultado">
             <br />
             <table id="Tabla_simbolos" border="3">
@@ -164,8 +165,8 @@ https://www.tooplate.com/view/2113-earth
 
               <div class="col-md-12">
                 <div class="featured-item">
-                  <div id="lienzo-ast">
-                    <p>Grafo completamente dirijido apuntando hacia abajo, siendo este un texto extremadamente grande en el cual veremos si redimenciona</p>
+                  <div style="text-align:center;" id="lienzo-ast">
+                    
                   </div>
                   <div class="down-content">
                     <h4>Reporte Arbol AST</h4>
@@ -193,6 +194,7 @@ https://www.tooplate.com/view/2113-earth
   <script src="./Analizador/gramatica.js"></script>
   <script src="./functions.js" type="module"></script>
   <script src="./dist/AST/Nodo_arbol.js"></script>
+  <script src="./dist/AST/recorrido_arbol.js"></script>
   <script src="./dist/Enums/Enums.js"></script>
   <script src="./dist/Expresiones/Literal.js"></script>
   <script src="./dist/Expresiones/Aritmetica.js"></script>
@@ -203,6 +205,7 @@ https://www.tooplate.com/view/2113-earth
   <script src="./dist/Expresiones/LlamadaFuncion.js"></script>
   <script src="./dist/Expresiones/FuncionesNativas.js"></script>
   <script src="./dist/Expresiones/FuncionesCadena.js"></script>
+  <script src="./dist/Expresiones/FuncionesArreglos.js"></script>
   <script src="./dist/Instrucciones/Print.js"></script>
   <script src="./dist/Instrucciones/Break.js"></script>
   <script src="./dist/Instrucciones/Continue.js"></script>
@@ -245,6 +248,8 @@ https://www.tooplate.com/view/2113-earth
   <script src="./dist/Operaciones/FSubString.js"></script>
   <script src="./dist/Operaciones/FtoLowerCase.js"></script>
   <script src="./dist/Operaciones/FtoUpperCase.js"></script>
+  <script src="./dist/Operaciones/Fpush.js"></script>
+  <script src="./dist/Operaciones/Fpop.js"></script>
   <script src="./dist/Operaciones/Logaritmo.js"></script>
   <script src="./dist/Operaciones/Pow.js"></script>
   <script src="./dist/Operaciones/Truncar.js"></script>

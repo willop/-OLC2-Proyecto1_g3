@@ -541,6 +541,7 @@ nav a::before {
   background-color: #fff;
   border: 5px solid #faf5b2;
   padding: 30px;
+  text-align: center;
 }
 .featured-item h4 {
   margin-top: 0px;
@@ -597,7 +598,7 @@ nav a::before {
 
 
 #lienzo-ast{
-  background-color: #f4f4f4;
+  background-color: #8f0e0e;
 }
 
 /* Slide 4 Style */

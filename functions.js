@@ -72,9 +72,15 @@ function accionBoton(e){
     //TextoDeEdicion = editor.getValue();
     otrotext.innerHTML = TextoDeEdicion;
     Imprimir(TextoDeEdicion);
-    //console.log("\n\n\n********************************************************\n********************************************************\n********************************************************\n Aca inicia el arbol");
-    //var recccc = recorrido.parse(TextoDeEdicion);
-    //console.log(recccc);
+    /*
+    console.log("\n\n\n********************************************************\n********************************************************\n********************************************************\n Aca inicia el arbol");
+    var recccc = recorrido.parse(TextoDeEdicion);
+    console.log(recccc);
+    var raiz = new recorrido_arbol;
+    var graficaarbol = "digraph {\n"+  raiz.recorrer_arbol(recccc)+ "\n}";
+    d3.select("#lienzo-ast").graphviz()
+    .renderDot(graficaarbol);
+*/
     var variable = gramatica.parse(TextoDeEdicion);
     console.log(variable);
 
@@ -92,7 +98,6 @@ function accionBoton(e){
             }else{
                     variable[inst].interpretar(entorno,recolector);   
             }     
-
             //sss
             
         }

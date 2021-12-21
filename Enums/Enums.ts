@@ -26,6 +26,11 @@ enum TipoAritmetica{
     POW
 }
 
+enum TipoFunctionArreglo{
+    FPUSH,
+    FPOP
+}
+
 enum TipoFuncionNativa{
     INTPARSE,
     DOUBLEPARSE,

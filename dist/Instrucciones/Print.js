@@ -8,10 +8,11 @@ class Print {
     }
     interpretar(entorno, recolector) {
         try {
-            console.log("Print --- entorno");
-            console.log(entorno);
-            console.log("Print --- resultado");
+            //console.log("Print --- entorno")
+            //console.log(entorno)
+            //console.log("Print --- resultado")
             var resultado = this.expresion.interpretar(entorno, recolector);
+            //console.log(resultado);
             //si el resultado es nulo
             var salida;
             if (resultado.valor == null) {
@@ -20,7 +21,7 @@ class Print {
             } //si no lo es 
             else {
                 salida = resultado.valor;
-                console.log(resultado);
+                //console.log(resultado)
             }
             //inicio algoritmo para las cadenas
             if (resultado.tipo == Tipo.STRING) {

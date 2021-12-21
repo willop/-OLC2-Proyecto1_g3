@@ -99,21 +99,24 @@ case 3:
 																														this.$.sethijo(new Nodo_arbol($$[$0-4],"Simbolo"));
 																														this.$.sethijo(new Nodo_arbol($$[$0-3],"Simbolo"));
 																														this.$.sethijo(new Nodo_arbol($$[$0-2],"Simbolo"));
-																														this.$.sethijo($$[$0-6],"");
-																														this.$.sethijo(new Nodo_arbol($$[$0-1],"Simbolo"));
+																														this.$.sethijo($$[$0-1],"");
+																														this.$.sethijo(new Nodo_arbol($$[$0],"Simbolo"));
 																														
 break;
+case 5:
+this.$ = new Nodo_arbol("INSTRUCCION",""); this.$.sethijo($$[$0-1]); this.$.sethijo($$[$0]);
+break;
 case 13:
-this.$ = new Nodo_arbol("IMPRESION",""); this.$.sethijo($$[$0])
+this.$ = new Nodo_arbol("INSTRUCCION",""); this.$.sethijo($$[$0])
 break;
 case 64:
-this.$ = new Nodo_arbol($$[$0],"cadena");
+ var a = $$[$0]; var al=a.length; var c = a.substring(1,al-1);  this.$ = new Nodo_arbol(c,"cadena");
 break;
 case 120:
  this.$ = new Nodo_arbol("VALORES",""); this.$.sethijo($$[$0])
 break;
 case 121:
- this.$ = new Nodo_arbol("Print","");
+   this.$ = new Nodo_arbol("IMPRESION","");
 																										this.$.sethijo(new Nodo_arbol($$[$0-4],"Reservada"));
 																										this.$.sethijo(new Nodo_arbol($$[$0-3],"Simbolo"));
 																										this.$.sethijo($$[$0-2]);

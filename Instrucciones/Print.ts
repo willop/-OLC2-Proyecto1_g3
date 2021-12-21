@@ -12,10 +12,11 @@ class Print implements Instruccion {
     
     interpretar(entorno:any,recolector:any){
         try{
-            console.log("Print --- entorno")
-            console.log(entorno)
-            console.log("Print --- resultado")
+            //console.log("Print --- entorno")
+            //console.log(entorno)
+            //console.log("Print --- resultado")
             var resultado = this.expresion.interpretar(entorno,recolector);
+            //console.log(resultado);
             //si el resultado es nulo
             var salida;
             if(resultado.valor == null){
@@ -24,7 +25,7 @@ class Print implements Instruccion {
             }//si no lo es 
             else{
                 salida = resultado.valor;
-                console.log(resultado)
+                //console.log(resultado)
             }  
             //inicio algoritmo para las cadenas
             if(resultado.tipo == Tipo.STRING){
@@ -62,6 +63,7 @@ class Print implements Instruccion {
                             }
                         }//fin while
                         //console.log("saliendo del while siendo numero: "+expresion);
+                        // validacion de vectores
                         expresion = eval(expresion);
                         textosalida+=expresion;
                     }//fin if para de digitos

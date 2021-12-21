@@ -171,13 +171,13 @@ VOID_MAIN: TK_VOID TK_MAIN TK_par_apertura TK_par_cierre TK_corchete_apertura IN
 																														$$.sethijo(new Nodo_arbol($3,"Simbolo"));
 																														$$.sethijo(new Nodo_arbol($4,"Simbolo"));
 																														$$.sethijo(new Nodo_arbol($5,"Simbolo"));
-																														$$.sethijo($1,"");
-																														$$.sethijo(new Nodo_arbol($6,"Simbolo"));
+																														$$.sethijo($6,"");
+																														$$.sethijo(new Nodo_arbol($7,"Simbolo"));
 																														}	
 ;
 
 INSTRUCCION: INSTRUCCION DECLARACION 			{}
-	| INSTRUCCION IMPRESION					    {}
+	| INSTRUCCION IMPRESION					    {$$ = new Nodo_arbol("INSTRUCCION",""); $$.sethijo($1); $$.sethijo($2);}
 	| INSTRUCCION ASIGNACION					{}
 	| INSTRUCCION FUNCIONES_NATIVAS				{}
 	| INSTRUCCION FUNCIONES						{}
@@ -185,7 +185,7 @@ INSTRUCCION: INSTRUCCION DECLARACION 			{}
 	| INSTRUCCION CONDICIONALES					{}
 	| INSTRUCCION BUCLES						{}
 	| DECLARACION 								{}
-	| IMPRESION									{$$ = new Nodo_arbol("IMPRESION",""); $$.sethijo($1)}
+	| IMPRESION									{$$ = new Nodo_arbol("INSTRUCCION",""); $$.sethijo($1)}
 	| ASIGNACION								{}
 	| FUNCIONES_NATIVAS							{}
 	| FUNCIONES									{}	
@@ -277,7 +277,7 @@ IGUALACION: TK_igual EXPRESIONARIT FIN_LINEA
 */
 
 
-VALORES: TK_CADENA															{$$ = new Nodo_arbol($1,"cadena");}
+VALORES: TK_CADENA															{ var a = $1; var al=a.length; var c = a.substring(1,al-1);  $$ = new Nodo_arbol(c,"cadena");}
 		|TK_NULL															{}
 		|TK_TRUE															{}
 		|TK_FALSE															{}
@@ -350,7 +350,7 @@ EXPRESIONARIT
 ;
 
 
-IMPRESION: TK_PRINT TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA							{ $$ = new Nodo_arbol("Print","");
+IMPRESION: TK_PRINT TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA							{   $$ = new Nodo_arbol("IMPRESION","");
 																										$$.sethijo(new Nodo_arbol($1,"Reservada"));
 																										$$.sethijo(new Nodo_arbol($2,"Simbolo"));
 																										$$.sethijo($3);

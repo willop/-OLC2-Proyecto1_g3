@@ -27,6 +27,11 @@ var TipoAritmetica;
     TipoAritmetica[TipoAritmetica["LOGARITMO"] = 9] = "LOGARITMO";
     TipoAritmetica[TipoAritmetica["POW"] = 10] = "POW";
 })(TipoAritmetica || (TipoAritmetica = {}));
+var TipoFunctionArreglo;
+(function (TipoFunctionArreglo) {
+    TipoFunctionArreglo[TipoFunctionArreglo["FPUSH"] = 0] = "FPUSH";
+    TipoFunctionArreglo[TipoFunctionArreglo["FPOP"] = 1] = "FPOP";
+})(TipoFunctionArreglo || (TipoFunctionArreglo = {}));
 var TipoFuncionNativa;
 (function (TipoFuncionNativa) {
     TipoFuncionNativa[TipoFuncionNativa["INTPARSE"] = 0] = "INTPARSE";

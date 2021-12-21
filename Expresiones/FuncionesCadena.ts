@@ -60,7 +60,6 @@ class FuncionesCadena implements Expresion {
                     resultado = ftolowercase.ftolowercase(valor)
                     break;
             }
-
             return resultado;
         } catch (e: any) {
             e.linea = this.linea;

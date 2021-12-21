@@ -103,6 +103,7 @@ function accionBoton(e){
         }
 
     }catch(e){
+        console.log("Entra al catch de funcion ");
         recolector.listaerrores.push(new ErrorGeneral(0,0,"ERROR EN EJECUCION GENERAL",null));
 
     }    

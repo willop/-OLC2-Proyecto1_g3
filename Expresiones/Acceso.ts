@@ -15,6 +15,9 @@ class Acceso implements Expresion {
 
         }        
         //console.log(new Return(a.valor,a.tipo,a.auxtipo));
+        if(a instanceof Simbolo && a.valor == null){
+            return a;
+        }
         return new Return(a.valor,a.tipo,a.auxtipo);
     }
 }

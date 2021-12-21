@@ -42,7 +42,15 @@ class Declaracion implements Instruccion {
                 if (this.tipo != valor.tipo) {
                     throw new TipoIncorrecto(this.linea, this.columna, "EL TIPO DECLARADO NO ES IGUAL AL TIPO ASIGNADO" + Tipo[valor.tipo] + " " + Tipo[this.tipo], entorno);
                 }
-                entorno.GuardarSimbolo(valor.valor, this.id, this.tipo);
+                if(valor.tipo == Tipo.STRUCT){                    
+                    if(valor instanceof Simbolo){
+                        entorno.guardarVariableStruct(this.id,valor.atributos,valor.auxtipo);
+                    }else{
+                        entorno.guardarVariableStruct(this.id,valor.valor,valor.auxtipo);
+                    }
+                }else{
+                    entorno.GuardarSimbolo(valor.valor, this.id, this.tipo);
+                }
             }
         } catch (e) {
             recolector.listaerrores.push(e);

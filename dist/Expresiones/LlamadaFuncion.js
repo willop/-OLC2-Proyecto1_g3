@@ -30,10 +30,27 @@ class LlamadaFuncion {
                 for (var i = 0; i < funcion.parametros.length; i++) {
                     var valor = this.parametros[i].interpretar(entorno, recolector);
                     //console.log()
-                    if (valor.tipo != funcion.parametros[i].tipo) {
-                        throw new ErrorGeneral(this.linea, this.columna, "ERROR TAMAñO DE PARAMETROS", entorno);
+                    if (valor.tipo != Tipo.STRUCT) {
+                        if (valor.tipo != funcion.parametros[i].tipo) {
+                            throw new ErrorGeneral(this.linea, this.columna, "ERROR TIPO PARAMETROS", entorno);
+                        }
                     }
-                    ent.GuardarSimbolo(valor.valor, funcion.parametros[i].id, valor.tipo);
+                    else {
+                        // AGREGAR VALIDACIONES DE TIPO STRUCT, VER LA CLASE ASIGNAR ATRIBUTO STRUCTS
+                    }
+                    if (valor.tipo == Tipo.STRUCT) {
+                        var struct;
+                        if (this.parametros[i] instanceof AccesoStruct) {
+                            struct = valor;
+                        }
+                        else {
+                            struct = entorno.ObtenerSimbolo(this.parametros[i].id);
+                        }
+                        ent.guardarVariableStruct(this.parametros[i].id, struct.atributos, valor.auxtipo);
+                    }
+                    else {
+                        ent.GuardarSimbolo(valor.valor, funcion.parametros[i].id, valor.tipo);
+                    }
                 } //fin for
                 var aux = funcion.instrucciones.interpretar(ent, recolector);
                 if (aux != null) { // validas que tenga retorno
@@ -60,7 +77,12 @@ class LlamadaFuncion {
                             }
                         }
                         else {
-                            return retor;
+                            if (this.llamadaexpresion) {
+                                return retor;
+                            }
+                            else {
+                                return;
+                            }
                         }
                     }
                 }
@@ -69,6 +91,31 @@ class LlamadaFuncion {
                 }
             }
             else {
+                var getStruct = entorno.obtenerStruct(nuevoid);
+                if (getStruct != null) {
+                    if (this.parametros.length != getStruct.atributos.size) {
+                        throw new ErrorGeneral(this.linea, this.columna, "ERROR TAMAñO DE PARAMETROS", entorno);
+                    }
+                    var atributos = new Map();
+                    for (var i = 0; i < funcion.parametros.length; i++) {
+                        var valor = this.parametros[i].interpretar(entorno, recolector);
+                        //console.log()
+                        if (valor.tipo == Tipo.STRUCT && !(this.parametros[i] instanceof LlamadaFuncion)) {
+                            valor = entorno.ObtenerSimbolo(this.parametros[i].id);
+                        }
+                        valor.auxtipo = getStruct.id;
+                        atributos.set(getStruct.atributos[i].id, valor);
+                    }
+                    if (this.llamadaexpresion) {
+                        return new Return(atributos, Tipo.STRUCT, nuevoid);
+                    }
+                    else {
+                        return;
+                    }
+                }
+                else {
+                    throw new StructNoEncontrado(this.linea, this.columna, "EL FUNCION O STRUCT NO ENCONTRADO", this);
+                }
             }
         }
         catch (e) {

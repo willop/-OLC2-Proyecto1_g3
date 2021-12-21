@@ -78,6 +78,9 @@ var TipoError;
     TipoError[TipoError["ERROR_BOOLEANO"] = 7] = "ERROR_BOOLEANO";
     TipoError[TipoError["ERROR_TIPO_VARIABLES_ARRAY"] = 8] = "ERROR_TIPO_VARIABLES_ARRAY";
     TipoError[TipoError["FUNCION_YA_DECLARADA"] = 9] = "FUNCION_YA_DECLARADA";
+    TipoError[TipoError["STRUCT_YA_DECLARADA"] = 10] = "STRUCT_YA_DECLARADA";
+    TipoError[TipoError["STRUCT_NO_EXISTE"] = 11] = "STRUCT_NO_EXISTE";
+    TipoError[TipoError["ATRIBUTO_NO_EXISTE"] = 12] = "ATRIBUTO_NO_EXISTE";
 })(TipoError || (TipoError = {}));
 var TipoFor;
 (function (TipoFor) {

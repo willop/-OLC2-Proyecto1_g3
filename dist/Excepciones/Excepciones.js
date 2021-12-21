@@ -75,3 +75,18 @@ class FuncionYaDeclarada extends ErrorInterprete {
         super(linea, columna, TipoError.FUNCION_YA_DECLARADA, descripcion, ambito);
     }
 }
+class StructYaDeclarado extends ErrorInterprete {
+    constructor(linea, columna, descripcion, ambito) {
+        super(linea, columna, TipoError.STRUCT_YA_DECLARADA, descripcion, ambito);
+    }
+}
+class StructNoEncontrado extends ErrorInterprete {
+    constructor(linea, columna, descripcion, ambito) {
+        super(linea, columna, TipoError.STRUCT_NO_EXISTE, descripcion, ambito);
+    }
+}
+class AtributoNoExiste extends ErrorInterprete {
+    constructor(linea, columna, descripcion, ambito) {
+        super(linea, columna, TipoError.ATRIBUTO_NO_EXISTE, descripcion, ambito);
+    }
+}

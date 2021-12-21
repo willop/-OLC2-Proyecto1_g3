@@ -127,3 +127,30 @@ class FuncionYaDeclarada extends ErrorInterprete{
     }
 
 }
+
+class StructYaDeclarado extends ErrorInterprete{
+    
+    constructor (linea:number,columna:number,descripcion:any,ambito:any){
+        super(linea,columna,TipoError.STRUCT_YA_DECLARADA,descripcion,ambito)
+        
+    }
+
+}
+
+class StructNoEncontrado extends ErrorInterprete{
+    
+    constructor (linea:number,columna:number,descripcion:any,ambito:any){
+        super(linea,columna,TipoError.STRUCT_NO_EXISTE,descripcion,ambito)
+        
+    }
+
+}
+
+class AtributoNoExiste extends ErrorInterprete{
+    
+    constructor (linea:number,columna:number,descripcion:any,ambito:any){
+        super(linea,columna,TipoError.ATRIBUTO_NO_EXISTE,descripcion,ambito)
+        
+    }
+
+}

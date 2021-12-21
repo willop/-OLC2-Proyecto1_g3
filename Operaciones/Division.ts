@@ -58,7 +58,7 @@ class Division{
     }
     //------------ IZQUIERDA ENTERO DERECHA OTROS
     dividirintint(izquierda: any,derecha:any):any{
-        return new Return(izquierda.valor / derecha.valor,Tipo.INTEGER);
+        return new Return(izquierda.valor / derecha.valor,Tipo.DOUBLE);
     }
     /// ACA VOY A INICIAR 
     dividirintdouble(izquierda: any,derecha:any):any{
@@ -66,7 +66,7 @@ class Division{
     }
     dividirintchar(izquierda: any,derecha:any):any{
         derecha.valor = derecha.valor.charCodeAt(0);
-        return new Return(izquierda.valor / derecha.valor,Tipo.INTEGER);
+        return new Return(izquierda.valor / derecha.valor,Tipo.DOUBLE);
     }
 
     //------------ IZQUIERDA DOUBLE DERECHA OTROS

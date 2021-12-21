@@ -58,6 +58,7 @@ class Print {
                                 }
                             } //fin while
                             //console.log("saliendo del while siendo numero: "+expresion);
+                            // validacion de vectores
                             expresion = eval(expresion);
                             textosalida += expresion;
                         } //fin if para de digitos

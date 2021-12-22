@@ -9,10 +9,47 @@ class ExpComa {
     interpretar(entorno, recolector) {
         console.log("-----Expresion derecha ----");
         var expresionder = this.expresionder.interpretar(entorno, recolector);
+        console.log(expresionder);
         console.log(this.expresionder);
         console.log("-----Expresion izquierda ----");
         var expresioniz = this.expresioniz.interpretar(entorno, recolector);
+        console.log(expresioniz);
         console.log(this.expresioniz);
+        var aux;
+        //derecha es arreglo
+        if (expresionder.tipo == Tipo.ARRAY) {
+            aux = "[";
+            console.log("se entro a array");
+            for (var i = 0; i < expresionder.valor.length; i++) {
+                aux += expresionder.valor[i].valor;
+                if (!(i < expresionder.valor.length - 1)) {
+                }
+                else {
+                    aux += ",";
+                }
+            }
+            aux += "]";
+            expresionder.tipo = Tipo.STRING;
+            expresionder.valor = aux;
+        }
+        else if (expresioniz.tipo == Tipo.ARRAY) {
+            aux = "[";
+            console.log("se entro a array");
+            for (var i = 0; i < expresioniz.valor.length; i++) {
+                aux += expresioniz.valor[i].valor;
+                if (!(i < expresioniz.valor.length - 1)) {
+                }
+                else {
+                    aux += ",";
+                }
+            }
+            aux += "]";
+            expresioniz.tipo = Tipo.STRING;
+            expresioniz.valor = aux;
+        }
+        console.log("imprimiendocada arreglo");
+        console.log(expresionder);
+        console.log(expresioniz);
         //validacion de tipo
         //string o variable
         //si derecha es string                 /// string string --  string id            id -- string       id -- id

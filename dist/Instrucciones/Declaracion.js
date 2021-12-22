@@ -45,6 +45,82 @@ class Declaracion {
                     }
                 }
                 else {
+                    var bandera = false;
+                    var salida = valor.valor;
+                    if (this.tipo == Tipo.STRING) {
+                        var tam = valor.valor.length;
+                        var expresion = "";
+                        var textosalida = "";
+                        for (var i = 0; i < tam; i++) {
+                            expresion == "";
+                            if (salida.charAt(i) == '$') {
+                                i++;
+                                if (salida.charAt(i) == "(") {
+                                    i++;
+                                }
+                                while (salida.charAt(i) != " ") {
+                                    if (salida.charAt(i) == ")" && (salida.charAt(i + 1) == " " || i + 1 == tam)) {
+                                        break;
+                                    }
+                                    else {
+                                        expresion += salida.charAt(i);
+                                        if (salida.charAt(i) == "[" || salida.charAt(i) == "]") {
+                                            bandera = true;
+                                        }
+                                        if (i + 1 == tam) {
+                                            break;
+                                        }
+                                        else {
+                                            i++;
+                                        }
+                                    }
+                                } //fin del while
+                                console.log("DENTRO DE PRINT");
+                                console.log(expresion);
+                                console.log("saliendo del while con: " + expresion);
+                                if (!bandera) {
+                                    if (!expresion.match(/[a-z]/i)) {
+                                        //es una operacion
+                                        console.log("Es una operacion");
+                                        var expresionvalor = eval(expresion);
+                                        textosalida += expresionvalor;
+                                    }
+                                    else {
+                                        console.log("Es una variable");
+                                        var expresionvalor = entorno.ObtenerSimbolo(expresion);
+                                        console.log(expresionvalor);
+                                        textosalida += expresionvalor.valor;
+                                    }
+                                }
+                                else {
+                                    console.log("es un array");
+                                    //indice -- id -- 
+                                    var indice = "";
+                                    var variable = "";
+                                    var resulta;
+                                    for (var j = 0; j < expresion.length; j++) {
+                                        if (expresion.charAt(j).match(/[a-z]/)) {
+                                            variable += expresion.charAt(j);
+                                        }
+                                        if (expresion.charAt(j).match(/[0-9]/)) {
+                                            indice += expresion.charAt(j);
+                                        }
+                                    }
+                                    resulta = new AccesoArray(new Literal(indice, Tipo.INTEGER, this.linea, this.columna), new Acceso(variable, this.linea, this.columna), this.linea, this.columna);
+                                    resulta = resulta.interpretar(entorno, recolector);
+                                    console.log(resulta.valor);
+                                    textosalida += resulta.valor.toString();
+                                    continue;
+                                }
+                            }
+                            else {
+                                textosalida += salida.charAt(i);
+                            }
+                        }
+                        salida = textosalida.toString();
+                        //console.log("La salida es de: "+textosalida);
+                    }
+                    valor.valor = salida;
                     entorno.GuardarSimbolo(valor.valor, this.id, this.tipo);
                 }
             }

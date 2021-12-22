@@ -15,6 +15,7 @@ class Print {
             //console.log(resultado);
             //si el resultado es nulo
             var salida;
+            var bandera = false;
             if (resultado.valor == null) {
                 console.log("SI ES NULL");
                 salida = "null";
@@ -29,68 +30,72 @@ class Print {
                 var expresion = "";
                 var textosalida = "";
                 for (var i = 0; i < tam; i++) {
-                    expresion = "";
-                    //console.log("Analizando el caracter: "+salida.charAt(i))
+                    expresion == "";
                     if (salida.charAt(i) == '$') {
-                        //console.log("Si se reconocio el caracter");
                         i++;
-                        //console.log("ahora el nuevo caracter es: "+salida.charAt(i))
-                        if (!salida.charAt(i).match(/[a-z]/i)) {
-                            while (!salida.charAt(i).match(/[a-z]/i)) {
-                                //console.log("dentro del primer while con: "+salida.charAt(i)+" valor i: "+i+" y tam: "+tam)
-                                if (salida.charAt(i) == "$") {
-                                    //console.log("aca ni entra");
-                                    i--;
+                        if (salida.charAt(i) == "(") {
+                            i++;
+                        }
+                        while (salida.charAt(i) != " ") {
+                            if (salida.charAt(i) == ")" && (salida.charAt(i + 1) == " " || i + 1 == tam)) {
+                                break;
+                            }
+                            else {
+                                expresion += salida.charAt(i);
+                                if (salida.charAt(i) == "[" || salida.charAt(i) == "]") {
+                                    bandera = true;
+                                }
+                                if (i + 1 == tam) {
                                     break;
                                 }
                                 else {
-                                    expresion += salida.charAt(i);
-                                    if (i + 1 == tam) {
-                                        break;
-                                    }
-                                    else {
-                                        i++;
-                                        if (salida.charAt(i + 1).match(/[a-z]/i)) {
-                                            i--;
-                                            break;
-                                        }
-                                    }
+                                    i++;
                                 }
-                            } //fin while
-                            //console.log("saliendo del while siendo numero: "+expresion);
-                            // validacion de vectores
-                            expresion = eval(expresion);
-                            textosalida += expresion;
-                        } //fin if para de digitos
+                            }
+                        } //fin del while
+                        console.log("DENTRO DE PRINT");
+                        console.log(expresion);
+                        console.log("saliendo del while con: " + expresion);
+                        if (!bandera) {
+                            if (!expresion.match(/[a-z]/i)) {
+                                //es una operacion
+                                console.log("Es una operacion");
+                                var expresionvalor = eval(expresion);
+                                textosalida += expresionvalor;
+                            }
+                            else {
+                                console.log("Es una variable");
+                                var expresionvalor = entorno.ObtenerSimbolo(expresion);
+                                console.log(expresionvalor);
+                                textosalida += expresionvalor.valor;
+                            }
+                        }
                         else {
-                            //console.log("Entra al else? con:"+salida.charAt(i))
-                            expresion = "";
-                            while (salida.charAt(i) != ' ') {
-                                //console.log("dentro del primer while con: "+salida.charAt(i)+" valor i: "+i+" y tam: "+tam)
-                                if (i == tam) {
+                            console.log("es un array");
+                            //indice -- id -- 
+                            var indice = "";
+                            var variable = "";
+                            var resulta;
+                            for (var j = 0; j < expresion.length; j++) {
+                                if (expresion.charAt(j).match(/[a-z]/)) {
+                                    variable += expresion.charAt(j);
                                 }
-                                else {
-                                    expresion += salida.charAt(i); //a
-                                    //console.log("el valor de expresion despues: "+expresion+" y i:"+i)
-                                    if (i + 1 == tam) {
-                                        break;
-                                    }
-                                    else {
-                                        i++;
-                                    }
+                                if (expresion.charAt(j).match(/[0-9]/)) {
+                                    indice += expresion.charAt(j);
                                 }
-                            } //fin while
-                            //console.log("el valor de la variable es: "+expresion);
-                            var expresionvalor = entorno.ObtenerSimbolo(expresion);
-                            //console.log("********* la variable contiene el valor: "+expresionvalor.valor);
-                            textosalida += expresionvalor.valor;
+                            }
+                            resulta = new AccesoArray(new Literal(indice, Tipo.INTEGER, this.linea, this.columna), new Acceso(variable, this.linea, this.columna), this.linea, this.columna);
+                            resulta = resulta.interpretar(entorno, recolector);
+                            console.log(resulta.valor);
+                            textosalida += resulta.valor.toString();
+                            continue;
                         }
                     }
                     else {
                         textosalida += salida.charAt(i);
                     }
-                } //fin del for
-                salida = textosalida;
+                }
+                salida = textosalida.toString();
                 //console.log("La salida es de: "+textosalida);
             }
             //fin del algoritmo

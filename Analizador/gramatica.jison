@@ -544,18 +544,22 @@ FUNCIONES_NATIVAS: TK_TOINT TK_par_apertura EXPRESIONARIT TK_par_cierre				{$$ =
 
 
 
-PARAMETRO_FUNSION: TIPO_VALOR TK_ID							{$$ = [new Parametro($2,$1,null,this._$.first_line,this._$.first_column)];}
-				| TIPO_VALOR TK_ID MAS_PARAMETROS_FUNSION   {$$ = [new Parametro($2,$1,null,this._$.first_line,this._$.first_column)].concat($3);}
-				| TK_ID TK_ID								{$$ = [new Parametro($2,Tipo.STRUCT,$1,this._$.first_line,this._$.first_column)];}
-				| TK_ID TK_ID MAS_PARAMETROS_FUNSION		{$$ = [new Parametro($2,Tipo.STRUCT,$1,this._$.first_line,this._$.first_column)].concat($3);}
+PARAMETRO_FUNSION: TIPO_VALOR TK_ID										{$$ = [new Parametro($2,$1,null,this._$.first_line,this._$.first_column)];}
+				| TIPO_VALOR TK_ID MAS_PARAMETROS_FUNSION   			{$$ = [new Parametro($2,$1,null,this._$.first_line,this._$.first_column)].concat($3);}
+				| TK_ID TK_ID											{$$ = [new Parametro($2,Tipo.STRUCT,$1,this._$.first_line,this._$.first_column)];}
+				| TK_ID TK_ID MAS_PARAMETROS_FUNSION					{$$ = [new Parametro($2,Tipo.STRUCT,$1,this._$.first_line,this._$.first_column)].concat($3);}
+				| TIPO_VALOR COND_ARREGLO TK_ID 						{$$ = [new Parametro($3,Tipo.ARRAY,null,this._$.first_line,this._$.first_column)];} 
+				| TIPO_VALOR COND_ARREGLO TK_ID MAS_PARAMETROS_FUNSION	{$$ = [new Parametro($3,Tipo.ARRAY,null,this._$.first_line,this._$.first_column)].concat($4);} 
 ;
 
-MAS_PARAMETROS_FUNSION: MAS_PARAMETROS_FUNSION TK_coma TIPO_VALOR TK_ID		{$$ = $1.concat(new Parametro($4,$3,null,this._$.first_line,this._$.first_column));}
-				|MAS_PARAMETROS_FUNSION TK_coma TK_ID TK_ID					{$$ = $1.concat(new Parametro($4,Tipo.STRUCT,$3,this._$.first_line,this._$.first_column));}
-				|MAS_PARAMETROS_FUNSION TK_coma TK_ID 						{$$ = $1.concat(new Parametro($3,null,null,this._$.first_line,this._$.first_column));}
-				|TK_coma TIPO_VALOR TK_ID									{$$ = [new Parametro($3,$2,null,this._$.first_line,this._$.first_column)];}
-				|TK_coma TK_ID TK_ID										{$$ = [new Parametro($3,Tipo.STRUCT,$2,this._$.first_line,this._$.first_column)];}
-				|TK_coma TK_ID												{$$ = [new Parametro($2,null,null,this._$.first_line,this._$.first_column)];}
+MAS_PARAMETROS_FUNSION: MAS_PARAMETROS_FUNSION TK_coma TIPO_VALOR TK_ID						 {$$ = $1.concat(new Parametro($4,$3,null,this._$.first_line,this._$.first_column));}
+				|MAS_PARAMETROS_FUNSION TK_coma TK_ID TK_ID									 {$$ = $1.concat(new Parametro($4,Tipo.STRUCT,$3,this._$.first_line,this._$.first_column));}
+				|MAS_PARAMETROS_FUNSION TK_coma TK_ID 										 {$$ = $1.concat(new Parametro($3,null,null,this._$.first_line,this._$.first_column));}
+				|MAS_PARAMETROS_FUNSION TK_coma TIPO_VALOR COND_ARREGLO TK_ID 		 		 {$$ = $1.concat(new Parametro($3,Tipo.ARRAY,null,this._$.first_line,this._$.first_column));}
+				|TK_coma TIPO_VALOR TK_ID													 {$$ = [new Parametro($3,$2,null,this._$.first_line,this._$.first_column)];}
+				|TK_coma TK_ID TK_ID														 {$$ = [new Parametro($3,Tipo.STRUCT,$2,this._$.first_line,this._$.first_column)];}
+				|TK_coma TK_ID																 {$$ = [new Parametro($2,null,null,this._$.first_line,this._$.first_column)];}
+				|TK_coma TIPO_VALOR COND_ARREGLO TK_ID 								 		 {$$ = [new Parametro($4,Tipo.ARRAY,null,this._$.first_line,this._$.first_column)];} 
 ;
 
 RETURN: TK_RETURN EXPRESIONARIT FIN_LINEA															{$$ = new Retornar($2,this._$.first_line,this._$.first_column);}		// return a+b;
@@ -638,10 +642,10 @@ FUNCION_SWITCH: TK_SWITCH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchet
 																																																											}
 																																																											$$ = new Switch( $3,$7,$9,$10,this._$.first_line,this._$.first_column);
 																																																											}																																																											
-			*/|TK_SWITCH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura   TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES   TK_DEFAULT TK_dos_puntos LISTA_INSTRUCCIONES	TK_corchete_cierre  {$9.nombre= "AmbienteSwitch";
+			|TK_SWITCH TK_par_apertura EXPRESIONARIT TK_par_cierre TK_corchete_apertura   TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES   TK_DEFAULT TK_dos_puntos LISTA_INSTRUCCIONES	TK_corchete_cierre  					{$9.nombre= "AmbienteSwitch";
 																																																											$15.condicionswitch = $3;  $$ = new Switch( $3,$7,$9,$11,this._$.first_line,this._$.first_column);
 																																																											}
-;
+*/;
 
 SENTENCIAS_CASE: SENTENCIAS_CASE TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES 					 							{
 																																			console.log("entra en case:");
@@ -656,10 +660,10 @@ SENTENCIAS_CASE: SENTENCIAS_CASE TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INST
 																																			console.log("sube el valor nulo creo: "+$1.condicionswitch+"  aca tambien vacio creo anterior "+valorcondicion.condicionswitch);
 																																			$$ = $1;
 																																		}
-				| SENTENCIAS_CASE TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES 	TK_DEFAULT TK_dos_puntos LISTA_INSTRUCCIONES				{
+				| SENTENCIAS_CASE TK_CASE EXPRESIONARIT TK_dos_puntos  LISTA_INSTRUCCIONES TK_DEFAULT TK_dos_puntos LISTA_INSTRUCCIONES	{
 																																			//console.log("case: "+$2.valor);
 																																			$4.nombre= "AmbienteCase";
-																																			var Vcase = new Switch($1.condicionswitch,$3,$5,$10,this._$.first_line,this._$.first_column);
+																																			var Vcase = new Switch($1.condicionswitch,$3,$5,$8,this._$.first_line,this._$.first_column);
 																																			var valorcondicion = $1;
 																																			while(valorcondicion.condiciondefault!= null){
 																																				valorcondicion = valorcondicion.condiciondefault;
@@ -703,7 +707,7 @@ BUCLE_DO_WHILE: TK_DO TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierr
 
 BUCLE_FOR: TK_FOR TK_par_apertura DECLARACION  EXPRESIONARIT TK_pcoma TK_ID TK_INCREMENTO TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre			{$$ = new For($3.id,$3,$4,TipoAumento.INCREMENTO,TipoFor.CLASICO,$10,this._$.first_line,this._$.first_column);}
 		| TK_FOR TK_par_apertura ASIGNACION  EXPRESIONARIT TK_pcoma TK_ID TK_DECREMENTO TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre			{$$ = new For($3.id,$3,$4,TipoAumento.DECREMENTO,TipoFor.CLASICO,$10,this._$.first_line,this._$.first_column);}
-		| TK_FOR TK_ID TK_IN EXPRESIONARIT TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre 		{console.log("Tipo en forin: "+$4.tipo);$$ = new For($2,0,$4,TipoAumento.DECREMENTO,TipoFor.FORIN,$6,this._$.first_line,this._$.first_column);}
+		| TK_FOR TK_ID TK_IN EXPRESIONARIT TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre 																		{console.log("Tipo en forin: "+$4.tipo);$$ = new For($2,0,$4,TipoAumento.DECREMENTO,TipoFor.FORIN,$6,this._$.first_line,this._$.first_column);}
 		//| TK_FOR TK_ID TK_IN ARREGLO TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre 			//{$$ = new For($3.id,$3,$4,TipoAumento.DECREMENTO,TipoFor.CLASICO,$10,this._$.first_line,this._$.first_column);}
 		//| TK_FOR TK_ID TK_IN TK_ID ARREGLO TK_corchete_apertura INSTRUCCIONES TK_corchete_cierre 
 ;

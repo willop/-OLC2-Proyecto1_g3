@@ -293,7 +293,7 @@ FIN_LINEA_STRUCT: TK_coma
 ;
 
 TIPO_DECLARACION : TK_ID TK_igual EXPRESIONARIT FIN_LINEA																			{$$ = new Declaracion($3,this._$.first_line,this._$.first_column,null,$1)} //Declaracion = 58}	 // asig = [exp=58,tipo=null,id=null] asig.id=TK_ID  lo que subo es [exp=58,tipo=null,id=TK_ID]    //necesito verificar si es un vector																																
-				| TK_ID_ TK_igual EXPRESIONARIT MAS_VALORES_IMPRESION FIN_LINEA					 									{$$ = new Declaracion( new ExpComa($3,$4,this._$.first_line,this._$.first_column),this._$.first_line,this._$.first_column,null,$1);}	
+				| TK_ID TK_igual EXPRESIONARIT MAS_VALORES_IMPRESION FIN_LINEA					 									{$$ = new Declaracion( new ExpComa($3,$4,this._$.first_line,this._$.first_column),this._$.first_line,this._$.first_column,null,$1);}	
 				| TK_ID  MAS_VARIABLES FIN_LINEA																					{ var arr=[$1];
 																																		  for(var a=0; a<$2.length;a++){
 																																			  arr.push($2[a]);

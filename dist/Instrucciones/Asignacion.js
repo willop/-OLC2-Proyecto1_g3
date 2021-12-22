@@ -7,15 +7,15 @@ class Asignacion {
         this.id = id;
     }
     interpretar(entorno, recolector) {
-        console.log("Hola desde asignacion viene con valores: id: " + this.id.id + " con expresion: ");
-        console.log(this.expresion);
+        //console.log("Hola desde asignacion viene con valores: id: "+this.id.id+" con expresion: ");
+        //console.log(this.expresion)
         try {
             var variable = entorno.ObtenerSimbolo(this.id.id);
             var valor = this.expresion.interpretar(entorno, recolector);
-            console.log("--------Variable-------");
+            /*console.log("--------Variable-------");
             console.log(variable);
             console.log("--------valor-------");
-            console.log(valor);
+            console.log(valor);*/
             if (variable.tipo != valor.tipo) {
                 throw new TipoIncorrecto(this.linea, this.columna, "EL TIPO ASIGNADO NO ES IGUAL AL TIPO DECLARADO" + Tipo[valor.tipo] + " " + Tipo[variable.tipo], entorno);
             }

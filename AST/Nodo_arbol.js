@@ -1,18 +1,16 @@
 class Nodo_arbol{
-    valor:any;
-    id:any;
-    tipo:any;
-    hijos:any;
-    constructor(valor:any,tipo:any){
+    valor;
+    id;
+    hijos;
+    constructor(valor){
         this.id=0;
         this.valor=valor;
-        this.tipo=tipo;
         this.hijos=[];
     }
     getValor(){
         this.valor;
     }
-    sethijo(_hijo:any){
+    sethijo(_hijo){
         this.hijos.push(_hijo);
     }
 }

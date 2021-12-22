@@ -81,6 +81,7 @@ function accionBoton(e){
     d3.select("#lienzo-ast").graphviz()
     .renderDot(graficaarbol);
 */
+
     var variable = gramatica.parse(TextoDeEdicion);
     console.log(variable);
     

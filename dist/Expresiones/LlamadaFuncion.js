@@ -23,6 +23,8 @@ class LlamadaFuncion {
                 console.log(this.parametros.length);
                 console.log("funcionparametros length");
                 console.log(funcion.parametros.length);
+                if (this.parametros == null) {
+                }
                 if (this.parametros.length != funcion.parametros.length) {
                     throw new ErrorGeneral(this.linea, this.columna, "ERROR TAMAñO DE PARAMETROS", entorno);
                 }
@@ -51,7 +53,8 @@ class LlamadaFuncion {
                     else {
                         ent.GuardarSimbolo(valor.valor, funcion.parametros[i].id, valor.tipo);
                     }
-                } //fin for
+                }
+                //fin for
                 var aux = funcion.instrucciones.interpretar(ent, recolector);
                 if (aux != null) { // validas que tenga retorno
                     console.log(aux);

@@ -23,14 +23,33 @@ class For {
                     var lit = new Declaracion(null, this.linea, this.columna, Tipo.STRING, this.idcontrol); //declaro la variable
                     lit.interpretar(entorno, recolector);
                     var simbolo = entorno.ObtenerSimbolo(this.idcontrol);
-                    console.log("Imprimiendo simbolo");
-                    console.log(simbolo);
-                    var asig = new Asignacion(new Literal(this.final.valor[0], Tipo.STRING, this.linea, this.columna), this.linea, this.columna, simbolo.id);
+                    //console.log("Imprimiendo simbolo");
+                    //console.log(simbolo);
+                    var asig = new Asignacion(new Literal(this.final.valor[0], Tipo.STRING, this.linea, this.columna), this.linea, this.columna, new Acceso(this.idcontrol, this.linea, this.columna));
                     asig.interpretar(entorno, recolector);
                     //var variable = entorno.ObtenerSimbolo(this.idcontrol);
                     this.ejecutarforin(this.idcontrol, this.inicio, this.final, entorno, recolector);
                 }
                 else {
+                    //si entra con un arreglo para
+                    var auxfinal = [];
+                    //console.log(this.final);
+                    var tipoarreglo = this.final.expresion[0].tipo;
+                    for (var i = 0; i < this.final.expresion.length; i++) {
+                        auxfinal.push(this.final.expresion[i].valor);
+                    }
+                    //console.log(auxfinal);
+                    this.final.valor = auxfinal;
+                    var lit = new Declaracion(null, this.linea, this.columna, tipoarreglo, this.idcontrol); //declaro la variable
+                    lit.interpretar(entorno, recolector);
+                    var simbolo = entorno.ObtenerSimbolo(this.idcontrol);
+                    //console.log("Imprimiendo simbolo");
+                    //console.log(simbolo);
+                    var asig = new Asignacion(new Literal(this.final.valor[0], Tipo.INTEGER, this.linea, this.columna), this.linea, this.columna, new Acceso(this.idcontrol, this.linea, this.columna));
+                    asig.interpretar(entorno, recolector);
+                    var simbolo2 = entorno.ObtenerSimbolo(this.idcontrol);
+                    //console.log(simbolo2);
+                    this.ejecutarforinarreglo(this.idcontrol, this.inicio, this.final, entorno, recolector);
                 }
             }
         }
@@ -93,15 +112,13 @@ class For {
     }
     //***************************************** FOR IN ************************************************* */
     ejecutarforin(idcontrol, inicio, final, entorno, recolector) {
-        this.inicio.interpretar(entorno, recolector); //se ejecuta la variable
+        //this.inicio.interpretar(entorno, recolector); //se ejecuta la variable
         return this.iteracionforin(final, entorno, recolector, 1);
     }
     iteracionforin(final, entorno, recolector, iniciofor1) {
         var iniciofor = iniciofor1;
         var finalfor = final.valor.length + 1; /// hola = 4
         var variable = entorno.ObtenerSimbolo(this.idcontrol); // letra
-        console.log("id variable");
-        console.log(variable);
         //console.log("valor de la variable: "+variable.expresion +" e id: "+variable.id);                                                                         //primero se verifica si es un string o un arreglo y a la variable la dejamos como arreglo
         //finalfor 4 >= 0 true,  0 <= 4
         //console.log("final "+finalfor+" , iniccio: "+iniciofor);
@@ -121,13 +138,12 @@ class For {
                     return aux;
                 }
             }
-            //hacer el break
             //console.log("antes de ingresar al incremento del For In con un valor de: "+variable.expresion)
             //console.log(entorno.ObtenerSimbolo(this.idcontrol)) //devuelve h
-            var asig = new Asignacion(new Literal(this.final.valor[iniciofor], Tipo.STRING, this.linea, this.columna), this.linea, this.columna, new Acceso(this.idcontrol, this.linea, this.columna));
+            var asig = new Asignacion(new Literal(this.final.valor[iniciofor], Tipo.INTEGER, this.linea, this.columna), this.linea, this.columna, new Acceso(this.idcontrol, this.linea, this.columna));
             asig.interpretar(entorno, recolector);
             iniciofor = iniciofor + 1;
-            if (iniciofor > finalfor) {
+            if (iniciofor >= finalfor) {
             }
             else {
                 //console.log("entra aca con valores: "+iniciofor +" y finalfor "+finalfor);
@@ -137,4 +153,52 @@ class For {
         else {
         }
     }
+    ejecutarforinarreglo(idcontrol, inicio, final, entorno, recolector) {
+        //this.inicio.interpretar(entorno, recolector); //se ejecuta la variable
+        return this.iteracionforinarreglo(final, entorno, recolector, 1);
+    }
+    iteracionforinarreglo(final, entorno, recolector, iniciofor1) {
+        var iniciofor = iniciofor1;
+        var finalfor = final.valor.length + 1; /// hola = 4
+        var variable = entorno.ObtenerSimbolo(this.idcontrol); // letra
+        //console.log("ACA ENTRAMOS A ITERACION FOR ARREGLO");
+        //console.log(iniciofor, finalfor, variable);
+        //console.log("valor de la variable: "+variable.expresion +" e id: "+variable.id);                                                                         //primero se verifica si es un string o un arreglo y a la variable la dejamos como arreglo
+        //finalfor 4 >= 0 true,  0 <= 4
+        //console.log("final "+finalfor+" , iniccio: "+iniciofor);
+        if (finalfor >= 0 && iniciofor < finalfor) {
+            //console.log("Estas entrando pa?");
+            console.log(this.listainstrucciones);
+            var aux = this.listainstrucciones.interpretar(entorno, recolector); //print  imprime solo h
+            console.log("IMPRIMIENDO AUX");
+            console.log(aux);
+            if (aux != null) { // validas que tenga retorno
+                if (aux instanceof Return) { //que se de tipo retorno
+                    if (aux.tipo == Tipo.CONTINUE) { //depende si es continue o break
+                        return this.iteracionClasica(final, entorno, recolector);
+                    }
+                    else if (aux.tipo == Tipo.BRAKE) {
+                        return;
+                    }
+                }
+                else {
+                    return aux;
+                }
+            }
+            //console.log("antes de ingresar al incremento del For In con un valor de: "+variable.expresion)
+            //console.log(entorno.ObtenerSimbolo(this.idcontrol)) //devuelve h
+            var asig = new Asignacion(new Literal(this.final.valor[iniciofor], Tipo.INTEGER, this.linea, this.columna), this.linea, this.columna, new Acceso(this.idcontrol, this.linea, this.columna));
+            asig.interpretar(entorno, recolector);
+            iniciofor = iniciofor + 1;
+            if (iniciofor >= finalfor) {
+            }
+            else {
+                //console.log("entra aca con valores: "+iniciofor +" y finalfor "+finalfor);
+                return this.iteracionforinarreglo(final, entorno, recolector, iniciofor);
+            }
+        }
+        else {
+        }
+    }
 }
+///CUANDO SEA UN STRING , SE COMPARA EL INDEX DE LA CADENA CONTRA EL TAMANIO DE LA CADENA (INCIO,FIN)

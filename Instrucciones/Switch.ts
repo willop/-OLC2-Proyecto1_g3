@@ -5,7 +5,6 @@ class Switch implements Instruccion {
     condiciondefault:any;
     linea: number;
     columna: number;
-    condicionencontrada = false;
     constructor (condicion:any,expresion:any,instrucciones:any,condiciondefault:any,linea: number, columna: number){
         this.linea = linea;
         this.expresion = expresion;
@@ -41,14 +40,14 @@ class Switch implements Instruccion {
             }
             //si es verdadero retronara la lista de instruciones 
             if(this.condicionswitch.valor == this.expresion.valor) {
-                // aca esta listo para ejecutar las instrucciones
-                //var inst = this.instrucciones
-                /*console.log("le voy a enviar a la funcion:");
+                //aca esta listo para ejecutar las instrucciones
+                var inst = this.instrucciones
+                console.log("le voy a enviar a la funcion:");
                 console.log(inst);
-                this.funcionmascondiciones(inst,entorno, recolector);
-                console.log("*********************************\n****************************\n******************")
-                console.log("Estas instrucciones ejecutara")
-                console.log(this.instrucciones)*/
+                var fun = this.funcionmascondiciones(inst,entorno, recolector);
+                //console.log("*********************************\n****************************\n******************")
+                //console.log("Estas instrucciones ejecutara")
+                //console.log(this.instrucciones)
                 return this.instrucciones.interpretar(entorno,recolector);
             //si ya no trae instrucciones a ejecutar, realizara la condicion else siempre y cuando no sea nula
             }else if(this.condiciondefault != null){
@@ -66,7 +65,7 @@ class Switch implements Instruccion {
         var banderabreak=false;
         var inst:any;
                 for(inst in funcionesejecutar.instrucciones) {
-                    console.log("IMPRIMIENDO INSTRUCCIONES")
+                    //console.log("IMPRIMIENDO INSTRUCCIONES")
                     console.log(funcionesejecutar.instrucciones[inst]);
                     if(this.instrucciones.instrucciones[inst] instanceof Break){
                         console.log("******************** SE ENCONTRO UN BREAK ***********");
@@ -75,20 +74,22 @@ class Switch implements Instruccion {
                 }//despues de reconocer todas las INSTRUCCIONES
                 if(banderabreak){
                     //se ejecuta todo lo recolectado
-                    this.instrucciones = funcionesejecutar;
                     return;
                 }else{
                     //verifico si existen mas instrucciones en el defatul o si existe default
+
+
                     if(this.condiciondefault != null){
-                        console.log("la lista de instrucciones no tiene break\ny la condicion default osea abajo tiene instrucciones\n ahora a buscar esas instrucciones");
-                        console.log(this.condiciondefault.instrucciones);
-                        var instr = this.instrucciones;
-                        instr += this.instrucciones;
-                        console.log("va a ser recursivo");
-                        console.log(instr)
-                        this.funcionmascondiciones(instr,entorno,recolector);
+                        this.instrucciones.instrucciones.push(this.condiciondefault.instrucciones.instrucciones[0]);
+                        //this.instrucciones.instrucciones.push(this.condiciondefault.instrucciones.instrucciones[1]);
+                        console.log("le voy a enviar")
+                        console.log(this.instrucciones)
+                        var nuevainst = this.condiciondefault.condiciondefault;
+                        console.log(nuevainst);
+                        //this.condiciondefault = nuevainst;
+                        //this.funcionmascondiciones(nuevainst,entorno,recolector);
                     }else{
-                        return this.instrucciones.interpretar(entorno,recolector);
+                        return;
                     }
                 }
     }

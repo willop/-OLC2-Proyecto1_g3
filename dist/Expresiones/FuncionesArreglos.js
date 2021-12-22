@@ -14,13 +14,15 @@ class FuncionesArreglos {
             var resultado = new Return(0, Tipo.INTEGER);
             switch (this.tipo) {
                 case TipoFunctionArreglo.FPUSH:
-                    console.log("Funcion push y valor de id= " + valorid);
+                    console.log("Funcion push y valor de id= ");
+                    console.log(valorid);
                     var fpush = new Fpush();
                     var exp = this.expresion.interpretar(valorid, recolector);
                     resultado = fpush.fpush(valorid, exp);
                     break;
                 case TipoFunctionArreglo.FPOP:
-                    console.log("Funcion pop y valor de id= " + valorid);
+                    console.log("Funcion pop y valor de id= ");
+                    console.log(valorid);
                     var fpop = new Fpop();
                     resultado = fpop.fpop(valorid);
                     break;

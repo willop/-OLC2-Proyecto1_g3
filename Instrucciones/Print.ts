@@ -12,13 +12,15 @@ class Print implements Instruccion {
     
     interpretar(entorno:any,recolector:any){
         try{
+            var salida;
+            
             //console.log("Print --- entorno")
             //console.log(entorno)
             //console.log("Print --- resultado")
             var resultado = this.expresion.interpretar(entorno,recolector);
             //console.log(resultado);
             //si el resultado es nulo
-            var salida;
+            
             var bandera = false;
             if(resultado.valor == null){
                 console.log("SI ES NULL")
@@ -101,8 +103,23 @@ class Print implements Instruccion {
             salida = textosalida.toString();
             //console.log("La salida es de: "+textosalida);
             }
+            console.log("Esta es la expresion")
+            console.log(this.expresion);
+            if(this.expresion instanceof Acceso){
+                console.log("es una instancia de acceso array")
+                var ex = this.expresion.interpretar(entorno,recolector);
+                console.log(ex);
+                //var ve = entorno.ObtenerSimbolo(ex.id);
+                console.log("Antes del for")
+                salida ="";
+                for(var i=0;i<ex.valor.length;i++){
+                    salida+=ex.valor[i].valor;
+                }
+                
+            }
+            console.log(salida)
+            
             //fin del algoritmo
-
             if(this.lineanueva){
                 salida = "\n"+ salida 
             }

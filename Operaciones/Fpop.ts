@@ -6,7 +6,9 @@ class Fpop {
             console.log("verificar si es tipo vector: "+id.tipo);
             if(id.tipo == Tipo.ARRAY){
                 //si es un arreglo 
-                console.log("Ingresa y listo para eliminar");
+                if(id.valor.length > 0){
+                    id.valor.pop();
+                }
                 //id.push(expresion.valor);
             }
         } catch (e) {

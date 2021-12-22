@@ -4,10 +4,7 @@ class recorrido_arbol{
     constructor(){
 
     }
-
-    
-    
-    recorrer_arbol(nodo:any){
+    recorrer_arbol(nodo){
         var concatenacion="";
         
         if(nodo.id == 0){
@@ -15,13 +12,11 @@ class recorrido_arbol{
             id_n++;
         }
         concatenacion+=(nodo.id +'[label ="'+nodo.valor+'" fillcolor ="#d62728" shape="circle"];\n').toString();
-        nodo.hijos.forEach((element: any) =>{
+        //console.log(nodo.hijos)
+        nodo.hijos.forEach((element) =>{
             concatenacion+=(nodo.id +'->' +id_n + ';\n');
             concatenacion+=this.recorrer_arbol(element);
         });
         return concatenacion;
     }
-
-
-
 }

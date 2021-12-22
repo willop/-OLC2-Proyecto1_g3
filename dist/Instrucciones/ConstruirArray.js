@@ -10,15 +10,22 @@ class ConstruirArray {
             var valores = [];
             var i;
             var tipoAnterior = null;
-            for (let i = 0; i < this.expresion.length; i++) {
-                var valor = this.expresion[i].interpretar(entorno, recolector);
-                valores[i] = valor;
-                /*if(tipoAnterior!=null &&valor.tipo != tipoAnterior){
-                    throw new ETipoValorArray(this.linea,this.columna,"ERROR TIPO VARIABLE ARRAY",null);
+            if (this.expresion != null) {
+                for (let i = 0; i < this.expresion.length; i++) {
+                    var valor = this.expresion[i].interpretar(entorno, recolector);
+                    valores[i] = valor;
+                    /*if(tipoAnterior!=null &&valor.tipo != tipoAnterior){
+                        throw new ETipoValorArray(this.linea,this.columna,"ERROR TIPO VARIABLE ARRAY",null);
+                    }
+                    tipoAnterior = valor.tipo;*/
                 }
-                tipoAnterior = valor.tipo;*/
+                return new Return(valores, Tipo.ARRAY, tipoAnterior);
             }
-            return new Return(valores, Tipo.ARRAY, tipoAnterior);
+            else {
+                //var valor = this.expresion.interpretar(entorno, recolector);
+                //valores[i] = valor;                
+                return new Return([], Tipo.ARRAY, tipoAnterior);
+            }
         }
         catch (e) {
             recolector.listaerrores.push(e);

@@ -409,6 +409,7 @@ EXPRESIONARIT
 	| EXPRESIONARIT TK_MODULO EXPRESIONARIT       										{$$ = new Aritmetica($1,$3,TipoAritmetica.MODULO,this._$.first_line,this._$.first_column);}
 	| EXPRESIONARIT TK_pregunta EXPRESIONARIT TK_dos_puntos EXPRESIONARIT 				{$$ = new Ternario($1,$3,$5,this._$.first_line,this._$.first_column);}
 	| TK_llave_apertura LISTA_ARREGLO TK_llave_cierre									{var nuevo = new ConstruirArray($2,this._$.first_line,this._$.first_column); $$=nuevo;}
+	| TK_llave_apertura TK_llave_cierre													{var nuevo = new ConstruirArray(null,this._$.first_line,this._$.first_column); $$=nuevo;}
 	//| TK_ID TK_par_apertura EXPRESIONARIT PARAMETROS_EXTRA TK_par_cierre 	{$$ = new LlamadaFuncion($1,true,$3,this._$.first_line,this._$.first_column);}
 	| VALORES 																			{$$ = $1;}
 ;

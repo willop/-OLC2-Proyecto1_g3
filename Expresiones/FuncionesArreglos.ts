@@ -22,7 +22,7 @@ class FuncionesArreglos implements Expresion {
                     console.log("Funcion push y valor de id= ")
                     console.log(valorid);
                     var fpush = new Fpush();
-                    var exp = this.expresion.interpretar(valorid, recolector);
+                    var exp = this.expresion.interpretar(entorno, recolector);
                     resultado = fpush.fpush(valorid,exp);
                     break;
                 case TipoFunctionArreglo.FPOP:

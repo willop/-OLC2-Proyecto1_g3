@@ -9,22 +9,17 @@ class Print {
     interpretar(entorno, recolector) {
         try {
             var salida;
-            //console.log("Print --- entorno")
-            //console.log(entorno)
-            //console.log("Print --- resultado")
             var resultado = this.expresion.interpretar(entorno, recolector);
-            //console.log(resultado);
-            //si el resultado es nulo
             var bandera = false;
             if (resultado.valor == null) {
-                console.log("SI ES NULL");
                 salida = "null";
-            } //si no lo es 
+            }
             else {
                 salida = resultado.valor;
-                //console.log(resultado)
             }
             //inicio algoritmo para las cadenas
+            console.log("EL TIPO DE LO QUE IMPRIME ES:");
+            console.log(resultado);
             if (resultado.tipo == Tipo.STRING) {
                 var tam = salida.length;
                 var expresion = "";
@@ -53,26 +48,17 @@ class Print {
                                 }
                             }
                         } //fin del while
-                        console.log("DENTRO DE PRINT");
-                        console.log(expresion);
-                        console.log("saliendo del while con: " + expresion);
                         if (!bandera) {
                             if (!expresion.match(/[a-z]/i)) {
-                                //es una operacion
-                                console.log("Es una operacion");
                                 var expresionvalor = eval(expresion);
                                 textosalida += expresionvalor;
                             }
                             else {
-                                console.log("Es una variable");
                                 var expresionvalor = entorno.ObtenerSimbolo(expresion);
-                                console.log(expresionvalor);
                                 textosalida += expresionvalor.valor;
                             }
                         }
                         else {
-                            console.log("es un array");
-                            //indice -- id -- 
                             var indice = "";
                             var variable = "";
                             var resulta;
@@ -86,7 +72,6 @@ class Print {
                             }
                             resulta = new AccesoArray(new Literal(indice, Tipo.INTEGER, this.linea, this.columna), new Acceso(variable, this.linea, this.columna), this.linea, this.columna);
                             resulta = resulta.interpretar(entorno, recolector);
-                            console.log(resulta.valor);
                             textosalida += resulta.valor.toString();
                             continue;
                         }
@@ -96,20 +81,28 @@ class Print {
                     }
                 }
                 salida = textosalida.toString();
-                //console.log("La salida es de: "+textosalida);
             }
-            console.log("Esta es la expresion");
-            console.log(this.expresion);
-            if (this.expresion instanceof Acceso) {
-                console.log("es una instancia de acceso array");
-                var ex = this.expresion.interpretar(entorno, recolector);
-                console.log(ex);
-                //var ve = entorno.ObtenerSimbolo(ex.id);
-                console.log("Antes del for");
-                salida = "";
-                for (var i = 0; i < ex.valor.length; i++) {
-                    salida += ex.valor[i].valor;
+            else if (resultado.tipo == Tipo.ARRAY) {
+                console.log("ES UN ARREGLO");
+                if (this.expresion instanceof Acceso) {
+                    var ex = this.expresion.interpretar(entorno, recolector);
+                    salida = "";
+                    for (var i = 0; i < ex.valor.length; i++) {
+                        salida += ex.valor[i].valor;
+                    }
                 }
+            }
+            else if (resultado.tipo == Tipo.STRUCT) {
+                console.log("ACÁ ENTRAMOS SI VIENE UN STRUCT EN EL PRINT");
+            }
+            else {
+                console.log("dentro del else en el print");
+                var exp = this.expresion.interpretar(entorno, recolector);
+                console.log(exp);
+                //var ve = entorno.ObtenerSimbolo(ex.id);
+                console.log("NO ES STRING Y NO ES ARREGLO");
+                salida = "";
+                salida += exp.valor;
             }
             console.log(salida);
             //fin del algoritmo

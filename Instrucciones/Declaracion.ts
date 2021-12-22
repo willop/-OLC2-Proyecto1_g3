@@ -4,12 +4,14 @@ class Declaracion implements Instruccion {
     columna: number;
     tipo: any;
     id: any;
-    constructor(expresion: any, linea: number, columna: number, tipo: any, id: any) {
+    auxtipo:any;
+    constructor(expresion: any, linea: number, columna: number, tipo: any, id: any, auxtipo= null) {
         this.linea = linea;
         this.columna = columna;
         this.expresion = expresion;
         this.tipo = tipo;
         this.id = id;
+        this.auxtipo = auxtipo;
     }
 
     interpretar(entorno: any, recolector: any) {
@@ -42,7 +44,10 @@ class Declaracion implements Instruccion {
                 if (this.tipo != valor.tipo) {
                     throw new TipoIncorrecto(this.linea, this.columna, "EL TIPO DECLARADO NO ES IGUAL AL TIPO ASIGNADO" + Tipo[valor.tipo] + " " + Tipo[this.tipo], entorno);
                 }
-                if(valor.tipo == Tipo.STRUCT){                    
+                console.log("EN DECLARACION, IMPRIMIENDO VALOR")                 
+                    console.log(valor);
+                if(valor.tipo == Tipo.STRUCT){   
+                    
                     if(valor instanceof Simbolo){
                         entorno.guardarVariableStruct(this.id,valor.atributos,valor.auxtipo);
                     }else{

@@ -97,14 +97,14 @@ class LlamadaFuncion {
                         throw new ErrorGeneral(this.linea, this.columna, "ERROR TAMAñO DE PARAMETROS", entorno);
                     }
                     var atributos = new Map();
-                    for (var i = 0; i < funcion.parametros.length; i++) {
+                    for (var i = 0; i < getStruct.atributos.size; i++) {
                         var valor = this.parametros[i].interpretar(entorno, recolector);
                         //console.log()
                         if (valor.tipo == Tipo.STRUCT && !(this.parametros[i] instanceof LlamadaFuncion)) {
                             valor = entorno.ObtenerSimbolo(this.parametros[i].id);
                         }
                         valor.auxtipo = getStruct.id;
-                        atributos.set(getStruct.atributos[i].id, valor);
+                        atributos.set(getStruct.BuscarPorOrden(i).id, valor);
                     }
                     if (this.llamadaexpresion) {
                         return new Return(atributos, Tipo.STRUCT, nuevoid);

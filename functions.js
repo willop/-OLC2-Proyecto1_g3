@@ -83,6 +83,7 @@ function accionBoton(e){
 */
     var variable = gramatica.parse(TextoDeEdicion);
     console.log(variable);
+    
 
     try{
         for(var inst = 0; inst < variable.length; inst++){
@@ -130,5 +131,6 @@ function accionBoton(e){
     consola.setValue(salidaConsola);
     console.log(entorno.variables);
     console.log(entorno.funciones);
+    console.log(entorno.estructuras);
     
 }

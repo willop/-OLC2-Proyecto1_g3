@@ -5,6 +5,7 @@ class Switch implements Instruccion {
     condiciondefault:any;
     linea: number;
     columna: number;
+    condicionencontrada = false;
     constructor (condicion:any,expresion:any,instrucciones:any,condiciondefault:any,linea: number, columna: number){
         this.linea = linea;
         this.expresion = expresion;

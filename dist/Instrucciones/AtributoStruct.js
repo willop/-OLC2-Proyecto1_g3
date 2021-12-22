@@ -6,6 +6,7 @@ class AtributoStruct {
         this.id = id;
         this.tipo = tipo;
         this.auxtipo = auxtipo;
+        this.orden = 0;
     }
     interpretar(entorno, recolector) {
         try {

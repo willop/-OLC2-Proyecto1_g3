@@ -27,7 +27,7 @@ class For {
                     console.log(simbolo);
                     var asig = new Asignacion(new Literal(this.final.valor[0], Tipo.STRING, this.linea, this.columna), this.linea, this.columna, simbolo.id);
                     asig.interpretar(entorno, recolector);
-                    var variable = entorno.ObtenerSimbolo(this.idcontrol);
+                    //var variable = entorno.ObtenerSimbolo(this.idcontrol);
                     this.ejecutarforin(this.idcontrol, this.inicio, this.final, entorno, recolector);
                 }
                 else {

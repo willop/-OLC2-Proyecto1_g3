@@ -1,6 +1,7 @@
 "use strict";
 class Switch {
     constructor(condicion, expresion, instrucciones, condiciondefault, linea, columna) {
+        this.condicionencontrada = false;
         this.linea = linea;
         this.expresion = expresion;
         this.columna = columna;

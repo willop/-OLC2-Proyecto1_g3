@@ -4,16 +4,19 @@ class AtributoStruct implements Instruccion {
     auxtipo:any;
     linea:number
     columna:number;
+    orden:number;
     constructor (id:any,tipo=null, auxtipo=null, linea: number, columna: number){
         this.linea = linea;
         this.columna = columna;
         this.id = id;
         this.tipo = tipo;
         this.auxtipo = auxtipo;
+        this.orden =0;
     }
     
     interpretar(entorno:any,recolector:any){
         try{
+
             return this;
         }catch(e){
             recolector.listaerrores.push(e);
@@ -21,4 +24,5 @@ class AtributoStruct implements Instruccion {
         }
         
     }
+
 }

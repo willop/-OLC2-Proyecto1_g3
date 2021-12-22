@@ -34,7 +34,9 @@ class LlamadaFuncion implements Expresion {
                 console.log(this.parametros.length);
                 console.log("funcionparametros length");
                 console.log(funcion.parametros.length);
-            
+            if(this.parametros == null){
+
+            }
                 if(this.parametros.length != funcion.parametros.length){
                     throw new ErrorGeneral(this.linea, this.columna, "ERROR TAMAñO DE PARAMETROS", entorno); 
                 }
@@ -62,7 +64,8 @@ class LlamadaFuncion implements Expresion {
                         ent.GuardarSimbolo(valor.valor,funcion.parametros[i].id,valor.tipo);
                     }                    
                     
-                }//fin for
+                }
+                //fin for
                 var aux = funcion.instrucciones.interpretar(ent, recolector);
                     if(aux != null){ // validas que tenga retorno
                         console.log(aux);
@@ -98,21 +101,25 @@ class LlamadaFuncion implements Expresion {
                     }
 
             }else{
+                
                 var getStruct = entorno.obtenerStruct(nuevoid);
+                
                 if(getStruct != null){
                     if(this.parametros.length != getStruct.atributos.size){
                         throw new ErrorGeneral(this.linea, this.columna, "ERROR TAMAñO DE PARAMETROS", entorno); 
                     }
                     var atributos = new Map<String,Return>();
-                    for(var i=0;i<funcion.parametros.length;i++){
+                    for(var i=0;i<getStruct.atributos.size;i++){
                         var valor = this.parametros[i].interpretar(entorno, recolector);
                         //console.log()
                         if(valor.tipo == Tipo.STRUCT && !(this.parametros[i] instanceof LlamadaFuncion)){
                             valor = entorno.ObtenerSimbolo(this.parametros[i].id);
                         }
                         valor.auxtipo = getStruct.id;
-                        atributos.set(getStruct.atributos[i].id,valor);
+                        
+                        atributos.set(getStruct.BuscarPorOrden(i).id,valor);
                     }
+                    
                     if(this.llamadaexpresion){
                         return new Return(atributos,Tipo.STRUCT,nuevoid);
                     }else{

@@ -94,6 +94,17 @@ class Print {
             }
             else if (resultado.tipo == Tipo.STRUCT) {
                 console.log("ACÁ ENTRAMOS SI VIENE UN STRUCT EN EL PRINT");
+                console.log("cantidad de atributos");
+                var cantatributos = resultado.atributos.size;
+                console.log("Cantidad ");
+                var iterador = resultado.atributos.entries();
+                console.log(iterador);
+                salida = "";
+                for (let index = 0; index < cantatributos; index++) {
+                    salida += iterador.next().value[1].valor + "\n";
+                }
+                console.log("Nuevos valores de salida");
+                console.log(salida);
             }
             else {
                 console.log("dentro del else en el print");

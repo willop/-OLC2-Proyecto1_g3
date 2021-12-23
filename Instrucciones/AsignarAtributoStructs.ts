@@ -12,6 +12,7 @@ class AsignarAtributoStructs implements Instruccion {
     
     interpretar(entorno:any,recolector:any){
         try{
+            console.log("ENTRANDO A ASIGNAR ATRIBUTO STRUCT")
             var variable:any;
             var valor = this.expresion.interpretar(entorno,recolector);
             if(valor.tipo == Tipo.STRUCT && !(this.expresion instanceof LlamadaFuncion)){
@@ -46,7 +47,12 @@ class AsignarAtributoStructs implements Instruccion {
                 if(valor.tipo == Tipo.STRUCT){
                     if(this.id instanceof AccesoStruct){
                         var aux = this.id.Variable;
+                        console.log("ESTE ES ID ASIGNAR ATRIBUTO---")
+                        console.log(this.id);
+                        console.log(aux)
                         aux.atributos.set(this.id.atributo,valor);                        
+                        console.log(aux);
+                        console.log(valor);
                     }
                     
                 }else{

@@ -221,6 +221,9 @@ break;
 case 67:
 var a = $$[$0]; var al=a.length; var c = a.substring(1,al-1);    this.$ = new Literal(c,Tipo.STRING,this._$.first_line,this._$.first_column);
 break;
+case 68:
+this.$ = new Literal(null,Tipo.NULL,this._$.first_line,this._$.first_column);
+break;
 case 69:
 this.$ = new Literal(true,Tipo.BOOLEAN,this._$.first_line,this._$.first_column);
 break;
@@ -438,8 +441,8 @@ case 149:
 console.log("el 3");console.log($$[$0-3]);console.log("el 4");console.log($$[$0-2]);this.$= new LlamadaFuncion($$[$0-5],false,[$$[$0-3]].concat($$[$0-2]),this._$.first_line,this._$.first_column);
 break;
 case 150:
-var listainst =$$[$0-1]; listainst.crearentorno=false; var nuevo = new Parametro($$[$0-5],null,null,this._$.first_line,this._$.first_column);
-			this.$ = new Funcion($$[$0-7].auxtipo,$$[$0-6].id,[nuevo].concat($$[$0-4]),listainst,this._$.first_line,this._$.first_column);
+console.log("---- El 1---"); console.log($$[$0-7]);var listainst =$$[$0-1]; listainst.crearentorno=false; var nuevo = new Parametro($$[$0-5].id,$$[$0-5].tipo,$$[$0-5].auxtipo,this._$.first_line,this._$.first_column);
+			this.$ = new Funcion($$[$0-7].auxtipo,$$[$0-7].id,[nuevo].concat($$[$0-4]),listainst,this._$.first_line,this._$.first_column);
 break;
 case 151:
 this.$ = new Asignacion(new Aritmetica($$[$0-2],new Literal(1,Tipo.INTEGER,this._$.first_line,this._$.first_column),TipoAritmetica.RESTA,this._$.first_line,this._$.first_column),this._$.first_line,this._$.first_column,$$[$0-2]);
@@ -455,24 +458,21 @@ case 153:
 break;
 case 154:
 
-																									var aux = $$[$0-3].concat(new Declaracion(null,this._$.first_line,this._$.first_column, $$[$0-1],$$[$0],null));
+																									var aux = $$[$0-3].concat(new Parametro($$[$0],$$[$0-1],null,this._$.first_line,this._$.first_column));
 																									this.$ =aux;
 																								
 break;
 case 155:
 this.$ = [$$[$0]];
 break;
-case 156:
-this.$ = [new Declaracion(null,this._$.first_line,this._$.first_column, $$[$0-1],$$[$0],null)]
+case 156: case 171: case 181:
+this.$ = [new Parametro($$[$0],$$[$0-1],null,this._$.first_line,this._$.first_column)];
 break;
 case 169:
 this.$ = new FuncionesNativas($$[$0-1],TipoFuncionNativa.TOINT,this._$.first_line,this._$.first_column)
 break;
 case 170:
 this.$ = new FuncionesNativas($$[$0-1],TipoFuncionNativa.TODOUBLE,this._$.first_line,this._$.first_column)
-break;
-case 171: case 181:
-this.$ = [new Parametro($$[$0],$$[$0-1],null,this._$.first_line,this._$.first_column)];
 break;
 case 172:
 this.$ = [new Parametro($$[$0-1],$$[$0-2],null,this._$.first_line,this._$.first_column)].concat($$[$0]);

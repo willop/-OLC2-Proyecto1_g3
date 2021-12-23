@@ -16,6 +16,12 @@ class Asignacion {
             console.log(variable);
             console.log("--------valor-------");
             console.log(valor);*/
+            console.log("el tipo variable");
+            console.log(variable);
+            console.log(variable.tipo);
+            console.log("el valor tipo");
+            console.log(valor);
+            console.log(valor.tipo);
             if (variable.tipo != valor.tipo) {
                 throw new TipoIncorrecto(this.linea, this.columna, "EL TIPO ASIGNADO NO ES IGUAL AL TIPO DECLARADO" + Tipo[valor.tipo] + " " + Tipo[variable.tipo], entorno);
             }

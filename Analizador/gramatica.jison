@@ -334,7 +334,7 @@ IGUALACION: TK_igual EXPRESIONARIT FIN_LINEA
 
 
 VALORES: TK_CADENA															{var a = $1; var al=a.length; var c = a.substring(1,al-1);    $$ = new Literal(c,Tipo.STRING,this._$.first_line,this._$.first_column);}
-		|TK_NULL															{}
+		|TK_NULL															{$$ = new Literal(null,Tipo.NULL,this._$.first_line,this._$.first_column);}
 		|TK_TRUE															{$$ = new Literal(true,Tipo.BOOLEAN,this._$.first_line,this._$.first_column);}
 		|TK_FALSE															{$$ = new Literal(false,Tipo.BOOLEAN,this._$.first_line,this._$.first_column);}
 		|TK_CARACTER														{var a = $1; var al=a.length; var c = a.substring(1,al-1);    $$ = new Literal(c,Tipo.CHAR,this._$.first_line,this._$.first_column);}
@@ -479,8 +479,9 @@ ASIGNACION: ACCESSOATRIBUTO TK_igual EXPRESIONARIT FIN_LINEA					 								{//con
 			|ACCESSOATRIBUTO TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA 								{$$ = new LlamadaFuncion($1,false,[$3],this._$.first_line,this._$.first_column);}
 			//|ACCESSOATRIBUTO TK_par_apertura PARAMETRO_FUNSION TK_par_cierre FIN_LINEA 								{$$ = new LlamadaFuncion($1,false,[$3],this._$.first_line,this._$.first_column);}
 			|ACCESSOATRIBUTO TK_par_apertura EXPRESIONARIT PARAMETROS_EXTRA TK_par_cierre FIN_LINEA 			{console.log("el 3");console.log($3);console.log("el 4");console.log($4);$$= new LlamadaFuncion($1,false,[$3].concat($4),this._$.first_line,this._$.first_column);} // suma(5,6);
-			|ACCESSOATRIBUTO TK_par_apertura EXPRESIONARIT PARAMETROS_EXTRA TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre	{var listainst =$7; listainst.crearentorno=false; var nuevo = new Parametro($3,null,null,this._$.first_line,this._$.first_column);
-			$$ = new Funcion($1.auxtipo,$2.id,[nuevo].concat($4),listainst,this._$.first_line,this._$.first_column);}																						//{$$ = new Funcion($1.auxtipo,$1.id,[$3].concat($4),$7,this._$.first_line,this._$.first_column);}
+			|ACCESSOATRIBUTO TK_par_apertura EXPRESIONARIT PARAMETROS_EXTRA TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre	
+			{console.log("---- El 1---"); console.log($1);var listainst =$7; listainst.crearentorno=false; var nuevo = new Parametro($3.id,$3.tipo,$3.auxtipo,this._$.first_line,this._$.first_column);
+			$$ = new Funcion($1.auxtipo,$1.id,[nuevo].concat($4),listainst,this._$.first_line,this._$.first_column);}																						//{$$ = new Funcion($1.auxtipo,$1.id,[$3].concat($4),$7,this._$.first_line,this._$.first_column);}
 			//|TK_ID TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA										{} //a(s,5)
 			//|TK_ID TK_par_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_par_cierre FIN_LINEA				{} [s,d,[sddd]]
 			//|ACCESSOATRIBUTO TK_par_apertura  TK_par_cierre FIN_LINEA											{} //a() -- llamar una funcion 
@@ -502,12 +503,13 @@ PARAMETROS_EXTRA: PARAMETROS_EXTRA	TK_coma EXPRESIONARIT										{
 																									$$ =aux;
 																								}
 				| PARAMETROS_EXTRA TK_coma TIPO_VALOR TK_ID										{
-																									var aux = $1.concat(new Declaracion(null,this._$.first_line,this._$.first_column, $3,$4,null));
+																									var aux = $1.concat(new Parametro($4,$3,null,this._$.first_line,this._$.first_column));
 																									$$ =aux;
 																								}
 				| TK_coma EXPRESIONARIT															{$$ = [$2];}
 																											// id: any, auxtipo= null
-				| TK_coma TIPO_VALOR TK_ID														{$$ = [new Declaracion(null,this._$.first_line,this._$.first_column, $2,$3,null)]}
+				| TK_coma TIPO_VALOR TK_ID														{$$ = [new Parametro($3,$2,null,this._$.first_line,this._$.first_column)];}
+																									//id:any,tipo:any,auxtipo:any,linea: number, columna: number
 ;
 
 /*

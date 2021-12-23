@@ -15,6 +15,8 @@ class If implements Instruccion {
     interpretar(entorno:any,recolector:any){
         try{
             var resultado = this.condicion.interpretar(entorno,recolector);
+            console.log("El resultado de IF-------")
+            console.log(resultado);
             if(resultado.tipo != Tipo.BOOLEAN){
                 throw new EIf(this.linea,this.columna,"ERROR TIPO INCORRECTO EN CONDICION",null); 
             }

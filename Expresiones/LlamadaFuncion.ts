@@ -41,32 +41,44 @@ class LlamadaFuncion implements Expresion {
                     throw new ErrorGeneral(this.linea, this.columna, "ERROR TAMAñO DE PARAMETROS", entorno); 
                 }
                 var ent = new Entorno(entorno,nuevoid,entorno.numero+1);
+
                 for(var i=0;i<funcion.parametros.length;i++){
                     var valor = this.parametros[i].interpretar(entorno, recolector);
                     //console.log()
-                    if(valor.tipo != Tipo.STRUCT){
+                    if(funcion.parametros[i].tipo != Tipo.STRUCT){
                         if(valor.tipo != funcion.parametros[i].tipo){
                             throw new ErrorGeneral(this.linea, this.columna, "ERROR TIPO PARAMETROS", entorno);
                         }
                     }else{
                         // AGREGAR VALIDACIONES DE TIPO STRUCT, VER LA CLASE ASIGNAR ATRIBUTO STRUCTS
                     }
+
+                    console.log("EL VALOR TIPO -----")
+                    console.log(valor.tipo);
                     
-                    if(valor.tipo == Tipo.STRUCT){
+                    if(funcion.parametros[i].tipo == Tipo.STRUCT){
                         var struct:any;
+                        console.log("PARAMETROS EN POSICION I")
+                        console.log(this.parametros[i]);
                         if(this.parametros[i] instanceof AccesoStruct){
                             struct = valor;
                         }else{
                             struct = entorno.ObtenerSimbolo(this.parametros[i].id);
                         }
-                        ent.guardarVariableStruct(this.parametros[i].id,struct.atributos,valor.auxtipo);
+                        console.log("FUNCIONPARAMETROS AUX TIPO " + funcion.parametros[i].id);
+                        console.log(funcion.parametros[i].auxtipo);
+                        ent.guardarVariableStruct(funcion.parametros[i].id,struct.atributos,funcion.parametros[i].auxtipo);
                     }else{
-                        ent.GuardarSimbolo(valor.valor,funcion.parametros[i].id,valor.tipo);
+                        ent.GuardarSimbolo(valor.valor,funcion.parametros[i].id,funcion.parametros[i].tipo);
                     }                    
                     
                 }
+                console.log("NUEVO ENTORNO-----------")
+                console.log(ent);
                 //fin for
                 var aux = funcion.instrucciones.interpretar(ent, recolector);
+                console.log("ESTE ES EL AUX---------------")
+                console.log(aux);
                     if(aux != null){ // validas que tenga retorno
                         console.log(aux);
                         if(aux instanceof Return){ //que se de tipo retorno

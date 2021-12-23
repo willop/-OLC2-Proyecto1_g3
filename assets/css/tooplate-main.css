@@ -590,11 +590,32 @@ nav a::before {
   
 }
 
+#Tabla_errores{
+  border-color: rgb(0, 5, 10);
+  font-size: 25px;
+  background-color: rgb(87, 238, 187);
+  width: 80%;
+  
+}
+
 #trid{
   color:rgb(255, 255, 255);
   background-color: rgba(0, 153, 255, 0.479);
   border-bottom: 1px solid;
 }
+
+
+#trid2{
+  color:rgb(240, 60, 60);
+  background-color: rgba(113, 178, 221, 0.479);
+  border-bottom: 1px solid;
+}
+
+h2{
+  background-color: aliceblue;
+  width: 80%;
+}
+
 
 
 #lienzo-ast{

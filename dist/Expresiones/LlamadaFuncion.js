@@ -101,6 +101,8 @@ class LlamadaFuncion {
                     }
                     var atributos = new Map();
                     for (var i = 0; i < getStruct.atributos.size; i++) {
+                        console.log("****************IMPRIMIENDO PARAMETROS***********");
+                        console.log(this.parametros);
                         var valor = this.parametros[i].interpretar(entorno, recolector);
                         //console.log()
                         if (valor.tipo == Tipo.STRUCT && !(this.parametros[i] instanceof LlamadaFuncion)) {

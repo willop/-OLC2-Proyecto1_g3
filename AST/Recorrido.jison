@@ -254,10 +254,10 @@ STRUCT : TK_STRUCT TK_ID TK_corchete_apertura  TK_corchete_cierre FIN_LINEA					
 		|TK_STRUCT TK_ID TK_corchete_apertura CONTENIDO_STRUCT TK_corchete_cierre FIN_LINEA		{$$ = new Nodo_arbol("STRUCT"); $$.sethijo(new nodo_arbol($1));$$.sethijo(new nodo_arbol($2));$$.sethijo(new nodo_arbol($3));$$.sethijo($4);$$.sethijo(new nodo_arbol($5));$$.sethijo($6);}
 ;
 
-CONTENIDO_STRUCT:CONTENIDO_STRUCT TK_coma TIPO_VALOR TK_ID  {}
-				| CONTENIDO_STRUCT TK_coma TK_ID TK_ID		{}
-				| TIPO_VALOR TK_ID							{}
-				| TK_ID TK_ID								{}
+CONTENIDO_STRUCT:CONTENIDO_STRUCT TK_coma TIPO_VALOR TK_ID  {$$ = new Nodo_arbol("CONTENIDO_STRUCT");$$.sethijo($1);$$.sethijo(new nodo_arbol($2));$$.sethijo($3);$$.sethijo(new nodo_arbol($4));}
+				| CONTENIDO_STRUCT TK_coma TK_ID TK_ID		{$$ = new Nodo_arbol("CONTENIDO_STRUCT");$$.sethijo($1);$$.sethijo(new nodo_arbol($2));$$.sethijo(new nodo_arbol($3));$$.sethijo(new nodo_arbol($4));}
+				| TIPO_VALOR TK_ID							{$$ = new Nodo_arbol("CONTENIDO_STRUCT");$$.sethijo(new nodo_arbol($1));$$.sethijo(new nodo_arbol($2));}
+				| TK_ID TK_ID								{$$ = new Nodo_arbol("CONTENIDO_STRUCT");$$.sethijo(new nodo_arbol($1));$$.sethijo(new nodo_arbol($2));}
 ;
 /*TIPO_VALOR TK_ID TK_igual EXPRESIONARIT FIN_LINEA_STRUCT
 				| TIPO_VALOR TK_ID FIN_LINEA_STRUCT
@@ -266,8 +266,8 @@ CONTENIDO_STRUCT:CONTENIDO_STRUCT TK_coma TIPO_VALOR TK_ID  {}
 */
 
 				
-FIN_LINEA_STRUCT: TK_coma
-				| TK_pcoma
+FIN_LINEA_STRUCT: TK_coma			{$$= new Nodo_arbol("FIN_LINEA_STRUCT");$$.sethijo(new Nodo_arbol($1));}
+				| TK_pcoma			{$$= new Nodo_arbol("FIN_LINEA_STRUCT");$$.sethijo(new Nodo_arbol($1));}
 ;
 
 TIPO_DECLARACION : TK_ID TK_igual EXPRESIONARIT FIN_LINEA																			{}
@@ -284,20 +284,19 @@ MAS_VARIABLES: MAS_VARIABLES TK_coma TK_ID																							{}
 			|TK_coma TK_ID																											{}
 ;
 
-FIN_LINEA: TK_pcoma																													{}
+FIN_LINEA: TK_pcoma				{$$= new Nodo_arbol("FIN_LINEA");$$.sethijo(new Nodo_arbol($1));}
 ;
 
 
-TIPO_VALOR: TK_STRING 																												{}
-		|TK_INT																														{}
-		|TK_BOOLEAN																													{}
-		|TK_DOUBLE																													{}
-		|TK_CHAR																													{}
-		|TK_VOID																													{}
+TIPO_VALOR: TK_STRING 							{$$= new Nodo_arbol($1);}
+		|TK_INT									{$$= new Nodo_arbol($1);}
+		|TK_BOOLEAN								{$$= new Nodo_arbol($1);}
+		|TK_DOUBLE								{$$= new Nodo_arbol($1);}
+		|TK_CHAR								{$$= new Nodo_arbol($1);}
+		|TK_VOID								{$$= new Nodo_arbol($1);}
 ;
 
-COND_ARREGLO: TK_llave_apertura TK_llave_cierre																						{}
-
+COND_ARREGLO: TK_llave_apertura TK_llave_cierre					{$$ = new Nodo_arbol("COND_ARREGLO");$$.sethijo($1);$$.sethijo($2);}
 ;
 /*
 IGUALACION: TK_igual EXPRESIONARIT FIN_LINEA	
@@ -307,28 +306,27 @@ IGUALACION: TK_igual EXPRESIONARIT FIN_LINEA
 
 
 VALORES: TK_CADENA															{var a = $1; var al=a.length; var c = a.substring(1,al-1);  $$ = new Nodo_arbol(c);}
-		|TK_NULL															{}
-		|TK_TRUE															{}
-		|TK_FALSE															{}
-		|TK_CARACTER														{}
-		|ACCESSOATRIBUTO													{}
-		//|TK_ID TK_ID
+		|TK_NULL															{$$= new Nodo_arbol($1);}
+		|TK_TRUE															{$$= new Nodo_arbol($1);}
+		|TK_FALSE															{$$= new Nodo_arbol($1);}
+		|TK_CARACTER														{$$= new Nodo_arbol($1);}
+		|ACCESSOATRIBUTO													{$$= new Nodo_arbol($1);}
 		/*|TK_ID 																{$$ = new Acceso($1,this._$.first_line,this._$.first_column);}
 		|TK_ID TK_par_apertura TK_par_cierre								{}
 		|TK_ID TK_par_apertura PARAMETROS TK_par_cierre						{}
 		|TK_ID ARREGLO 														{}
-	  */|TK_ENTERO                        									{}
-		|TK_DECIMAL                       									{}
-		|TK_BEGIN 															{}
-		|TK_END 															{}
-		|TK_TYPEOF TK_par_apertura EXPRESIONARIT TK_par_cierre				{}
-		|TK_INT TK_punto TK_PARSE EXPRESIONARIT 							{}
-		|TK_DOUBLE TK_punto TK_PARSE EXPRESIONARIT 							{}
-		|TK_BOOLEAN TK_punto TK_PARSE EXPRESIONARIT 						{}
-		|FUNCIONES_NATIVAS													{}
-		|TK_STRING TK_par_apertura EXPRESIONARIT TK_par_cierre				{}
-		|TK_ID TK_par_apertura EXPRESIONARIT PARAMETROS_EXTRA TK_par_cierre		{}
-		|TK_ID TK_par_apertura EXPRESIONARIT TK_par_cierre						{}
+	  */|TK_ENTERO                        									{$$= new Nodo_arbol($1);}
+		|TK_DECIMAL                       									{$$= new Nodo_arbol($1);}
+		|TK_BEGIN 															{$$= new Nodo_arbol($1);}
+		|TK_END 															{$$= new Nodo_arbol($1);}
+		|TK_TYPEOF TK_par_apertura EXPRESIONARIT TK_par_cierre				{$$= new Nodo_arbol("VALORES");$$.sethijo(new Nodo_arbol($1));$$.sethijo(new nodo_arbol($2));$$.sethijo($3);$$.sethijo(new Nodo_arbol($4));}
+		|TK_INT TK_punto TK_PARSE EXPRESIONARIT 							{$$= new Nodo_arbol("VALORES");$$.sethijo(new Nodo_arbol($1));$$.sethijo(new nodo_arbol($2));$$.sethijo(new nodo_arbol($3));$$.sethijo($4);}}
+		|TK_DOUBLE TK_punto TK_PARSE EXPRESIONARIT 							{$$= new Nodo_arbol("VALORES");$$.sethijo(new Nodo_arbol($1));$$.sethijo(new nodo_arbol($2));$$.sethijo(new nodo_arbol($3));$$.sethijo($4);}}
+		|TK_BOOLEAN TK_punto TK_PARSE EXPRESIONARIT 						{$$= new Nodo_arbol("VALORES");$$.sethijo(new Nodo_arbol($1));$$.sethijo(new nodo_arbol($2));$$.sethijo(new nodo_arbol($3));$$.sethijo($4);}}
+		|FUNCIONES_NATIVAS													{$$= new Nodo_arbol("VALORES");$$.sethijo($1);}
+		|TK_STRING TK_par_apertura EXPRESIONARIT TK_par_cierre				{$$=new Nodo_arbol("VALORES");$$.sethijo(new Nodo_arbol($1));$$.sethijo(new Nodo_arbol($2));$$.sethijo($3);$$.sethijo(new Nodo_arbol($4));}
+		|TK_ID TK_par_apertura EXPRESIONARIT PARAMETROS_EXTRA TK_par_cierre	{$$=new Nodo_arbol("VALORES");$$.sethijo(new nodo_arbol($1));$$.sethijo(new nodo_arbol($2));$$.sethijo($3);$$.sethijo($4);$$.sethijo(new nodo_arbol($5));}
+		|TK_ID TK_par_apertura EXPRESIONARIT TK_par_cierre					{}
 ;
 
 ARREGLO: TK_llave_apertura LISTA_ARREGLO TK_llave_cierre										{}
@@ -378,13 +376,13 @@ EXPRESIONARIT
 	| EXPRESIONARIT TK_pregunta EXPRESIONARIT TK_dos_puntos EXPRESIONARIT 				{}
 	| TK_llave_apertura LISTA_ARREGLO TK_llave_cierre									{}
 	//| TK_ID TK_par_apertura EXPRESIONARIT PARAMETROS_EXTRA TK_par_cierre 	{$$ = new LlamadaFuncion($1,true,$3,this._$.first_line,this._$.first_column);}
-	| VALORES 																			{$$ = new Nodo_arbol("VALORES"); $$.sethijo($1);}
+	| VALORES 																			{$$ = new Nodo_arbol("EXPRESIONARIT"); $$.sethijo($1);}
 ;
 
 
-IMPRESION: TK_PRINT TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA							{$$ = new Nodo_arbol("IMPRESION"); $$.sethijo(new Nodo_arbol($1));$$.sethijo(new Nodo_arbol($2));$$.sethijo($3);$$.sethijo(new Nodo_arbol($4));$$.sethijo(new Nodo_arbol($5));}
+IMPRESION: TK_PRINT TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA							{$$ = new Nodo_arbol("IMPRESION"); $$.sethijo(new Nodo_arbol($1));$$.sethijo(new Nodo_arbol($2));$$.sethijo($3);$$.sethijo(new Nodo_arbol($4));$$.sethijo($5);}
 		|TK_PRINTLN TK_par_apertura EXPRESIONARIT TK_par_cierre	FIN_LINEA							{}
-		|TK_PRINT TK_par_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_par_cierre FIN_LINEA  		{}
+		|TK_PRINT TK_par_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_par_cierre FIN_LINEA  		{$$ = new Nodo_arbol("IMPRESION"); $$.sethijo(new Nodo_arbol($1));$$.sethijo(new Nodo_arbol($2));$$.sethijo($3);$$.sethijo(new Nodo_arbol($4));$$.sethijo($5);}
 		|TK_PRINTLN TK_par_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_par_cierre FIN_LINEA     {}
 ;
 
@@ -407,7 +405,7 @@ ACCESSOATRIBUTO : ACCESSOATRIBUTO TK_punto TK_ID			 													{}
 				| ACCESSOATRIBUTO TK_llave_apertura EXPRESIONARIT TK_llave_cierre 								{}
 				| ACCESSOATRIBUTO TK_llave_apertura EXPRESIONARIT PARAMETROS_EXTRA TK_llave_cierre 				{}
 			    //| TK_ID LLAMADA_FUNCION																			{}
-				| TK_ID																							{}
+				| TK_ID																							{$$= new Nodo_arbol($1);}
 				| TK_ID TK_ID																					{}
 				//| TK_ID TK_ID TK_par_apertura PARAMETRO_FUNSION TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre					{var listainst =$7; listainst.crearentorno=false; $$ = new Funcion($1,$2,$4,listainst,this._$.first_line,this._$.first_column);}
 				//| TK_ID TK_ID TK_igual EXPRESIONARIT
@@ -428,6 +426,7 @@ ASIGNACION: ACCESSOATRIBUTO TK_igual EXPRESIONARIT FIN_LINEA					 								{}
 			|ACCESSOATRIBUTO TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA 								{}
 			//|ACCESSOATRIBUTO TK_par_apertura PARAMETRO_FUNSION TK_par_cierre FIN_LINEA 								{$$ = new LlamadaFuncion($1,false,[$3],this._$.first_line,this._$.first_column);}
 			|ACCESSOATRIBUTO TK_par_apertura EXPRESIONARIT PARAMETROS_EXTRA TK_par_cierre FIN_LINEA 			{}
+			|ACCESSOATRIBUTO TK_par_apertura EXPRESIONARIT PARAMETROS_EXTRA TK_par_cierre TK_corchete_apertura LISTA_INSTRUCCIONES TK_corchete_cierre            				{}
 			//|TK_ID TK_par_apertura EXPRESIONARIT TK_par_cierre FIN_LINEA										{} //a(s,5)
 			//|TK_ID TK_par_apertura EXPRESIONARIT MAS_VALORES_IMPRESION TK_par_cierre FIN_LINEA				{} [s,d,[sddd]]
 			//|ACCESSOATRIBUTO TK_par_apertura  TK_par_cierre FIN_LINEA											{} //a() -- llamar una funcion 
@@ -445,7 +444,9 @@ ASIGNACION: ACCESSOATRIBUTO TK_igual EXPRESIONARIT FIN_LINEA					 								{}
 
 
 PARAMETROS_EXTRA: PARAMETROS_EXTRA	TK_coma EXPRESIONARIT										{}
+				| PARAMETROS_EXTRA TK_coma TIPO_VALOR TK_ID										{}
 				| TK_coma EXPRESIONARIT															{}
+				| TK_coma TIPO_VALOR TK_ID														{}
 ;
 
 /*
@@ -469,12 +470,12 @@ FUNCIONES_ARREGLO: TK_punto TK_PUSH TK_par_apertura EXPRESIONARIT TK_par_cierre 
 //					| TK_pregunta EXPRESIONARIT TK_dos_puntos EXPRESIONARIT 
 //;
 
-SIGNOS_COMPARACION: TK_mayor_igual        				{}
-	|  TK_menor_igual        							{}
-	|  TK_mayor											{}
-	|  TK_menor 										{}
-	|  TK_igualacion 									{}
-	|  TK_desigual 										{}
+SIGNOS_COMPARACION: TK_mayor_igual        				{$$= new Nodo_arbol($1);}
+	|  TK_menor_igual        							{$$= new Nodo_arbol($1);}
+	|  TK_mayor											{$$= new Nodo_arbol($1);}
+	|  TK_menor 										{$$= new Nodo_arbol($1);}
+	|  TK_igualacion 									{$$= new Nodo_arbol($1);}
+	|  TK_desigual 										{$$= new Nodo_arbol($1);}
 ;
 
 PARAMETROS: PARAMETROS TK_coma EXPRESIONARIT

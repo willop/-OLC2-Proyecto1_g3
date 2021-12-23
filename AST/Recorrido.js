@@ -71,7 +71,7 @@
     recoverable: (boolean: TRUE when the parser has a error recovery rule available for this particular error)
   }
 */
-var recorrido = (function(){
+var Recorrido = (function(){
 var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,5],$V1=[1,12],$V2=[1,9],$V3=[1,13],$V4=[1,14],$V5=[1,15],$V6=[1,16],$V7=[1,17],$V8=[1,20],$V9=[10,28,33,50],$Va=[2,65],$Vb=[5,8,33,36,45,46,47,48,49],$Vc=[1,33],$Vd=[1,34],$Ve=[1,48],$Vf=[2,141],$Vg=[1,49],$Vh=[2,60],$Vi=[2,61],$Vj=[2,62],$Vk=[2,63],$Vl=[1,55],$Vm=[1,66],$Vn=[1,82],$Vo=[1,81],$Vp=[1,77],$Vq=[1,79],$Vr=[1,78],$Vs=[1,64],$Vt=[1,67],$Vu=[1,68],$Vv=[1,69],$Vw=[1,70],$Vx=[1,72],$Vy=[1,73],$Vz=[1,74],$VA=[1,75],$VB=[1,76],$VC=[1,54],$VD=[1,63],$VE=[1,56],$VF=[1,57],$VG=[1,58],$VH=[1,59],$VI=[1,60],$VJ=[1,61],$VK=[1,62],$VL=[1,83],$VM=[1,84],$VN=[5,8,10,14,30,33,36,45,46,47,48,49,50,53,54,55,56,58,59,60,61,62,66,78,81,82,83,84,85,86,87,93,94,105,106,107,108,109,112,115,116,117,118,120,124,125,126],$VO=[1,89],$VP=[10,30,33,45,46,47,48,50,53,54,55,56,58,59,60,61,62,66,78,81,82,83,84,85,86,87,105,106],$VQ=[10,11,12,28,38,40,41,50,51,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,88,89,90,91,92],$VR=[1,126],$VS=[1,115],$VT=[1,116],$VU=[1,117],$VV=[1,118],$VW=[1,119],$VX=[1,120],$VY=[1,121],$VZ=[1,122],$V_=[1,123],$V$=[1,124],$V01=[1,125],$V11=[1,127],$V21=[1,128],$V31=[1,129],$V41=[1,130],$V51=[1,131],$V61=[1,132],$V71=[1,133],$V81=[11,12,38,40,51,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,88,89,90,91,92],$V91=[1,153],$Va1=[1,154],$Vb1=[1,155],$Vc1=[1,156],$Vd1=[1,164],$Ve1=[11,12,38,40,51,66,67,68,69,70,71,72,73,74,77,78,79,80,88,89,90,91,92],$Vf1=[38,51],$Vg1=[1,234],$Vh1=[1,237],$Vi1=[1,238],$Vj1=[1,239],$Vk1=[1,240],$Vl1=[1,255],$Vm1=[1,261],$Vn1=[38,40],$Vo1=[1,273],$Vp1=[1,274],$Vq1=[1,275],$Vr1=[1,276],$Vs1=[1,277],$Vt1=[1,283],$Vu1=[1,284],$Vv1=[1,285],$Vw1=[1,286],$Vx1=[1,287],$Vy1=[14,38],$Vz1=[11,12,38,40,51,67,68,69,70,71,72,73,74,88,89,91,92],$VA1=[11,12,38,40,51,67,68,73,74,88,89,91,92],$VB1=[11,12,38,40,51,66,67,68,69,70,71,72,73,74,77,88,89,91,92],$VC1=[11,12,38,40,51,66,67,68,69,70,71,72,73,74,77,79,80,88,89,90,91,92],$VD1=[11,38,51],$VE1=[1,327],$VF1=[1,336],$VG1=[8,14,33,45,46,47,48,49,93,94,105,106,107,108,109,112,117,118,120,124,125,126],$VH1=[8,14,33,45,46,47,48,49,93,94,105,106,107,108,109,112,115,116,117,118,120,124,125,126],$VI1=[11,12,38,40,51,92],$VJ1=[8,11,12,14,33,38,40,45,46,47,48,49,51,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,88,89,90,91,92,93,94,105,106,107,108,109,112,115,116,117,118,120,124,125,126],$VK1=[11,38],$VL1=[11,38,40],$VM1=[1,443],$VN1=[1,444],$VO1=[1,452],$VP1=[8,14,33,45,46,47,48,49,93,94,105,106,107,108,109,112,115,117,118,120,124,125,126],$VQ1=[14,118];
 var parser = {trace: function trace () { },
 yy: {},
@@ -119,45 +119,69 @@ case 36:
 this.$ = new Nodo_arbol("DECLARACION"); this.$.sethijo($$[$0-1]); this.$.sethijo($$[$0]);
 break;
 case 37:
-this.$ = new Nodo_arbol("DECLARACION"); this.$.sethijo($$[$0-5]);this.$.sethijo(new nodo_arbol($$[$0-4]));this.$.sethijo(new nodo_arbol($$[$0-3]));this.$.sethijo(new nodo_arbol($$[$0-2]));this.$.sethijo(new nodo_arbol($$[$0-1]));this.$.sethijo(new nodo_arbol($$[$0]));
+this.$ = new Nodo_arbol("DECLARACION"); this.$.sethijo($$[$0-5]);this.$.sethijo(new Nodo_arbol($$[$0-4]));this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo(new Nodo_arbol($$[$0]));
 break;
 case 38:
-this.$ = new Nodo_arbol("DECLARACION"); this.$.sethijo($$[$0-4]);this.$.sethijo(new nodo_arbol($$[$0-3]));this.$.sethijo($$[$0-2]);this.$.sethijo(new nodo_arbol($$[$0-1]));this.$.sethijo($$[$0]);
+this.$ = new Nodo_arbol("DECLARACION"); this.$.sethijo($$[$0-4]);this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo($$[$0-2]);this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo($$[$0]);
 break;
 case 39:
-this.$ = new Nodo_arbol("DECLARACION"); this.$.sethijo($$[$0-7]);this.$.sethijo(new nodo_arbol($$[$0-6]));this.$.sethijo(new nodo_arbol($$[$0-5]));this.$.sethijo($$[$0-4]);this.$.sethijo(new nodo_arbol($$[$0-3])); this.$ .sethijo(new nodo_arbol($$[$0-2])); this.$.sethijo($$[$0-1]);this.$ .sethijo(new nodo_arbol($$[$0]));
+this.$ = new Nodo_arbol("DECLARACION"); this.$.sethijo($$[$0-7]);this.$.sethijo(new Nodo_arbol($$[$0-6]));this.$.sethijo(new Nodo_arbol($$[$0-5]));this.$.sethijo($$[$0-4]);this.$.sethijo(new Nodo_arbol($$[$0-3])); this.$ .sethijo(new Nodo_arbol($$[$0-2])); this.$.sethijo($$[$0-1]);this.$ .sethijo(new Nodo_arbol($$[$0]));
 break;
 case 40:
-this.$ = new Nodo_arbol("DECLARACION"); this.$.sethijo($$[$0-7]);this.$.sethijo(new nodo_arbol($$[$0-6]));this.$.sethijo(new nodo_arbol($$[$0-5]));this.$.sethijo(new nodo_arbol($$[$0-4]));this.$.sethijo(new nodo_arbol($$[$0-3])); this.$ .sethijo($$[$0-2]);this.$.sethijo($$[$0-1]);this.$ .sethijo(new nodo_arbol($$[$0]));
+this.$ = new Nodo_arbol("DECLARACION"); this.$.sethijo($$[$0-7]);this.$.sethijo(new Nodo_arbol($$[$0-6]));this.$.sethijo(new Nodo_arbol($$[$0-5]));this.$.sethijo(new Nodo_arbol($$[$0-4]));this.$.sethijo(new Nodo_arbol($$[$0-3])); this.$ .sethijo($$[$0-2]);this.$.sethijo($$[$0-1]);this.$ .sethijo(new Nodo_arbol($$[$0]));
 break;
 case 41:
-this.$ = new Nodo_arbol("DECLARACION"); this.$.sethijo($$[$0-8]);this.$.sethijo(new nodo_arbol($$[$0-7]));this.$.sethijo(new nodo_arbol($$[$0-6]));this.$.sethijo(new nodo_arbol($$[$0-5]));this.$.sethijo($$[$0-4]); this.$ .sethijo(new nodo_arbol($$[$0-3]));this.$.sethijo(new nodo_arbol($$[$0-2])); this.$.sethijo($$[$0-1]);this.$.sethijo(new nodo_arbol($$[$0]));
+this.$ = new Nodo_arbol("DECLARACION"); this.$.sethijo($$[$0-8]);this.$.sethijo(new Nodo_arbol($$[$0-7]));this.$.sethijo(new Nodo_arbol($$[$0-6]));this.$.sethijo(new Nodo_arbol($$[$0-5]));this.$.sethijo($$[$0-4]); this.$ .sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo(new Nodo_arbol($$[$0-2])); this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]));
 break;
 case 42:
-this.$ = new Nodo_arbol("DECLARACION"); this.$.sethijo($$[$0-6]);this.$.sethijo(new nodo_arbol($$[$0-5]));this.$.sethijo(new nodo_arbol($$[$0-4]));this.$.sethijo(new nodo_arbol($$[$0-3]));this.$.sethijo(new nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);this.$.sethijo(new nodo_arbol($$[$0]));
+this.$ = new Nodo_arbol("DECLARACION"); this.$.sethijo($$[$0-6]);this.$.sethijo(new Nodo_arbol($$[$0-5]));this.$.sethijo(new Nodo_arbol($$[$0-4]));this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]));
 break;
 case 43:
-this.$ = new Nodo_arbol("STRUCT"); this.$.sethijo(new nodo_arbol($$[$0-4]));this.$.sethijo(new nodo_arbol($$[$0-3]));this.$.sethijo(new nodo_arbol($$[$0-2]));this.$.sethijo(new nodo_arbol($$[$0-1]));this.$.sethijo($$[$0]);
+this.$ = new Nodo_arbol("STRUCT"); this.$.sethijo(new Nodo_arbol($$[$0-4]));this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo($$[$0]);
 break;
 case 44:
-this.$ = new Nodo_arbol("STRUCT"); this.$.sethijo(new nodo_arbol($$[$0-5]));this.$.sethijo(new nodo_arbol($$[$0-4]));this.$.sethijo(new nodo_arbol($$[$0-3]));this.$.sethijo($$[$0-2]);this.$.sethijo(new nodo_arbol($$[$0-1]));this.$.sethijo($$[$0]);
+this.$ = new Nodo_arbol("STRUCT"); this.$.sethijo(new Nodo_arbol($$[$0-5]));this.$.sethijo(new Nodo_arbol($$[$0-4]));this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo($$[$0-2]);this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo($$[$0]);
 break;
 case 45:
-this.$ = new Nodo_arbol("CONTENIDO_STRUCT");this.$.sethijo($$[$0-3]);this.$.sethijo(new nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);this.$.sethijo(new nodo_arbol($$[$0]));
+this.$ = new Nodo_arbol("CONTENIDO_STRUCT");this.$.sethijo($$[$0-3]);this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]));
 break;
 case 46:
-this.$ = new Nodo_arbol("CONTENIDO_STRUCT");this.$.sethijo($$[$0-3]);this.$.sethijo(new nodo_arbol($$[$0-2]));this.$.sethijo(new nodo_arbol($$[$0-1]));this.$.sethijo(new nodo_arbol($$[$0]));
+this.$ = new Nodo_arbol("CONTENIDO_STRUCT");this.$.sethijo($$[$0-3]);this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo(new Nodo_arbol($$[$0]));
 break;
 case 47: case 48:
-this.$ = new Nodo_arbol("CONTENIDO_STRUCT");this.$.sethijo(new nodo_arbol($$[$0-1]));this.$.sethijo(new nodo_arbol($$[$0]));
+this.$ = new Nodo_arbol("CONTENIDO_STRUCT");this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo(new Nodo_arbol($$[$0]));
 break;
 case 49: case 50:
-this.$= new Nodo_arbol("FIN_LINEA_STRUCT");this.$.sethijo(new nodo_arbol($$[$0]));
+this.$= new Nodo_arbol("FIN_LINEA_STRUCT");this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 51:
+this.$ = new Nodo_arbol("TIPO_DECLARACION");this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);this.$.sethijo($$[$0]);
+break;
+case 52:
+this.$ = new Nodo_arbol("TIPO_DECLARACION");this.$.sethijo(new Nodo_arbol($$[$0-4]));this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo($$[$0-2]);this.$.sethijo($$[$0-1]);this.$.sethijo($$[$0]);
+break;
+case 53:
+this.$ = new Nodo_arbol("TIPO_DECLARACION");this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);this.$.sethijo($$[$0]);
+break;
+case 54:
+this.$ = new Nodo_arbol("TIPO_DECLARACION");this.$.sethijo($$[$0-4]);this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);this.$.sethijo($$[$0]);
+break;
+case 55:
+this.$ = new Nodo_arbol("TIPO_DECLARACION");this.$.sethijo($$[$0-2]);this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo($$[$0]);
+break;
+case 56:
+this.$ = new Nodo_arbol("TIPO_DECLARACION");this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo($$[$0]);
+break;
+case 57:
+this.$ = new Nodo_arbol("MAS_VARIABLES");this.$.sethijo($$[$0-2]);this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo(new Nodo_arbol($$[$0]))
+break;
+case 58:
+this.$ = new Nodo_arbol("MAS_VARIABLES");this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo(new Nodo_arbol($$[$0]));
 break;
 case 59:
 this.$= new Nodo_arbol("FIN_LINEA");this.$.sethijo(new Nodo_arbol($$[$0]));
 break;
-case 60: case 61: case 62: case 63: case 64: case 65: case 68: case 69: case 70: case 71: case 72: case 73: case 74: case 75: case 76: case 141: case 159: case 160: case 161: case 162: case 163: case 164:
+case 60: case 61: case 62: case 63: case 64: case 65: case 68: case 69: case 70: case 71: case 72: case 73: case 74: case 75: case 76:
 this.$= new Nodo_arbol($$[$0]);
 break;
 case 66:
@@ -167,10 +191,10 @@ case 67:
 var a = $$[$0]; var al=a.length; var c = a.substring(1,al-1);  this.$ = new Nodo_arbol(c);
 break;
 case 77:
-this.$= new Nodo_arbol("VALORES");this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo(new nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]));
+this.$= new Nodo_arbol("VALORES");this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]));
 break;
 case 78: case 79: case 80:
-this.$= new Nodo_arbol("VALORES");this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo(new nodo_arbol($$[$0-2]));this.$.sethijo(new nodo_arbol($$[$0-1]));this.$.sethijo($$[$0]);
+this.$= new Nodo_arbol("VALORES");this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo($$[$0]);
 break;
 case 81:
 this.$= new Nodo_arbol("VALORES");this.$.sethijo($$[$0]);
@@ -179,16 +203,262 @@ case 82:
 this.$=new Nodo_arbol("VALORES");this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]));
 break;
 case 83:
-this.$=new Nodo_arbol("VALORES");this.$.sethijo(new nodo_arbol($$[$0-4]));this.$.sethijo(new nodo_arbol($$[$0-3]));this.$.sethijo($$[$0-2]);this.$.sethijo($$[$0-1]);this.$.sethijo(new nodo_arbol($$[$0]));
+this.$=new Nodo_arbol("VALORES");this.$.sethijo(new Nodo_arbol($$[$0-4]));this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo($$[$0-2]);this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 85:
+this.$ = new Nodo_arbol("ARREGLO");this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 86:
+this.$ = new Nodo_arbol("LISTA_ARREGLO");this.$.sethijo($$[$0-2]);this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo($$[$0]);
+break;
+case 87:
+this.$ = new Nodo_arbol("LISTA_ARREGLO");this.$.sethijo($$[$0]);
+break;
+case 88:
+this.$ = new Nodo_arbol("EXPRESIONARTI");this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo($$[$0]);
+break;
+case 89: case 90: case 91: case 92: case 93: case 94: case 95: case 96: case 99: case 100: case 102: case 103: case 119: case 120: case 121:
+this.$ = new Nodo_arbol("EXPRESIONARIT");this.$.sethijo($$[$0-2]);this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo($$[$0]);
+break;
+case 97: case 98: case 118:
+this.$ = new Nodo_arbol("EXPRESIONARIT");this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 101:
+this.$ = new Nodo_arbol("EXPRESIONARIT");this.$.sethijo($$[$0-3]);this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);
+break;
+case 104: case 123:
+this.$ = new Nodo_arbol("EXPRESIONARIT");this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 105:
+this.$ = new Nodo_arbol("EXPRESIONARIT");this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo($$[$0])
+break;
+case 106: case 108: case 110: case 112: case 114:
+this.$ = new Nodo_arbol("EXPRESIONARIT");this.$.sethijo($$[$0-3]);this.$.sethijo($$[$0-2]);this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 107: case 109: case 111: case 113: case 115:
+this.$ = new Nodo_arbol("EXPRESIONARIT");this.$.sethijo(new Nodo_arbol($$[$0-4]));this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 116:
+this.$ = new Nodo_arbol("EXPRESIONARIT");this.$.sethijo($$[$0-5]);this.$.sethijo(new Nodo_arbol($$[$0-4]));
+break;
+case 117:
+this.$ = new Nodo_arbol("EXPRESIONARIT");this.$.sethijo($$[$0-6]);this.$.sethijo(new Nodo_arbol($$[$0-5]));
+break;
+case 122:
+this.$ = new Nodo_arbol("EXPRESIONARIT");this.$.sethijo($$[$0-4]);this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo($$[$0-2]);this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo($$[$0]);
 break;
 case 124:
 this.$ = new Nodo_arbol("EXPRESIONARIT"); this.$.sethijo($$[$0]);
 break;
-case 125:
+case 125: case 126:
 this.$ = new Nodo_arbol("IMPRESION"); this.$.sethijo(new Nodo_arbol($$[$0-4]));this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo($$[$0-2]);this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo($$[$0]);
 break;
-case 127:
-this.$ = new Nodo_arbol("IMPRESION"); this.$.sethijo(new Nodo_arbol($$[$0-5]));this.$.sethijo(new Nodo_arbol($$[$0-4]));this.$.sethijo($$[$0-3]);this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);
+case 127: case 128:
+this.$ = new Nodo_arbol("IMPRESION"); this.$.sethijo(new Nodo_arbol($$[$0-5]));this.$.sethijo(new Nodo_arbol($$[$0-4]));this.$.sethijo($$[$0-3]);this.$.sethijo($$[$0-2]);this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo($$[$0]);
+break;
+case 129:
+this.$= new Nodo_arbol("MAS_VALORES_EXPRESIONARIT");this.$.sethijo($$[$0-2]);this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo($$[$0]);
+break;
+case 130:
+this.$= new Nodo_arbol("MAS_VALORES_EXPRESIONARIT");this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo($$[$0]);
+break;
+case 131:
+this.$ = new Nodo_arbol("ACCESOATRIBUTO");this.$.sethijo($$[$0-2]);this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 132: case 137:
+this.$ = new Nodo_arbol("ACCESOATRIBUTO");this.$.sethijo($$[$0-5]);this.$.sethijo(new Nodo_arbol($$[$0-4]));this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 133:
+this.$ = new Nodo_arbol("ACCESOATRIBUTO");this.$.sethijo($$[$0-7]);this.$.sethijo(new Nodo_arbol($$[$0-6]));this.$.sethijo(new Nodo_arbol($$[$0-5]));this.$.sethijo(new Nodo_arbol($$[$0-4]));this.$.sethijo($$[$0-3]);this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 134: case 135: case 136:
+this.$ = new Nodo_arbol("ACCESOATRIBUTO");this.$.sethijo($$[$0-4]);this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 138:
+this.$ = new Nodo_arbol("ACCESOATRIBUTO");this.$.sethijo($$[$0-4]);this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo(new Nodo_arbol($$[$0-1]));
+break;
+case 139:
+this.$ = new Nodo_arbol("ACCESOATRIBUTO");this.$.sethijo($$[$0-3]);this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 140:
+this.$ = new Nodo_arbol("ACCESOATRIBUTO");this.$.sethijo($$[$0-4]);this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo($$[$0-2]);this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 141:
+this.$ = new Nodo_arbol($$[$0]);
+break;
+case 142:
+this.$ = new Nodo_arbol("ACCESOATRIBUTO");this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 143:
+this.$= new Nodo_arbol("ASIGNACION");this.$= new Nodo_arbol($$[$0-3]);this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 144:
+this.$= new Nodo_arbol("ASIGNACION");this.$= new Nodo_arbol($$[$0-1]);this.$.sethijo($$[$0]);
+break;
+case 145:
+this.$ = new Nodo_arbol("ASIGNACION");this.$= new Nodo_arbol($$[$0-3]);this.$= new Nodo_arbol($$[$0-2]);this.$= new Nodo_arbol($$[$0-1]);this.$= new Nodo_arbol($$[$0]);
+break;
+case 146:
+this.$ = new Nodo_arbol("ASIGNACION");this.$= new Nodo_arbol($$[$0-3]);this.$= new Nodo_arbol(new Nodo_arbol($$[$0-2]));this.$= new Nodo_arbol(new Nodo_arbol($$[$0-1]));this.$= new Nodo_arbol($$[$0]);
+break;
+case 147:
+this.$ = new Nodo_arbol("ASIGNACION");this.$= new Nodo_arbol($$[$0-4]);this.$= new Nodo_arbol(new Nodo_arbol($$[$0-3]));this.$= new Nodo_arbol($$[$0-2]);this.$= new Nodo_arbol(new Nodo_arbol($$[$0-1]));this.$= new Nodo_arbol($$[$0]);
+break;
+case 148:
+this.$ = new Nodo_arbol("ASIGNACION");this.$= new Nodo_arbol($$[$0-5]);this.$.sethijo(new Nodo_arbol($$[$0-4])); this.$= new Nodo_arbol($$[$0-3]);this.$= new Nodo_arbol($$[$0-2]);this.$= new Nodo_arbol($$[$0-1]);Nodo_arbol($$[$0]);
+break;
+case 149:
+this.$ = new Nodo_arbol("ASIGNACION");this.$= new Nodo_arbol($$[$0-7]);this.$.sethijo(new Nodo_arbol($$[$0-6])); this.$= new Nodo_arbol($$[$0-5]);this.$= new Nodo_arbol($$[$0-4]);this.$= new Nodo_arbol($$[$0-3]);Nodo_arbol(new Nodo_arbol($$[$0-2]));this.$= new Nodo_arbol($$[$0-1]);Nodo_arbol(new Nodo_arbol($$[$0]));
+break;
+case 150: case 151:
+this.$ = new Nodo_arbol("ASIGNACION");this.$= new Nodo_arbol($$[$0-2]);this.$= new Nodo_arbol(new Nodo_arbol($$[$0-1]));this.$= new Nodo_arbol($$[$0]);
+break;
+case 152:
+this.$ = new Nodo_arbol("PARAMETROS_EXTRA");this.$.sethijo($$[$0-2]);this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo($$[$0]);
+break;
+case 153:
+this.$ = new Nodo_arbol("PARAMETROS_EXTRA");this.$.sethijo($$[$0-3]);this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 154:
+this.$ = new Nodo_arbol("PARAMETROS_EXTRA");this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo($$[$0]);
+break;
+case 155:
+this.$ = new Nodo_arbol("PARAMETROS_EXTRA");this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 156:
+this.$ = new Nodo_arbol("FUNCIONES_ARREGLO");this.$.sethijo(new Nodo_arbol($$[$0-4]));this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo($$[$0-2]);this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 157: case 158:
+this.$ = new Nodo_arbol("FUNCIONES_ARREGLO");this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 159: case 160: case 161: case 162: case 163: case 164:
+this.$= new Nodo_arbol("SIGNOS_COMPARACION");this.$= new Nodo_arbol($$[$0]);
+break;
+case 165:
+this.$= new Nodo_arbol("PARAMETROS");this.$.sethijo($$[$0-2]);this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo($$[$0]);
+break;
+case 166:
+this.$= new Nodo_arbol("PARAMETROS");this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo($$[$0]);
+break;
+case 167:
+this.$= new Nodo_arbol("PARAMETROS");this.$.sethijo($$[$0]);
+break;
+case 168: case 169:
+this.$ = new Nodo_arbol("FUNCIONES_NATIVAS");this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 170:
+this.$ = new Nodo_arbol("PARAMETRO_FUNSION"); this.$.sethijo($$[$0-1]); this.$.sethijo($$[$0])
+break;
+case 171:
+this.$ = new Nodo_arbol("PARAMETRO_FUNSION"); this.$.sethijo($$[$0-2]); this.$.sethijo($$[$0-1]);sethijo($$[$0]);
+break;
+case 172:
+this.$ = new Nodo_arbol("PARAMETRO_FUNSION"); this.$.sethijo(new Nodo_arbol($$[$0-1])); this.$.sethijo(new Nodo_arbol($$[$0]))
+break;
+case 173:
+this.$ = new Nodo_arbol("PARAMETRO_FUNSION"); this.$.sethijo(new Nodo_arbol($$[$0-2])); this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo($$[$0]);
+break;
+case 174:
+this.$ = new Nodo_arbol("PARAMETRO_FUNSION"); this.$.sethijo($$[$0-2]); this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 175:
+this.$ = new Nodo_arbol("PARAMETRO_FUNSION"); this.$.sethijo($$[$0-3]); this.$.sethijo($$[$0-2]);this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo($$[$0]);
+break;
+case 176:
+this.$ = new Nodo_arbol("MAS_PARAMETROS_FUNSION");this.$.sethijo($$[$0-3]);this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 177:
+this.$ = new Nodo_arbol("MAS_PARAMETROS_FUNSION");this.$.sethijo($$[$0-3]);this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 178:
+this.$ = new Nodo_arbol("MAS_PARAMETROS_FUNSION");this.$.sethijo($$[$0-2]);this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 179:
+this.$ = new Nodo_arbol("MAS_PARAMETROS_FUNSION");this.$.sethijo($$[$0-4]);this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo($$[$0-2]);this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]))
+break;
+case 180:
+this.$ = new Nodo_arbol("MAS_PARAMETROS_FUNSION");this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 181:
+this.$ = new Nodo_arbol("MAS_PARAMETROS_FUNSION");this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo(new Nodo_arbol($$[$0]))
+break;
+case 182:
+this.$ = new Nodo_arbol("MAS_PARAMETROS_FUNSION");this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 183:
+this.$ = new Nodo_arbol("MAS_PARAMETROS_FUNSION");this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo($$[$0-2]);this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]))
+break;
+case 184:
+this.$ = new Nodo_arbol("RETURN");this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);this.$.sethijo($$[$0]);
+break;
+case 185:
+this.$ = new Nodo_arbol("RETURN");this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo($$[$0]);
+break;
+case 186: case 187:
+this.$ = new Nodo_arbol("BREAK");this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 188: case 189:
+this.$ = new Nodo_arbol("CONDICIONALES");this.$.sethijo($$[$0])
+break;
+case 190:
+this.$ = new Nodo_arbol("FUNCION_IF");this.$.sethijo(new Nodo_arbol($$[$0-6]));this.$.sethijo(new Nodo_arbol($$[$0-5]));this.$.sethijo($$[$0-4]);this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo($$[$0-2]);this.$.sethijo(new Nodo_arbol($$[$0-1]));
+break;
+case 191: case 192:
+this.$ = new Nodo_arbol("FUNCION_IF");this.$.sethijo(new Nodo_arbol($$[$0-7]));this.$.sethijo(new Nodo_arbol($$[$0-6]));this.$.sethijo($$[$0-5]);this.$.sethijo(new Nodo_arbol($$[$0-4]));this.$.sethijo($$[$0-3]);this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);
+break;
+case 193:
+this.$ = new Nodo_arbol("FUNCION_IF");this.$.sethijo(new Nodo_arbol($$[$0-4]));this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo($$[$0-2]);this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo($$[$0]);
+break;
+case 194: case 195:
+this.$ = new Nodo_arbol("FUNCION_IF");this.$.sethijo(new Nodo_arbol($$[$0-5]));this.$.sethijo(new Nodo_arbol($$[$0-4]));this.$.sethijo($$[$0-3]);this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);this.$.sethijo($$[$0]);
+break;
+case 196:
+this.$ = new Nodo_arbol("FUNCION_ELSEIF");this.$.sethijo($$[$0-7]);this.$.sethijo(new Nodo_arbol($$[$0-5]));this.$.sethijo($$[$0-4]);this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 197:
+this.$ = new Nodo_arbol("FUNCION_ELSEIF");this.$.sethijo($$[$0-8]);this.$.sethijo(new Nodo_arbol($$[$0-6]));this.$.sethijo($$[$0-5]);this.$.sethijo(new Nodo_arbol($$[$0-4]));this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo($$[$0-2]);this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo($$[$0]);
+break;
+case 198:
+this.$ = new Nodo_arbol("FUNCION_ELSEIF");this.$.sethijo(new Nodo_arbol($$[$0-7]));this.$.sethijo(new Nodo_arbol($$[$0-6]));this.$.sethijo($$[$0-5]);this.$.sethijo(new Nodo_arbol($$[$0-4]));this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo($$[$0-2]);this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo($$[$0]);
+break;
+case 199:
+this.$ = new Nodo_arbol("FUNCION_ELSEIF");this.$.sethijo(new Nodo_arbol($$[$0-6]));this.$.sethijo(new Nodo_arbol($$[$0-5]));this.$.sethijo($$[$0-4]);this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 200:
+this.$ = new Nodo_arbol("FUNCION_ELSE");this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 201:
+this.$ = new Nodo_arbol("FUNCION_ELSE");this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo($$[$0]);
+break;
+case 202:
+this.$ = new Nodo_arbol("FUNCIONSWITCH");this.$.sethijo(new Nodo_arbol($$[$0-9]));this.$.sethijo(new Nodo_arbol($$[$0-8]));this.$.sethijo($$[$0-7]);this.$.sethijo(new Nodo_arbol($$[$0-6]));this.$.sethijo(new Nodo_arbol($$[$0-5]));this.$.sethijo(new Nodo_arbol($$[$0-4]));this.$.sethijo($$[$0-3]);this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 203:
+this.$ = new Nodo_arbol("FUNCIONSWITCH");this.$.sethijo(new Nodo_arbol($$[$0-10]));this.$.sethijo(new Nodo_arbol($$[$0-9]));this.$.sethijo($$[$0-8]);this.$.sethijo(new Nodo_arbol($$[$0-7]));this.$.sethijo(new Nodo_arbol($$[$0-6]));this.$.sethijo(new Nodo_arbol($$[$0-5]));this.$.sethijo($$[$0-4]);this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo($$[$0-2]);this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 204:
+this.$= new Nodo_arbol("SENTENCIAS_CASE");this.$.sethijo($$[$0-4]);this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo($$[$0-2]);this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo($$[$0]);
+break;
+case 205:
+this.$= new Nodo_arbol("SENTENCIAS_CASE");this.$.sethijo($$[$0-7]);this.$.sethijo(new Nodo_arbol($$[$0-6]));this.$.sethijo($$[$0-5]);this.$.sethijo(new Nodo_arbol($$[$0-4]));this.$.sethijo($$[$0-3]);this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo($$[$0]);
+break;
+case 206:
+this.$= new Nodo_arbol("SENTENCIAS_CASE");this.$.sethijo($$[$0-3]);this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);
+break;
+case 207: case 208: case 209:
+this.$= new Nodo_arbol("BUCLES");this.$.sethijo($$[$0]);
+break;
+case 210:
+this.$ = new Nodo_arbol("BUCLE_WHILE");this.$.sethijo(new Nodo_arbol($$[$0-6]));this.$.sethijo(new Nodo_arbol($$[$0-5]));this.$.sethijo($$[$0-4]);this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 211:
+this.$ = new Nodo_arbol("BUCLE_DO_WHILE");this.$.sethijo(new Nodo_arbol($$[$0-8]));this.$.sethijo(new Nodo_arbol($$[$0-7]));this.$.sethijo($$[$0-6]);this.$.sethijo(new Nodo_arbol($$[$0-5]));this.$.sethijo(new Nodo_arbol($$[$0-4]));this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo($$[$0-2]);this.$.sethijo(new Nodo_arbol($$[$0-1]));this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 212: case 213:
+this.$ = new Nodo_arbol("BUCLE_FOR");this.$.sethijo(new Nodo_arbol($$[$0-10]));this.$.sethijo(new Nodo_arbol($$[$0-9]));this.$.sethijo($$[$0-8]);this.$.sethijo($$[$0-7]);this.$.sethijo(new Nodo_arbol($$[$0-6]));this.$.sethijo(new Nodo_arbol($$[$0-5]));this.$.sethijo(new Nodo_arbol($$[$0-4]));this.$.sethijo(new Nodo_arbol($$[$0-3]));this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]));
+break;
+case 214:
+this.$ = new Nodo_arbol("BUCLE_FOR");this.$.sethijo(new Nodo_arbol($$[$0-6]));this.$.sethijo(new Nodo_arbol($$[$0-5]));this.$.sethijo(new Nodo_arbol($$[$0-4]));this.$.sethijo($$[$0-3]);this.$.sethijo(new Nodo_arbol($$[$0-2]));this.$.sethijo($$[$0-1]);this.$.sethijo(new Nodo_arbol($$[$0]));
 break;
 }
 },
@@ -882,9 +1152,9 @@ return new Parser;
 
 
 if (typeof require !== 'undefined' && typeof exports !== 'undefined') {
-exports.parser = recorrido;
-exports.Parser = recorrido.Parser;
-exports.parse = function () { return recorrido.parse.apply(recorrido, arguments); };
+exports.parser = Recorrido;
+exports.Parser = Recorrido.Parser;
+exports.parse = function () { return Recorrido.parse.apply(Recorrido, arguments); };
 exports.main = function commonjsMain (args) {
     if (!args[1]) {
         console.log('Usage: '+args[0]+' FILE');

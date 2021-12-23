@@ -195,13 +195,13 @@ Características básicas
 </p>
 
 - Vista Editor de codigo
-<img src="./Imagenes/i1.png">
+<img src="./Imagenes/i1.PNG">
 
 - Vista traduccion de Codigo
-<img src="./Imagenes/i2.png">
+<img src="./Imagenes/i2.PNG">
 
 - Vista Salida Consola
-<img src="./Imagenes/i3.png">
+<img src="./Imagenes/i3.PNG">
 
 - Ejemplo Reporte Arbol
 <img src="./Imagenes/i4.png">
